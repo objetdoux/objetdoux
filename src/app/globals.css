@@ -10,7 +10,6 @@
   --color-foreground: var(--foreground);
   --font-sans: "Pretendard", "Noto Sans KR", "Apple SD Gothic Neo", sans-serif;
   --font-mono: "SFMono-Regular", "SF Mono", "Consolas", monospace;
-  --font-serif-display: "Iowan Old Style", "Times New Roman", "Times", serif;
 }
 
 * {
@@ -32,10 +31,6 @@ body {
 
 a {
   text-decoration: none;
-}
-
-.font-serif-display {
-  font-family: var(--font-serif-display);
 }
 
 input,
