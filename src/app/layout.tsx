@@ -1,0 +1,23 @@
+import type { Metadata } from "next";
+import "./globals.css";
+
+export const metadata: Metadata = {
+  title: {
+    default: "objetdoux",
+    template: "%s | objetdoux",
+  },
+  description:
+    "objetdoux 브랜드의 감도와 이야기를 담아내는 공식 홈페이지입니다.",
+};
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html lang="ko" className="h-full antialiased">
+      <body className="min-h-full flex flex-col">{children}</body>
+    </html>
+  );
+}
