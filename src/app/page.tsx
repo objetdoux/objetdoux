@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { shopProducts } from "./site-data";
 
 const eventItems = [
   {
@@ -11,12 +12,7 @@ const eventItems = [
   },
 ];
 
-const newItems = [
-  { name: "New Plate Series", price: "₩38,000" },
-  { name: "New Mug Series", price: "₩29,000" },
-  { name: "New Bowl Series", price: "₩32,000" },
-  { name: "Gift Package", price: "₩12,000" },
-];
+const newItems = shopProducts.slice(0, 4);
 
 const magazineItems = [
   {
@@ -93,9 +89,10 @@ export default function Home() {
 
         <div className="mt-4 grid grid-cols-2 gap-5 xl:grid-cols-4">
           {newItems.map((item) => (
-            <article
-              key={item.name}
-              className="rounded-[1.5rem] border border-black/6 bg-white p-4 sm:p-5"
+            <Link
+              key={item.slug}
+              href={`/shop/${item.slug}`}
+              className="rounded-[1.5rem] border border-black/6 bg-white p-4 transition hover:border-black/12 hover:bg-[#fcfaf7] sm:p-5"
             >
               <div className="aspect-square rounded-[1rem] bg-[#e5e3de]" />
               <p className="mt-3 text-base font-medium text-stone-900">
@@ -104,7 +101,7 @@ export default function Home() {
               <p className="mt-1 text-sm leading-6 text-stone-500">
                 {item.price}
               </p>
-            </article>
+            </Link>
           ))}
         </div>
       </section>

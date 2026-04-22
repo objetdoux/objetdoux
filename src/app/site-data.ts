@@ -39,42 +39,105 @@ export const shopMenu = ["All", "Plate", "Cup", "Bowl", "Tea Ware", "Object"];
 
 export const shopProducts = [
   {
+    slug: "lune-plate",
     name: "Lune Plate",
     category: "Plate",
+    priceValue: 38000,
     price: "₩38,000",
     description: "식탁 위 기본이 되는 담백한 메인 플레이트",
+    summary: "부드러운 곡선과 넓은 면이 특징인 메인 플레이트",
+    material: "Ceramic",
+    size: "26cm",
   },
   {
+    slug: "soft-rim-plate",
     name: "Soft Rim Plate",
     category: "Plate",
+    priceValue: 34000,
     price: "₩34,000",
     description: "가벼운 디저트와 브런치에 어울리는 얕은 접시",
+    summary: "얕은 깊이와 넓은 림이 조화를 이루는 디저트 플레이트",
+    material: "Ceramic",
+    size: "21cm",
   },
   {
+    slug: "morning-cup",
     name: "Morning Cup",
     category: "Cup",
+    priceValue: 29000,
     price: "₩29,000",
     description: "매일 손이 가는 데일리 컵",
+    summary: "차분한 비율로 매일 쓰기 좋은 기본 컵",
+    material: "Ceramic",
+    size: "300ml",
   },
   {
+    slug: "calm-mug",
     name: "Calm Mug",
     category: "Cup",
+    priceValue: 32000,
     price: "₩32,000",
     description: "차와 커피 모두 편안하게 담아내는 머그",
+    summary: "손에 안정감 있게 잡히는 데일리 머그",
+    material: "Ceramic",
+    size: "350ml",
   },
   {
+    slug: "deep-bowl",
     name: "Deep Bowl",
     category: "Bowl",
+    priceValue: 36000,
     price: "₩36,000",
     description: "국물과 면 요리에 어울리는 깊은 볼",
+    summary: "깊이감이 있어 다양한 한식 메뉴에 어울리는 볼",
+    material: "Ceramic",
+    size: "18cm",
   },
   {
+    slug: "daily-bowl",
     name: "Daily Bowl",
     category: "Bowl",
+    priceValue: 28000,
     price: "₩28,000",
     description: "작은 반찬과 디저트를 담기 좋은 기본 볼",
+    summary: "작은 음식과 디저트를 담기 좋은 데일리 볼",
+    material: "Ceramic",
+    size: "14cm",
+  },
+  {
+    slug: "soft-tea-cup",
+    name: "Soft Tea Cup",
+    category: "Tea Ware",
+    priceValue: 31000,
+    price: "₩31,000",
+    description: "차를 위한 잔잔한 비율의 티컵",
+    summary: "부드러운 손잡이와 차분한 실루엣이 특징인 티컵",
+    material: "Ceramic",
+    size: "220ml",
+  },
+  {
+    slug: "table-tray",
+    name: "Table Tray",
+    category: "Object",
+    priceValue: 42000,
+    price: "₩42,000",
+    description: "작은 오브제를 정돈하는 세라믹 트레이",
+    summary: "식탁과 선반 위를 단정하게 정리하는 트레이",
+    material: "Ceramic",
+    size: "28cm",
   },
 ];
+
+export const shopSortOptions = [
+  { value: "latest", label: "최신순" },
+  { value: "price-high", label: "가격 높은순" },
+  { value: "price-low", label: "가격 낮은순" },
+  { value: "name", label: "이름순" },
+];
+
+export function getProductBySlug(slug: string) {
+  return shopProducts.find((product) => product.slug === slug);
+}
 
 export const magazineArticles = [
   {

@@ -1,4 +1,4 @@
-import { shopMenu, shopProducts } from "../site-data";
+import { ShopCatalog } from "./shop-catalog";
 
 export default function ShopPage() {
   return (
@@ -15,85 +15,7 @@ export default function ShopPage() {
           </p>
         </div>
 
-        <div className="mt-8 rounded-[1.5rem] border border-black/6 bg-white p-4 sm:p-5">
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <div>
-              <p className="text-sm font-medium text-stone-900">상품 검색</p>
-              <p className="mt-1 text-sm text-stone-500">
-                추후 상품명, 카테고리로 검색할 수 있는 영역입니다.
-              </p>
-            </div>
-            <div className="flex w-full gap-2 sm:w-auto sm:min-w-[320px]">
-              <input
-                type="search"
-                placeholder="상품명을 검색해보세요"
-                className="min-w-0 flex-1 rounded-xl border border-black/8 bg-[#faf8f5] px-4 py-3 text-sm text-stone-700 outline-none placeholder:text-stone-400"
-              />
-              <button
-                type="button"
-                className="rounded-xl bg-stone-950 px-5 py-3 text-sm font-medium text-white transition hover:bg-stone-800"
-              >
-                검색
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <div className="mt-6 grid gap-8 lg:grid-cols-[220px_minmax(0,1fr)]">
-          <aside className="rounded-[1.5rem] border border-black/6 bg-white p-6">
-            <p className="text-sm font-semibold text-stone-900">CATEGORY</p>
-            <div className="mt-5 space-y-3">
-              {shopMenu.map((item, index) => (
-                <button
-                  key={item}
-                  type="button"
-                  className={
-                    index === 0
-                      ? "flex w-full items-center justify-between rounded-xl bg-[#f2ede6] px-4 py-3 text-left text-sm font-medium text-stone-900"
-                      : "flex w-full items-center justify-between rounded-xl px-4 py-3 text-left text-sm text-stone-500 transition hover:bg-[#f8f5f1] hover:text-stone-900"
-                  }
-                >
-                  <span>{item}</span>
-                  <span className="text-xs text-stone-400">›</span>
-                </button>
-              ))}
-            </div>
-          </aside>
-
-          <section>
-            <div className="mb-5 flex items-center justify-between">
-              <p className="text-sm text-stone-500">
-                총 {shopProducts.length}개의 상품
-              </p>
-              <p className="text-sm text-stone-500">최신순</p>
-            </div>
-
-            <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
-              {shopProducts.map((product) => (
-                <article
-                  key={product.name}
-                  className="overflow-hidden rounded-[1.5rem] border border-black/6 bg-white"
-                >
-                  <div className="m-5 mb-0 h-64 rounded-[1rem] bg-[#e5e3de]" />
-                  <div className="px-6 py-6">
-                    <p className="text-xs font-medium uppercase tracking-[0.18em] text-[#8a6b5f]">
-                      {product.category}
-                    </p>
-                    <h2 className="mt-3 text-xl font-semibold tracking-[-0.02em] text-stone-950">
-                      {product.name}
-                    </h2>
-                    <p className="mt-3 text-sm leading-7 text-stone-600">
-                      {product.description}
-                    </p>
-                    <p className="mt-5 text-base font-semibold text-stone-900">
-                      {product.price}
-                    </p>
-                  </div>
-                </article>
-              ))}
-            </div>
-          </section>
-        </div>
+        <ShopCatalog />
       </div>
     </main>
   );
