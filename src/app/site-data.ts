@@ -139,6 +139,11 @@ export function getProductBySlug(slug: string) {
   return shopProducts.find((product) => product.slug === slug);
 }
 
+export const cartItems = [
+  { slug: "lune-plate", quantity: 1 },
+  { slug: "morning-cup", quantity: 2 },
+];
+
 export const magazineArticles = [
   {
     category: "STORY",
@@ -177,3 +182,97 @@ export const ordinaryNotes = [
       "좋은 식기는 쓰는 사람의 취향을 보여주면서도 오래 함께 남는 물건이 됩니다.",
   },
 ];
+
+export const mockUser = {
+  name: "김오브제",
+  email: "hello@objetdoux.com",
+  phone: "010-1234-5678",
+  joinedAt: "2026.04.10",
+  defaultAddress: "서울 성동구 성수이로 00, 00빌딩 3층",
+};
+
+export const myPageSections = [
+  {
+    title: "주문 내역",
+    description: "최근 주문 상태와 결제 금액을 확인합니다.",
+    href: "/mypage/orders",
+  },
+  {
+    title: "회원 정보",
+    description: "이메일, 연락처, 기본 배송지 정보를 관리합니다.",
+    href: "/mypage/profile",
+  },
+  {
+    title: "배송지 관리",
+    description: "자주 쓰는 배송지를 저장하고 수정합니다.",
+    href: "/mypage/addresses",
+  },
+  {
+    title: "관심 상품",
+    description: "추후 찜 기능과 함께 모아볼 수 있는 영역입니다.",
+    href: "/mypage/wishlist",
+  },
+];
+
+export const myPageOrders = [
+  {
+    orderNumber: "OD-20260422-001",
+    date: "2026.04.22",
+    status: "상품 준비 중",
+    total: "₩96,000",
+    items: "Lune Plate 외 1건",
+    paymentMethod: "신용카드",
+    shippingFee: "₩3,000",
+    recipient: "김오브제",
+    address: "서울 성동구 성수이로 00, 00빌딩 3층",
+    deliveryMemo: "부재 시 문 앞에 놓아주세요",
+    products: [
+      { slug: "lune-plate", quantity: 1 },
+      { slug: "morning-cup", quantity: 2 },
+    ],
+  },
+  {
+    orderNumber: "OD-20260418-003",
+    date: "2026.04.18",
+    status: "배송 완료",
+    total: "₩42,000",
+    items: "Table Tray",
+    paymentMethod: "카카오페이",
+    shippingFee: "₩3,000",
+    recipient: "김오브제",
+    address: "서울 성동구 성수이로 00, 00빌딩 3층",
+    deliveryMemo: "배송 전 연락 부탁드립니다",
+    products: [{ slug: "table-tray", quantity: 1 }],
+  },
+];
+
+export function getOrderByNumber(orderNumber: string) {
+  return myPageOrders.find((order) => order.orderNumber === orderNumber);
+}
+
+export const wishlistSlugs = ["soft-rim-plate", "calm-mug", "soft-tea-cup"];
+
+export const myPageAddresses = [
+  {
+    id: "default",
+    label: "기본 배송지",
+    recipient: mockUser.name,
+    phone: mockUser.phone,
+    zoneCode: "04799",
+    address: mockUser.defaultAddress,
+    detailAddress: "공동현관 비밀번호 1234",
+  },
+  {
+    id: "mapo",
+    label: "",
+    recipient: "김오브제",
+    phone: "010-5678-1234",
+    zoneCode: "03980",
+    address: "서울 마포구 연남로 00, 101동 502호",
+    detailAddress: "문 앞에 놓아주세요",
+  },
+];
+
+export function getAddressById(addressId: string) {
+  return myPageAddresses.find((address) => address.id === addressId);
+}

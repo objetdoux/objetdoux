@@ -67,9 +67,6 @@ export default async function ProductDetailPage({
             <p className="mt-6 text-base leading-7 text-stone-600">
               {product.summary}
             </p>
-            <p className="mt-4 text-sm leading-7 text-stone-600">
-              {product.description}
-            </p>
 
             <div className="mt-8 grid gap-4 border-t border-black/6 pt-6 sm:grid-cols-2">
               <div>
@@ -89,20 +86,20 @@ export default async function ProductDetailPage({
             <div className="mt-8 grid gap-4 border-t border-black/6 pt-6">
               <div>
                 <p className="text-xs uppercase tracking-[0.16em] text-stone-500">
-                  Option
-                </p>
-                <div className="mt-2 rounded-xl border border-black/8 bg-[#faf8f5] px-4 py-3 text-sm text-stone-700">
-                  기본 옵션 / 준비중
-                </div>
-              </div>
-              <div>
-                <p className="text-xs uppercase tracking-[0.16em] text-stone-500">
                   Quantity
                 </p>
                 <div className="mt-2 flex w-36 items-center justify-between rounded-xl border border-black/8 bg-[#faf8f5] px-4 py-3 text-sm text-stone-700">
                   <span>-</span>
                   <span>1</span>
                   <span>+</span>
+                </div>
+              </div>
+              <div className="rounded-[1rem] bg-[#faf8f5] px-4 py-4">
+                <div className="flex items-center justify-between gap-4">
+                  <p className="text-sm text-stone-500">총 상품 금액</p>
+                  <p className="text-lg font-semibold text-stone-900">
+                    {product.price}
+                  </p>
                 </div>
               </div>
             </div>
@@ -114,36 +111,50 @@ export default async function ProductDetailPage({
               >
                 구매 문의
               </button>
-              <button
-                type="button"
+              <Link
+                href="/cart"
                 className="rounded-xl border border-black/8 bg-[#faf8f5] px-6 py-3 text-sm font-medium text-stone-700 transition hover:bg-white"
               >
                 장바구니 담기
-              </button>
+              </Link>
             </div>
 
             <div className="mt-8 space-y-3 border-t border-black/6 pt-6 text-sm text-stone-600">
-              <div className="flex items-start justify-between gap-4">
+              <div className="grid gap-2 sm:grid-cols-[120px_minmax(0,1fr)] sm:gap-4">
                 <p className="font-medium text-stone-900">배송 안내</p>
-                <p className="max-w-[18rem] text-right">
+                <p className="sm:max-w-[32rem] sm:justify-self-end sm:text-right">
                   기본 배송 2~5일 소요 / 제주 및 도서산간 추가 배송비 별도
                 </p>
               </div>
-              <div className="flex items-start justify-between gap-4">
+              <div className="grid gap-2 sm:grid-cols-[120px_minmax(0,1fr)] sm:gap-4">
                 <p className="font-medium text-stone-900">교환 / 반품</p>
-                <p className="max-w-[18rem] text-right">
+                <p className="sm:max-w-[32rem] sm:justify-self-end sm:text-right">
                   수령 후 7일 이내 가능 / 사용 흔적이 없는 경우에 한함
                 </p>
               </div>
-              <div className="flex items-start justify-between gap-4">
+              <div className="grid gap-2 sm:grid-cols-[120px_minmax(0,1fr)] sm:gap-4">
                 <p className="font-medium text-stone-900">안내</p>
-                <p className="max-w-[18rem] text-right">
+                <p className="sm:max-w-[32rem] sm:justify-self-end sm:text-right">
                   수작업 공정 특성상 미세한 차이가 있을 수 있습니다.
                 </p>
               </div>
             </div>
           </div>
         </div>
+
+        <section className="mt-16">
+          <div className="min-h-[32rem] bg-[#e5e3de] sm:min-h-[48rem] lg:min-h-[72rem]">
+            <div className="p-6">
+              <h2 className="text-2xl font-semibold tracking-[-0.03em] text-stone-800">
+                상세 이미지 영역
+              </h2>
+              <p className="mt-4 max-w-md text-sm leading-6 text-stone-500">
+                추후 와이프분이 넣을 긴 상세페이지 이미지를 위한 영역입니다.
+                카드나 패딩 없이 넓게 붙는 구조로 바꿔두었습니다.
+              </p>
+            </div>
+          </div>
+        </section>
 
         <section className="mt-16">
           <div className="flex items-end justify-between">
@@ -170,12 +181,15 @@ export default async function ProductDetailPage({
                   <h3 className="mt-3 text-xl font-semibold tracking-[-0.02em] text-stone-950">
                     {item.name}
                   </h3>
-                  <p className="mt-3 text-sm leading-6 text-stone-600">
-                    {item.description}
+                  <p className="mt-2 text-sm leading-6 text-stone-600">
+                    {item.summary}
                   </p>
-                  <p className="mt-4 text-base font-semibold text-stone-900">
-                    {item.price}
-                  </p>
+                  <div className="mt-4 flex items-center justify-between gap-4">
+                    <p className="text-base font-semibold text-stone-900">
+                      {item.price}
+                    </p>
+                    <span className="text-sm text-stone-400">자세히 보기</span>
+                  </div>
                 </div>
               </Link>
             ))}
