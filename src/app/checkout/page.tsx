@@ -248,7 +248,7 @@ export default function CheckoutPage() {
               </Link>
               <Link
                 href="/cart"
-                className="rounded-xl border border-black/8 bg-[#faf8f5] px-6 py-3 text-center text-sm font-medium text-stone-700 transition hover:bg-white"
+                className="rounded-xl border border-black/8 bg-[#faf8f5] px-6 py-3 text-center text-sm font-medium text-stone-700 transition hover:border-stone-900"
               >
                 장바구니로 돌아가기
               </Link>

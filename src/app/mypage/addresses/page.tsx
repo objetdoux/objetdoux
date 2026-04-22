@@ -33,54 +33,54 @@ export default function MyPageAddressesPage() {
                 자주 사용하는 배송지를 저장하고 관리하는 페이지입니다.
               </p>
             </div>
-            <button
-              type="button"
-              className="rounded-xl bg-stone-950 px-4 py-2 text-sm font-medium text-white transition hover:bg-stone-800"
+            <Link
+              href="/mypage/addresses/new"
+              className="inline-flex h-12 items-center justify-center rounded-xl bg-stone-950 px-5 text-sm font-medium text-white transition hover:bg-stone-800"
             >
               새 배송지 추가
-            </button>
+            </Link>
           </div>
 
           <div className="mt-8 space-y-4">
             {myPageAddresses.map((address) => (
               <article
                 key={address.id}
-                className="rounded-[1.5rem] bg-[#faf8f5] px-5 py-5 sm:px-6 sm:py-6"
+                className="rounded-[1.5rem] bg-[#faf8f5] px-5 py-4 sm:px-6 sm:py-5"
               >
-                <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+                <div className="flex min-h-[10rem] flex-col justify-between gap-4">
                   <div>
                     {address.label ? (
-                      <p className="inline-flex h-8 items-center rounded-full bg-white px-3 text-xs font-medium text-stone-600">
+                      <p className="text-sm font-medium text-stone-500">
                         {address.label}
                       </p>
                     ) : null}
                     <p className="mt-2 text-lg font-semibold text-stone-950">
                       {address.recipient}
                     </p>
-                    <p className="mt-2 text-sm text-stone-600">{address.phone}</p>
-                    <p className="mt-2 text-sm leading-6 text-stone-600">
+                    <p className="mt-1.5 text-sm text-stone-600">{address.phone}</p>
+                    <p className="mt-1.5 text-sm leading-6 text-stone-600">
                       {address.address}
                     </p>
                   </div>
 
-                  <div className="flex flex-wrap items-center gap-2 sm:justify-end">
+                  <div className="flex flex-wrap items-center justify-end gap-x-4 gap-y-2 text-sm">
                     {!address.label ? (
                       <button
                         type="button"
-                        className="inline-flex h-11 items-center justify-center rounded-xl border border-black/8 bg-white px-4 text-sm font-medium text-stone-700 transition hover:bg-[#f3efe9]"
+                        className="text-stone-700 transition hover:text-stone-950"
                       >
                         기본으로 설정
                       </button>
                     ) : null}
                     <Link
                       href={`/mypage/addresses/${address.id}`}
-                      className="inline-flex h-11 items-center justify-center rounded-xl border border-black/8 bg-white px-4 text-sm font-medium text-stone-700 transition hover:bg-[#f3efe9]"
+                      className="text-stone-700 transition hover:text-stone-950"
                     >
                       수정
                     </Link>
                     <button
                       type="button"
-                      className="inline-flex h-11 items-center justify-center rounded-xl border border-black/8 bg-white px-4 text-sm font-medium text-stone-500 transition hover:bg-[#f3efe9] hover:text-stone-700"
+                      className="text-stone-500 transition hover:text-stone-700"
                     >
                       삭제
                     </button>

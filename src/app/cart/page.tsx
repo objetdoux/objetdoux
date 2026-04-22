@@ -120,7 +120,7 @@ export default function CartPage() {
               </Link>
               <Link
                 href="/shop"
-                className="rounded-xl border border-black/8 bg-[#faf8f5] px-6 py-3 text-center text-sm font-medium text-stone-700 transition hover:bg-white"
+                className="rounded-xl border border-black/8 bg-[#faf8f5] px-6 py-3 text-center text-sm font-medium text-stone-700 transition hover:border-stone-900"
               >
                 쇼핑 계속하기
               </Link>

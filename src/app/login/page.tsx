@@ -47,15 +47,18 @@ export default function LoginPage() {
             </div>
 
             <div className="mt-4 flex flex-wrap gap-x-4 gap-y-2 text-sm text-stone-500">
-              <a href="#" className="transition hover:text-stone-900">
+              <Link href="/signup" className="transition hover:text-stone-900">
                 회원가입
-              </a>
-              <a href="#" className="transition hover:text-stone-900">
+              </Link>
+              <Link href="/find-id" className="transition hover:text-stone-900">
                 아이디 찾기
-              </a>
-              <a href="#" className="transition hover:text-stone-900">
+              </Link>
+              <Link
+                href="/reset-password"
+                className="transition hover:text-stone-900"
+              >
                 비밀번호 찾기
-              </a>
+              </Link>
             </div>
 
             <div className="mt-10">

@@ -39,7 +39,7 @@ export default function MyPageWishlistPage() {
             </div>
             <Link
               href="/shop"
-              className="rounded-xl border border-black/8 bg-[#faf8f5] px-4 py-2 text-sm text-stone-700 transition hover:bg-white"
+              className="rounded-xl border border-black/8 bg-[#faf8f5] px-4 py-2 text-sm text-stone-700 transition hover:border-stone-900"
             >
               상품 더 보기
             </Link>

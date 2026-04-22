@@ -141,7 +141,7 @@ export default function OrderCompletePage() {
                 </Link>
                 <Link
                   href="/"
-                  className="rounded-xl border border-black/8 bg-white px-6 py-3 text-center text-sm font-medium text-stone-700 transition hover:bg-white"
+                  className="rounded-xl border border-black/8 bg-white px-6 py-3 text-center text-sm font-medium text-stone-700 transition hover:border-stone-900"
                 >
                   메인으로 돌아가기
                 </Link>

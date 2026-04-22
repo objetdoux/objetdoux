@@ -134,7 +134,7 @@ export function ShopCatalog() {
                         ? "좋아요 취소"
                         : "좋아요 추가"
                     }
-                    className="absolute right-3 top-3 flex h-10 w-10 items-center justify-center rounded-full bg-white/90 text-lg text-stone-700 shadow-sm transition hover:bg-white hover:text-stone-950"
+                    className="absolute right-3 top-3 flex h-10 w-10 items-center justify-center rounded-full bg-white/90 text-lg text-stone-700 shadow-sm transition hover:text-stone-950"
                   >
                     {likedProducts.includes(product.slug) ? "♥" : "♡"}
                   </button>

@@ -35,7 +35,7 @@ export default function MyPageOrdersPage() {
             </div>
             <Link
               href="/mypage"
-              className="rounded-xl border border-black/8 bg-[#faf8f5] px-4 py-2 text-sm text-stone-700 transition hover:bg-white"
+              className="rounded-xl border border-black/8 bg-[#faf8f5] px-4 py-2 text-sm text-stone-700 transition hover:border-stone-900"
             >
               마이페이지로 돌아가기
             </Link>
@@ -46,7 +46,7 @@ export default function MyPageOrdersPage() {
               <Link
                 key={order.orderNumber}
                 href={`/mypage/orders/${order.orderNumber}`}
-                className="block rounded-[1.5rem] bg-[#faf8f5] px-5 py-5 transition hover:bg-white sm:px-6 sm:py-6"
+                className="block rounded-[1.5rem] bg-[#faf8f5] px-5 py-5 transition hover:border-black/8 sm:px-6 sm:py-6"
               >
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                   <div>

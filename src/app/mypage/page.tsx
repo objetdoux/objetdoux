@@ -37,7 +37,7 @@ export default function MyPage() {
                 <Link
                   key={section.title}
                   href={section.href}
-                  className="flex items-center justify-between rounded-[1.25rem] bg-[#faf8f5] px-4 py-4 text-base font-medium text-stone-950 transition hover:bg-white"
+                  className="flex items-center justify-between rounded-[1.25rem] bg-[#faf8f5] px-4 py-4 text-base font-medium text-stone-950 transition hover:border-black/8"
                 >
                   <span>{section.title}</span>
                   <span className="text-sm text-stone-300">›</span>
@@ -59,7 +59,7 @@ export default function MyPage() {
                 </div>
                 <Link
                   href="/shop"
-                  className="rounded-xl border border-black/8 bg-[#faf8f5] px-4 py-2 text-sm text-stone-700 transition hover:bg-white"
+                  className="rounded-xl border border-black/8 bg-[#faf8f5] px-4 py-2 text-sm text-stone-700 transition hover:border-stone-900"
                 >
                   쇼핑 계속하기
                 </Link>
@@ -70,7 +70,7 @@ export default function MyPage() {
                   <Link
                     key={order.orderNumber}
                     href={`/mypage/orders/${order.orderNumber}`}
-                    className="block rounded-[1.5rem] bg-[#faf8f5] px-5 py-5 transition hover:bg-white sm:px-6 sm:py-6"
+                    className="block rounded-[1.5rem] bg-[#faf8f5] px-5 py-5 transition hover:border-black/8 sm:px-6 sm:py-6"
                   >
                     <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                       <div>

@@ -42,7 +42,7 @@ export default function MyPageProfilePage() {
               </button>
               <Link
                 href="/mypage"
-                className="inline-flex h-12 items-center justify-center rounded-xl border border-black/8 bg-[#faf8f5] px-5 text-sm font-medium text-stone-700 transition hover:bg-white"
+                className="inline-flex h-12 items-center justify-center rounded-xl border border-black/8 bg-[#faf8f5] px-5 text-sm font-medium text-stone-700 transition hover:border-stone-900"
               >
                 마이페이지로 돌아가기
               </Link>

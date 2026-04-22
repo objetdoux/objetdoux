@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getProductBySlug, shopProducts } from "../../site-data";
+import { getProductBySlug, shopProducts, wishlistSlugs } from "../../site-data";
 
 type ProductDetailPageProps = {
   params: Promise<{ slug: string }>;
@@ -27,6 +27,7 @@ export default async function ProductDetailPage({
       (item) => item.category === product.category && item.slug !== product.slug,
     )
     .slice(0, 3);
+  const isLiked = wishlistSlugs.includes(product.slug);
 
   return (
     <main className="bg-[#f7f3ee] px-6 py-10 lg:px-8 lg:py-14">
@@ -54,15 +55,27 @@ export default async function ProductDetailPage({
           </div>
 
           <div className="rounded-[1.75rem] border border-black/6 bg-white px-6 py-7 sm:px-8 sm:py-8">
-            <p className="text-xs font-medium uppercase tracking-[0.18em] text-[#8a6b5f]">
-              {product.category}
-            </p>
-            <h1 className="mt-3 text-3xl font-semibold tracking-[-0.03em] text-stone-950 sm:text-4xl">
-              {product.name}
-            </h1>
-            <p className="mt-4 text-lg font-semibold text-stone-900">
-              {product.price}
-            </p>
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <p className="text-xs font-medium uppercase tracking-[0.18em] text-[#8a6b5f]">
+                  {product.category}
+                </p>
+                <h1 className="mt-3 text-3xl font-semibold tracking-[-0.03em] text-stone-950 sm:text-4xl">
+                  {product.name}
+                </h1>
+                <p className="mt-4 text-lg font-semibold text-stone-900">
+                  {product.price}
+                </p>
+              </div>
+
+              <button
+                type="button"
+                aria-label={isLiked ? "좋아요 취소" : "좋아요 추가"}
+                className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full border border-black/8 bg-[#faf8f5] text-[1.9rem] leading-none text-stone-900 transition hover:border-stone-900"
+              >
+                {isLiked ? "♥" : "♡"}
+              </button>
+            </div>
 
             <p className="mt-6 text-base leading-7 text-stone-600">
               {product.summary}
@@ -113,7 +126,7 @@ export default async function ProductDetailPage({
               </button>
               <Link
                 href="/cart"
-                className="rounded-xl border border-black/8 bg-[#faf8f5] px-6 py-3 text-sm font-medium text-stone-700 transition hover:bg-white"
+                className="rounded-xl border border-black/8 bg-[#faf8f5] px-6 py-3 text-sm font-medium text-stone-700 transition hover:border-stone-900"
               >
                 장바구니 담기
               </Link>
