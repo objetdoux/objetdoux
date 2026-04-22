@@ -12,10 +12,10 @@ const eventItems = [
 ];
 
 const newItems = [
-  { name: "New Plate Series", price: "₩38,000", isNew: true, soldOut: false },
-  { name: "New Mug Series", price: "₩29,000", isNew: true, soldOut: false },
-  { name: "New Bowl Series", price: "₩32,000", isNew: true, soldOut: true },
-  { name: "Gift Package", price: "₩12,000", isNew: false, soldOut: false },
+  { name: "New Plate Series", price: "₩38,000" },
+  { name: "New Mug Series", price: "₩29,000" },
+  { name: "New Bowl Series", price: "₩32,000" },
+  { name: "Gift Package", price: "₩12,000" },
 ];
 
 const magazineItems = [
@@ -41,11 +41,13 @@ export default function Home() {
           <div className="mx-auto flex h-full w-full max-w-6xl items-end px-6 py-8 sm:px-8 sm:py-10 lg:px-8 lg:py-12">
             <div className="max-w-2xl">
               <h1 className="text-4xl font-semibold leading-[1.15] tracking-[-0.04em] text-stone-900 sm:text-5xl lg:text-6xl">
-                메인 배너 이미지 영역
+                부드러운 감성의 오브제,
+                <br />
+                오브제두
               </h1>
               <p className="mt-5 max-w-xl text-sm leading-6 text-stone-600 sm:text-base sm:leading-7">
-                실제 대표 이미지가 들어갈 자리입니다. 좌우 여백 없이 화면을 크게
-                사용하는 배너 형태로 먼저 비율만 잡아두었습니다.
+                일상에 자연스럽게 스며드는 물건과 조용한 식탁의 분위기를
+                제안합니다.
               </p>
             </div>
           </div>
@@ -96,19 +98,7 @@ export default function Home() {
               className="rounded-[1.5rem] border border-black/6 bg-white p-4 sm:p-5"
             >
               <div className="aspect-square rounded-[1rem] bg-[#e5e3de]" />
-              <div className="mt-3 flex flex-wrap gap-2">
-                {item.isNew ? (
-                  <span className="rounded-full bg-stone-950 px-2.5 py-1 text-[11px] font-medium uppercase tracking-[0.12em] text-white">
-                    New
-                  </span>
-                ) : null}
-                {item.soldOut ? (
-                  <span className="rounded-full border border-black/10 bg-[#f3eee8] px-2.5 py-1 text-[11px] font-medium uppercase tracking-[0.12em] text-stone-500">
-                    Sold Out
-                  </span>
-                ) : null}
-              </div>
-              <p className="mt-2.5 text-base font-medium text-stone-900">
+              <p className="mt-3 text-base font-medium text-stone-900">
                 {item.name}
               </p>
               <p className="mt-1 text-sm leading-6 text-stone-500">
