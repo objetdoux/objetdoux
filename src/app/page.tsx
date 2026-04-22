@@ -12,10 +12,10 @@ const eventItems = [
 ];
 
 const newItems = [
-  "New Plate Series",
-  "New Mug Series",
-  "New Bowl Series",
-  "Gift Package",
+  { name: "New Plate Series", price: "₩38,000" },
+  { name: "New Mug Series", price: "₩29,000" },
+  { name: "New Bowl Series", price: "₩32,000" },
+  { name: "Gift Package", price: "₩12,000" },
 ];
 
 const magazineItems = [
@@ -44,7 +44,7 @@ export default function Home() {
               <br />
               메인 홈페이지
             </h1>
-            <p className="mt-7 text-base leading-8 text-stone-600 sm:text-lg">
+            <p className="mt-7 text-base leading-7 text-stone-600 sm:text-lg">
               메인 화면은 큰 배너를 중심으로 이벤트, 신제품, 매거진, 회사 정보가
               이어지는 구조로 정리했습니다. 실제 이미지 대신 지금은 모두 연한
               회색 플레이스홀더로만 배치해둔 상태입니다.
@@ -76,17 +76,17 @@ export default function Home() {
           </h2>
         </div>
 
-        <div className="mt-4 grid gap-5 md:grid-cols-2">
+        <div className="-mx-6 mt-4 flex gap-4 overflow-x-auto px-6 pb-2 md:mx-0 md:grid md:grid-cols-2 md:gap-5 md:overflow-visible md:px-0 md:pb-0">
           {eventItems.map((item) => (
             <article
               key={item.title}
-              className="rounded-[1.5rem] border border-black/6 bg-white p-6"
+              className="min-w-[84vw] rounded-[1.5rem] border border-black/6 bg-white p-6 md:min-w-0"
             >
               <div className="h-48 rounded-[1rem] bg-[#e5e3de]" />
               <h3 className="mt-5 text-xl font-semibold tracking-[-0.02em] text-stone-950">
                 {item.title}
               </h3>
-              <p className="mt-3 text-sm leading-7 text-stone-600">
+              <p className="mt-2 text-sm leading-6 text-stone-600">
                 {item.description}
               </p>
             </article>
@@ -109,13 +109,15 @@ export default function Home() {
         <div className="mt-4 grid grid-cols-2 gap-5 xl:grid-cols-4">
           {newItems.map((item) => (
             <article
-              key={item}
+              key={item.name}
               className="rounded-[1.5rem] border border-black/6 bg-white p-4 sm:p-5"
             >
               <div className="aspect-square rounded-[1rem] bg-[#e5e3de]" />
-              <p className="mt-3 text-base font-medium text-stone-900">{item}</p>
-              <p className="mt-1.5 text-sm text-stone-500">
-                추후 실제 상품 이미지와 가격 정보가 들어갈 예정입니다.
+              <p className="mt-2.5 text-base font-medium text-stone-900">
+                {item.name}
+              </p>
+              <p className="mt-1 text-sm leading-6 text-stone-500">
+                {item.price}
               </p>
             </article>
           ))}
@@ -137,17 +139,17 @@ export default function Home() {
           </Link>
         </div>
 
-        <div className="mt-4 grid gap-5 md:grid-cols-3">
+        <div className="-mx-6 mt-4 flex gap-4 overflow-x-auto px-6 pb-2 md:mx-0 md:grid md:grid-cols-3 md:gap-5 md:overflow-visible md:px-0 md:pb-0">
           {magazineItems.map((item) => (
             <article
               key={item.title}
-              className="rounded-[1.5rem] border border-black/6 bg-white p-6"
+              className="min-w-[84vw] rounded-[1.5rem] border border-black/6 bg-white p-6 md:min-w-0"
             >
               <div className="h-52 rounded-[1rem] bg-[#e5e3de]" />
               <h3 className="mt-5 text-xl font-semibold tracking-[-0.02em] text-stone-950">
                 {item.title}
               </h3>
-              <p className="mt-3 text-sm leading-7 text-stone-600">
+              <p className="mt-2 text-sm leading-6 text-stone-600">
                 {item.description}
               </p>
             </article>
@@ -166,7 +168,7 @@ export default function Home() {
           <div className="mt-8 grid gap-8 md:grid-cols-3">
             <div>
               <p className="text-sm font-semibold text-stone-900">ADDRESS</p>
-              <p className="mt-3 text-sm leading-7 text-stone-600">
+              <p className="mt-3 text-sm leading-6 text-stone-600">
                 서울시 강남구
                 <br />
                 추후 실제 주소가 들어갈 자리
@@ -174,7 +176,7 @@ export default function Home() {
             </div>
             <div>
               <p className="text-sm font-semibold text-stone-900">COMPANY</p>
-              <p className="mt-3 text-sm leading-7 text-stone-600">
+              <p className="mt-3 text-sm leading-6 text-stone-600">
                 상호명, 대표자명, 사업자등록번호 등
                 <br />
                 기본 회사 정보가 들어갈 자리
@@ -182,7 +184,7 @@ export default function Home() {
             </div>
             <div>
               <p className="text-sm font-semibold text-stone-900">CS</p>
-              <p className="mt-3 text-sm leading-7 text-stone-600">
+              <p className="mt-3 text-sm leading-6 text-stone-600">
                 평일 운영시간 / 문의 메일
                 <br />
                 hello@objetdoux.com
