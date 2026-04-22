@@ -24,7 +24,7 @@ export default function CartPage() {
   const total = subtotal + shippingFee;
 
   return (
-    <main className="bg-[#f7f3ee] px-6 py-16 lg:px-8 lg:py-24">
+    <main className="bg-[#f7f3ee] px-6 py-10 lg:px-8 lg:py-14">
       <div className="mx-auto w-full max-w-6xl">
         <div className="flex flex-wrap items-center gap-2 text-sm text-stone-500">
           <Link href="/" className="hover:text-stone-900">
@@ -38,7 +38,7 @@ export default function CartPage() {
           <span>CART</span>
         </div>
 
-        <div className="mt-8 max-w-2xl">
+        <div className="mt-6 max-w-2xl">
           <h1 className="text-4xl font-semibold tracking-[-0.04em] text-stone-950 sm:text-5xl">
             장바구니
           </h1>
@@ -48,7 +48,7 @@ export default function CartPage() {
           </p>
         </div>
 
-        <div className="mt-10 grid gap-8 lg:grid-cols-[minmax(0,1fr)_360px]">
+        <div className="mt-8 grid gap-8 lg:grid-cols-[minmax(0,1fr)_360px]">
           <section className="space-y-5">
             {items.map((item) => (
               <article

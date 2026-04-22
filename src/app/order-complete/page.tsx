@@ -25,7 +25,7 @@ export default function OrderCompletePage() {
   const total = subtotal + shippingFee;
 
   return (
-    <main className="bg-[#f7f3ee] px-6 py-16 lg:px-8 lg:py-24">
+    <main className="bg-[#f7f3ee] px-6 py-10 lg:px-8 lg:py-14">
       <div className="mx-auto w-full max-w-6xl">
         <div className="flex flex-wrap items-center gap-2 text-sm text-stone-500">
           <Link href="/" className="hover:text-stone-900">
@@ -43,7 +43,7 @@ export default function OrderCompletePage() {
           <span>COMPLETE</span>
         </div>
 
-        <section className="mt-8 rounded-[2rem] border border-black/6 bg-white px-6 py-10 sm:px-10 sm:py-12">
+        <section className="mt-6 rounded-[2rem] border border-black/6 bg-white px-6 py-10 sm:px-10 sm:py-12">
           <div className="flex flex-col gap-8 lg:grid lg:grid-cols-[minmax(0,1fr)_360px] lg:items-start">
             <div>
               <div className="flex h-14 w-14 items-center justify-center rounded-full bg-stone-950 text-lg text-white">

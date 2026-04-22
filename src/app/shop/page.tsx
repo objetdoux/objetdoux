@@ -2,10 +2,10 @@ import { ShopCatalog } from "./shop-catalog";
 
 export default function ShopPage() {
   return (
-    <main className="bg-[#f7f3ee] px-6 py-16 lg:px-8 lg:py-24">
+    <main className="bg-[#f7f3ee] px-6 py-10 lg:px-8 lg:py-14">
       <div className="mx-auto w-full max-w-6xl">
-        <div className="max-w-2xl">
-          <h1 className="mt-4 text-4xl font-semibold tracking-[-0.04em] text-stone-950 sm:text-5xl">
+        <div className="flex min-h-[10.5rem] max-w-2xl flex-col">
+          <h1 className="text-4xl font-semibold tracking-[-0.04em] text-stone-950 sm:text-5xl">
             제품과 카테고리를 보여주는 공간
           </h1>
           <p className="mt-6 text-base leading-8 text-stone-600">

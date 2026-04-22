@@ -2,7 +2,7 @@ import { ordinaryNotes } from "../site-data";
 
 export default function OrdinaryPage() {
   return (
-    <main className="bg-[#f7f3ee] px-6 py-16 lg:px-8 lg:py-24">
+    <main className="bg-[#f7f3ee] px-6 py-10 lg:px-8 lg:py-14">
       <div className="mx-auto w-full max-w-6xl">
         <div className="max-w-2xl">
           <p className="text-xs font-medium uppercase tracking-[0.24em] text-[#8a6b5f]">

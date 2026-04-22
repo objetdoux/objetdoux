@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 export default function MyPage() {
   return (
-    <main className="bg-[#f7f3ee] px-6 py-16 lg:px-8 lg:py-24">
+    <main className="bg-[#f7f3ee] px-6 py-10 lg:px-8 lg:py-14">
       <div className="mx-auto w-full max-w-6xl">
         <div className="flex flex-wrap items-center gap-2 text-sm text-stone-500">
           <Link href="/" className="hover:text-stone-900">
@@ -19,14 +19,14 @@ export default function MyPage() {
           <span>MY PAGE</span>
         </div>
 
-        <div className="mt-8 grid gap-8 lg:grid-cols-[260px_minmax(0,1fr)]">
+        <div className="mt-6 grid gap-8 lg:grid-cols-[260px_minmax(0,1fr)]">
           <aside className="rounded-[1.75rem] border border-black/6 bg-white px-6 py-7 sm:px-8 sm:py-8">
             <p className="text-sm tracking-[0.18em] text-stone-400">MY ACCOUNT</p>
             <h1 className="mt-4 text-3xl font-semibold tracking-[-0.04em] text-stone-950">
               {mockUser.name}
             </h1>
 
-            <div className="mt-6 space-y-4 text-sm leading-6 text-stone-600">
+            <div className="mt-4 space-y-1 text-sm leading-5 text-stone-600">
               <p>{mockUser.email}</p>
               <p>{mockUser.phone}</p>
               <p>가입일 {mockUser.joinedAt}</p>
@@ -37,12 +37,10 @@ export default function MyPage() {
                 <Link
                   key={section.title}
                   href={section.href}
-                  className="block rounded-[1.25rem] bg-[#faf8f5] px-4 py-4 transition hover:bg-white"
+                  className="flex items-center justify-between rounded-[1.25rem] bg-[#faf8f5] px-4 py-4 text-base font-medium text-stone-950 transition hover:bg-white"
                 >
-                  <p className="text-base font-medium text-stone-950">{section.title}</p>
-                  <p className="mt-1 text-sm leading-6 text-stone-500">
-                    {section.description}
-                  </p>
+                  <span>{section.title}</span>
+                  <span className="text-sm text-stone-300">›</span>
                 </Link>
               ))}
             </div>

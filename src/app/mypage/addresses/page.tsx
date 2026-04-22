@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 export default function MyPageAddressesPage() {
   return (
-    <main className="bg-[#f7f3ee] px-6 py-16 lg:px-8 lg:py-24">
+    <main className="bg-[#f7f3ee] px-6 py-10 lg:px-8 lg:py-14">
       <div className="mx-auto w-full max-w-4xl">
         <div className="flex flex-wrap items-center gap-2 text-sm text-stone-500">
           <Link href="/" className="hover:text-stone-900">
@@ -23,7 +23,7 @@ export default function MyPageAddressesPage() {
           <span>ADDRESSES</span>
         </div>
 
-        <section className="mt-8 rounded-[1.75rem] border border-black/6 bg-white px-6 py-7 sm:px-8 sm:py-8">
+        <section className="mt-6 rounded-[1.75rem] border border-black/6 bg-white px-6 py-7 sm:px-8 sm:py-8">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
               <h1 className="text-3xl font-semibold tracking-[-0.03em] text-stone-950">

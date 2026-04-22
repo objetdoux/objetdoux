@@ -57,7 +57,7 @@ export default async function OrderDetailPage({
   const subtotal = products.reduce((sum, item) => sum + item.total, 0);
 
   return (
-    <main className="bg-[#f7f3ee] px-6 py-16 lg:px-8 lg:py-24">
+    <main className="bg-[#f7f3ee] px-6 py-10 lg:px-8 lg:py-14">
       <div className="mx-auto w-full max-w-6xl">
         <div className="flex flex-wrap items-center gap-2 text-sm text-stone-500">
           <Link href="/" className="hover:text-stone-900">
@@ -71,7 +71,7 @@ export default async function OrderDetailPage({
           <span>{order.orderNumber}</span>
         </div>
 
-        <div className="mt-8 grid gap-8 lg:grid-cols-[minmax(0,1fr)_340px]">
+        <div className="mt-6 grid gap-8 lg:grid-cols-[minmax(0,1fr)_340px]">
           <div className="space-y-6">
             <section className="rounded-[1.75rem] border border-black/6 bg-white px-6 py-7 sm:px-8 sm:py-8">
               <div className="flex flex-wrap items-start justify-between gap-4">

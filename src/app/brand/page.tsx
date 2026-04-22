@@ -1,6 +1,6 @@
 export default function BrandPage() {
   return (
-    <main className="bg-[#f7f3ee] px-6 py-16 lg:px-8 lg:py-24">
+    <main className="bg-[#f7f3ee] px-6 py-10 lg:px-8 lg:py-14">
       <div className="mx-auto grid w-full max-w-6xl gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
         <div className="rounded-[1.75rem] border border-black/6 bg-white p-5 sm:p-6">
           <div className="flex h-[24rem] items-end rounded-[1.25rem] bg-[#e5e3de] p-6 sm:h-[32rem]">
