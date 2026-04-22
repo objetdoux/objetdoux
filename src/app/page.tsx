@@ -39,9 +39,6 @@ export default function Home() {
       <section className="mx-auto w-full max-w-6xl">
         <div className="grid gap-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-end">
           <div className="max-w-xl py-4">
-            <p className="text-xs font-medium uppercase tracking-[0.24em] text-[#8a6b5f]">
-              main page
-            </p>
             <h1 className="mt-5 text-4xl font-semibold leading-[1.18] tracking-[-0.04em] text-stone-950 sm:text-5xl lg:text-6xl">
               오브제두
               <br />
@@ -74,15 +71,12 @@ export default function Home() {
 
       <section className="mx-auto mt-16 w-full max-w-6xl">
         <div>
-          <p className="text-xs font-medium uppercase tracking-[0.24em] text-[#8a6b5f]">
-            event
-          </p>
           <h2 className="mt-3 text-3xl font-semibold tracking-[-0.03em] text-stone-950 sm:text-4xl">
             EVENT
           </h2>
         </div>
 
-        <div className="mt-8 grid gap-5 md:grid-cols-2">
+        <div className="mt-4 grid gap-5 md:grid-cols-2">
           {eventItems.map((item) => (
             <article
               key={item.title}
@@ -103,9 +97,6 @@ export default function Home() {
       <section className="mx-auto mt-16 w-full max-w-6xl">
         <div className="flex items-end justify-between">
           <div>
-            <p className="text-xs font-medium uppercase tracking-[0.24em] text-[#8a6b5f]">
-              new items
-            </p>
             <h2 className="mt-3 text-3xl font-semibold tracking-[-0.03em] text-stone-950 sm:text-4xl">
               NEW ITEMS
             </h2>
@@ -115,15 +106,15 @@ export default function Home() {
           </Link>
         </div>
 
-        <div className="mt-8 grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
+        <div className="mt-4 grid grid-cols-2 gap-5 xl:grid-cols-4">
           {newItems.map((item) => (
             <article
               key={item}
-              className="rounded-[1.5rem] border border-black/6 bg-white p-5"
+              className="rounded-[1.5rem] border border-black/6 bg-white p-4 sm:p-5"
             >
-              <div className="h-56 rounded-[1rem] bg-[#e5e3de]" />
-              <p className="mt-4 text-base font-medium text-stone-900">{item}</p>
-              <p className="mt-2 text-sm text-stone-500">
+              <div className="aspect-square rounded-[1rem] bg-[#e5e3de]" />
+              <p className="mt-3 text-base font-medium text-stone-900">{item}</p>
+              <p className="mt-1.5 text-sm text-stone-500">
                 추후 실제 상품 이미지와 가격 정보가 들어갈 예정입니다.
               </p>
             </article>
@@ -134,9 +125,6 @@ export default function Home() {
       <section className="mx-auto mt-16 w-full max-w-6xl">
         <div className="flex items-end justify-between">
           <div>
-            <p className="text-xs font-medium uppercase tracking-[0.24em] text-[#8a6b5f]">
-              magazine
-            </p>
             <h2 className="mt-3 text-3xl font-semibold tracking-[-0.03em] text-stone-950 sm:text-4xl">
               MAGAZINE
             </h2>
@@ -149,7 +137,7 @@ export default function Home() {
           </Link>
         </div>
 
-        <div className="mt-8 grid gap-5 md:grid-cols-3">
+        <div className="mt-4 grid gap-5 md:grid-cols-3">
           {magazineItems.map((item) => (
             <article
               key={item.title}
@@ -170,9 +158,6 @@ export default function Home() {
       <section className="mx-auto mt-16 w-full max-w-6xl">
         <div className="rounded-[1.75rem] border border-black/6 bg-white px-6 py-8 sm:px-8 sm:py-10">
           <div className="max-w-xl">
-            <p className="text-xs font-medium uppercase tracking-[0.24em] text-[#8a6b5f]">
-              company info
-            </p>
             <h2 className="mt-3 text-3xl font-semibold tracking-[-0.03em] text-stone-950 sm:text-4xl">
               COMPANY
             </h2>
