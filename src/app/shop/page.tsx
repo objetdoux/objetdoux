@@ -5,9 +5,6 @@ export default function ShopPage() {
     <main className="bg-[#f7f3ee] px-6 py-16 lg:px-8 lg:py-24">
       <div className="mx-auto w-full max-w-6xl">
         <div className="max-w-2xl">
-          <p className="text-xs font-medium uppercase tracking-[0.24em] text-[#8a6b5f]">
-            shop
-          </p>
           <h1 className="mt-4 text-4xl font-semibold tracking-[-0.04em] text-stone-950 sm:text-5xl">
             제품과 카테고리를 보여주는 공간
           </h1>
@@ -18,7 +15,31 @@ export default function ShopPage() {
           </p>
         </div>
 
-        <div className="mt-10 grid gap-8 lg:grid-cols-[220px_minmax(0,1fr)]">
+        <div className="mt-8 rounded-[1.5rem] border border-black/6 bg-white p-4 sm:p-5">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <p className="text-sm font-medium text-stone-900">상품 검색</p>
+              <p className="mt-1 text-sm text-stone-500">
+                추후 상품명, 카테고리로 검색할 수 있는 영역입니다.
+              </p>
+            </div>
+            <div className="flex w-full gap-2 sm:w-auto sm:min-w-[320px]">
+              <input
+                type="search"
+                placeholder="상품명을 검색해보세요"
+                className="min-w-0 flex-1 rounded-xl border border-black/8 bg-[#faf8f5] px-4 py-3 text-sm text-stone-700 outline-none placeholder:text-stone-400"
+              />
+              <button
+                type="button"
+                className="rounded-xl bg-stone-950 px-5 py-3 text-sm font-medium text-white transition hover:bg-stone-800"
+              >
+                검색
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-6 grid gap-8 lg:grid-cols-[220px_minmax(0,1fr)]">
           <aside className="rounded-[1.5rem] border border-black/6 bg-white p-6">
             <p className="text-sm font-semibold text-stone-900">CATEGORY</p>
             <div className="mt-5 space-y-3">

@@ -15,12 +15,17 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-50 border-b border-black/6 bg-[rgba(247,243,238,0.88)] backdrop-blur">
       <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-6 py-5 lg:px-8">
-        <Link
-          href="/"
-          className="text-sm font-semibold uppercase tracking-[0.28em] text-stone-900"
-        >
-          objetdoux
-        </Link>
+        <div className="flex items-center gap-4">
+          <Link
+            href="/"
+            className="flex items-center gap-3 text-sm font-semibold uppercase tracking-[0.28em] text-stone-900"
+          >
+            <span className="flex h-10 w-10 items-center justify-center rounded-full border border-black/8 bg-[#ece8e2] text-[10px] font-medium tracking-[0.12em] text-stone-500">
+              LOGO
+            </span>
+            <span>objetdoux</span>
+          </Link>
+        </div>
 
         <nav className="hidden items-center gap-7 text-sm md:flex">
           {links.map((link) => {

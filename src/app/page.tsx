@@ -12,10 +12,10 @@ const eventItems = [
 ];
 
 const newItems = [
-  { name: "New Plate Series", price: "₩38,000" },
-  { name: "New Mug Series", price: "₩29,000" },
-  { name: "New Bowl Series", price: "₩32,000" },
-  { name: "Gift Package", price: "₩12,000" },
+  { name: "New Plate Series", price: "₩38,000", isNew: true, soldOut: false },
+  { name: "New Mug Series", price: "₩29,000", isNew: true, soldOut: false },
+  { name: "New Bowl Series", price: "₩32,000", isNew: true, soldOut: true },
+  { name: "Gift Package", price: "₩12,000", isNew: false, soldOut: false },
 ];
 
 const magazineItems = [
@@ -35,41 +35,24 @@ const magazineItems = [
 
 export default function Home() {
   return (
-    <main className="bg-[#f7f3ee] px-6 py-16 lg:px-8 lg:py-24">
-      <section className="mx-auto w-full max-w-6xl">
-        <div className="grid gap-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-end">
-          <div className="max-w-xl py-4">
-            <h1 className="mt-5 text-4xl font-semibold leading-[1.18] tracking-[-0.04em] text-stone-950 sm:text-5xl lg:text-6xl">
-              오브제두
-              <br />
-              메인 홈페이지
-            </h1>
-            <p className="mt-7 text-base leading-7 text-stone-600 sm:text-lg">
-              메인 화면은 큰 배너를 중심으로 이벤트, 신제품, 매거진, 회사 정보가
-              이어지는 구조로 정리했습니다. 실제 이미지 대신 지금은 모두 연한
-              회색 플레이스홀더로만 배치해둔 상태입니다.
-            </p>
-          </div>
-
-          <div className="rounded-[1.75rem] border border-black/6 bg-[#ece9e4] p-6 sm:p-8">
-            <div className="flex min-h-[21rem] items-end rounded-[1.25rem] bg-[#e2dfda] p-6 sm:min-h-[29rem]">
-              <div>
-                <p className="text-xs font-medium uppercase tracking-[0.24em] text-stone-500">
-                  Main Banner
-                </p>
-                <h2 className="mt-3 text-3xl font-semibold tracking-[-0.03em] text-stone-800 sm:text-4xl">
-                  큰 배너 영역
-                </h2>
-                <p className="mt-3 max-w-sm text-sm leading-7 text-stone-500">
-                  대표 비주얼, 시즌 캠페인, 주요 카피가 들어갈 자리입니다.
-                </p>
-              </div>
+    <main className="bg-[#f7f3ee] py-16 lg:py-24">
+      <section className="w-full">
+        <div className="aspect-[16/9] w-full bg-[#e2dfda] sm:aspect-[16/8] lg:aspect-[16/6]">
+          <div className="mx-auto flex h-full w-full max-w-6xl items-end px-6 py-8 sm:px-8 sm:py-10 lg:px-8 lg:py-12">
+            <div className="max-w-2xl">
+              <h1 className="text-4xl font-semibold leading-[1.15] tracking-[-0.04em] text-stone-900 sm:text-5xl lg:text-6xl">
+                메인 배너 이미지 영역
+              </h1>
+              <p className="mt-5 max-w-xl text-sm leading-6 text-stone-600 sm:text-base sm:leading-7">
+                실제 대표 이미지가 들어갈 자리입니다. 좌우 여백 없이 화면을 크게
+                사용하는 배너 형태로 먼저 비율만 잡아두었습니다.
+              </p>
             </div>
           </div>
         </div>
       </section>
 
-      <section className="mx-auto mt-16 w-full max-w-6xl">
+      <section className="mx-auto mt-16 w-full max-w-6xl px-6 lg:px-8">
         <div>
           <h2 className="mt-3 text-3xl font-semibold tracking-[-0.03em] text-stone-950 sm:text-4xl">
             EVENT
@@ -94,7 +77,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="mx-auto mt-16 w-full max-w-6xl">
+      <section className="mx-auto mt-16 w-full max-w-6xl px-6 lg:px-8">
         <div className="flex items-end justify-between">
           <div>
             <h2 className="mt-3 text-3xl font-semibold tracking-[-0.03em] text-stone-950 sm:text-4xl">
@@ -113,6 +96,18 @@ export default function Home() {
               className="rounded-[1.5rem] border border-black/6 bg-white p-4 sm:p-5"
             >
               <div className="aspect-square rounded-[1rem] bg-[#e5e3de]" />
+              <div className="mt-3 flex flex-wrap gap-2">
+                {item.isNew ? (
+                  <span className="rounded-full bg-stone-950 px-2.5 py-1 text-[11px] font-medium uppercase tracking-[0.12em] text-white">
+                    New
+                  </span>
+                ) : null}
+                {item.soldOut ? (
+                  <span className="rounded-full border border-black/10 bg-[#f3eee8] px-2.5 py-1 text-[11px] font-medium uppercase tracking-[0.12em] text-stone-500">
+                    Sold Out
+                  </span>
+                ) : null}
+              </div>
               <p className="mt-2.5 text-base font-medium text-stone-900">
                 {item.name}
               </p>
@@ -124,7 +119,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="mx-auto mt-16 w-full max-w-6xl">
+      <section className="mx-auto mt-16 w-full max-w-6xl px-6 lg:px-8">
         <div className="flex items-end justify-between">
           <div>
             <h2 className="mt-3 text-3xl font-semibold tracking-[-0.03em] text-stone-950 sm:text-4xl">
@@ -157,7 +152,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="mx-auto mt-16 w-full max-w-6xl">
+      <section className="mx-auto mt-16 w-full max-w-6xl px-6 lg:px-8">
         <div className="rounded-[1.75rem] border border-black/6 bg-white px-6 py-8 sm:px-8 sm:py-10">
           <div className="max-w-xl">
             <h2 className="mt-3 text-3xl font-semibold tracking-[-0.03em] text-stone-950 sm:text-4xl">

@@ -5,9 +5,6 @@ export default function MagazinePage() {
     <main className="bg-[#f7f3ee] px-6 py-16 lg:px-8 lg:py-24">
       <div className="mx-auto w-full max-w-6xl">
         <div className="max-w-2xl">
-          <p className="text-xs font-medium uppercase tracking-[0.24em] text-[#8a6b5f]">
-            magazine
-          </p>
           <h1 className="mt-4 text-4xl font-semibold tracking-[-0.04em] text-stone-950 sm:text-5xl">
             브랜드의 시선과 식탁에 대한 기록
           </h1>
