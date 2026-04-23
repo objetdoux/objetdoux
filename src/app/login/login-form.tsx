@@ -10,11 +10,19 @@ const initialState: AuthActionState = {
   message: "",
 };
 
-export function LoginForm({ joined }: { joined: boolean }) {
+export function LoginForm({
+  joined,
+  verified,
+  authError,
+}: {
+  joined: boolean;
+  verified: boolean;
+  authError: boolean;
+}) {
   const [state, action, pending] = useActionState(login, initialState);
 
   return (
-    <form action={action}>
+    <form key={state.values?.email ?? state.message} action={action}>
       <div>
         <h2 className="text-2xl font-semibold tracking-[-0.03em] text-stone-950">
           일반 로그인
@@ -22,6 +30,16 @@ export function LoginForm({ joined }: { joined: boolean }) {
         {joined ? (
           <p className="mt-2 text-sm leading-5 text-green-700">
             회원가입이 완료되었습니다. 가입한 이메일로 로그인해주세요.
+          </p>
+        ) : null}
+        {verified ? (
+          <p className="mt-2 text-sm leading-5 text-green-700">
+            이메일 인증이 완료되었습니다. 이제 로그인할 수 있습니다.
+          </p>
+        ) : null}
+        {authError ? (
+          <p className="mt-2 text-sm leading-5 text-red-600">
+            인증 링크가 만료되었거나 올바르지 않습니다. 다시 시도해주세요.
           </p>
         ) : null}
       </div>
@@ -32,6 +50,7 @@ export function LoginForm({ joined }: { joined: boolean }) {
           <input
             name="email"
             type="email"
+            defaultValue={state.values?.email ?? ""}
             placeholder="objetdoux@example.com"
             className="mt-2 h-12 w-full rounded-xl border border-black/8 bg-[#faf8f5] px-4 text-sm text-stone-900 outline-none transition placeholder:text-stone-400 focus:border-stone-900"
           />

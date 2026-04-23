@@ -11,18 +11,27 @@ const initialState: AuthActionState = {
 
 export function SignupForm() {
   const [state, action, pending] = useActionState(signup, initialState);
+  const formKey = [
+    state.values?.name ?? "",
+    state.values?.email ?? "",
+    state.values?.phone ?? "",
+    state.message,
+  ].join("-");
 
   return (
-    <form action={action}>
+    <form key={formKey} action={action}>
       <div className="mt-8 space-y-6">
         <label className="block">
           <span className="text-sm text-stone-500">이름</span>
           <input
             name="name"
             type="text"
+            defaultValue={state.values?.name ?? ""}
             placeholder="이름을 입력해주세요"
-            className="mt-3 h-12 w-full rounded-xl border border-black/8 bg-[#faf8f5] px-4 text-sm text-stone-900 outline-none transition placeholder:text-stone-400 focus:border-stone-900"
+            aria-invalid={Boolean(state.fieldErrors?.name)}
+            className="mt-3 h-12 w-full rounded-xl border border-black/8 bg-[#faf8f5] px-4 text-sm text-stone-900 outline-none transition placeholder:text-stone-400 focus:border-stone-900 aria-invalid:border-red-400"
           />
+          <FieldError message={state.fieldErrors?.name} />
         </label>
 
         <label className="block">
@@ -30,9 +39,12 @@ export function SignupForm() {
           <input
             name="email"
             type="email"
+            defaultValue={state.values?.email ?? ""}
             placeholder="objetdoux@example.com"
-            className="mt-3 h-12 w-full rounded-xl border border-black/8 bg-[#faf8f5] px-4 text-sm text-stone-900 outline-none transition placeholder:text-stone-400 focus:border-stone-900"
+            aria-invalid={Boolean(state.fieldErrors?.email)}
+            className="mt-3 h-12 w-full rounded-xl border border-black/8 bg-[#faf8f5] px-4 text-sm text-stone-900 outline-none transition placeholder:text-stone-400 focus:border-stone-900 aria-invalid:border-red-400"
           />
+          <FieldError message={state.fieldErrors?.email} />
         </label>
 
         <label className="block">
@@ -40,9 +52,12 @@ export function SignupForm() {
           <input
             name="phone"
             type="tel"
+            defaultValue={state.values?.phone ?? ""}
             placeholder="010-0000-0000"
-            className="mt-3 h-12 w-full rounded-xl border border-black/8 bg-[#faf8f5] px-4 text-sm text-stone-900 outline-none transition placeholder:text-stone-400 focus:border-stone-900"
+            aria-invalid={Boolean(state.fieldErrors?.phone)}
+            className="mt-3 h-12 w-full rounded-xl border border-black/8 bg-[#faf8f5] px-4 text-sm text-stone-900 outline-none transition placeholder:text-stone-400 focus:border-stone-900 aria-invalid:border-red-400"
           />
+          <FieldError message={state.fieldErrors?.phone} />
         </label>
 
         <label className="block">
@@ -51,8 +66,10 @@ export function SignupForm() {
             name="password"
             type="password"
             placeholder="비밀번호를 입력해주세요"
-            className="mt-3 h-12 w-full rounded-xl border border-black/8 bg-[#faf8f5] px-4 text-sm text-stone-900 outline-none transition placeholder:text-stone-400 focus:border-stone-900"
+            aria-invalid={Boolean(state.fieldErrors?.password)}
+            className="mt-3 h-12 w-full rounded-xl border border-black/8 bg-[#faf8f5] px-4 text-sm text-stone-900 outline-none transition placeholder:text-stone-400 focus:border-stone-900 aria-invalid:border-red-400"
           />
+          <FieldError message={state.fieldErrors?.password} />
         </label>
 
         <label className="block">
@@ -61,8 +78,10 @@ export function SignupForm() {
             name="passwordConfirm"
             type="password"
             placeholder="비밀번호를 다시 입력해주세요"
-            className="mt-3 h-12 w-full rounded-xl border border-black/8 bg-[#faf8f5] px-4 text-sm text-stone-900 outline-none transition placeholder:text-stone-400 focus:border-stone-900"
+            aria-invalid={Boolean(state.fieldErrors?.passwordConfirm)}
+            className="mt-3 h-12 w-full rounded-xl border border-black/8 bg-[#faf8f5] px-4 text-sm text-stone-900 outline-none transition placeholder:text-stone-400 focus:border-stone-900 aria-invalid:border-red-400"
           />
+          <FieldError message={state.fieldErrors?.passwordConfirm} />
         </label>
       </div>
 
@@ -80,4 +99,12 @@ export function SignupForm() {
       </div>
     </form>
   );
+}
+
+function FieldError({ message }: { message?: string }) {
+  if (!message) {
+    return null;
+  }
+
+  return <p className="mt-2 text-xs leading-5 text-red-600">{message}</p>;
 }
