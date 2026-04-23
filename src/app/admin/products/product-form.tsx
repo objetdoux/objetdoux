@@ -17,8 +17,6 @@ type ProductFormProduct = {
   priceValue: number;
   summary: string;
   description: string;
-  material: string;
-  size: string;
   trackStock?: boolean;
   stockQuantity?: number;
   visible: boolean;
@@ -77,18 +75,6 @@ export function ProductForm({
                   name="slug"
                   value={product?.id}
                   placeholder="예: lune-plate"
-                />
-                <AdminTextField
-                  label="사이즈"
-                  name="size"
-                  value={product?.size}
-                  placeholder="26cm / 300ml"
-                />
-                <AdminTextField
-                  label="재질"
-                  name="material"
-                  value={product?.material}
-                  placeholder="Ceramic"
                 />
               </div>
             </AdminFormSection>

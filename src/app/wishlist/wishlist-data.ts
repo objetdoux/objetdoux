@@ -46,8 +46,6 @@ function mapWishlistProduct(product: WishlistProductRow): ShopProduct {
     price: `₩${product.price.toLocaleString("ko-KR")}`,
     description: product.description ?? "",
     summary: product.summary ?? "",
-    material: "",
-    size: "",
     soldOut: product.is_sold_out ?? false,
     trackStock: product.track_stock ?? false,
     stockQuantity: product.stock_quantity ?? 0,

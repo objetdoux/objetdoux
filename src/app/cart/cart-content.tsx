@@ -159,21 +159,21 @@ export function CartContent({
 
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
                   <div>
-                    <div className="grid h-12 w-40 grid-cols-[3rem_1fr_3rem] items-center overflow-hidden rounded-xl border border-black/8 bg-[#faf8f5] text-sm text-stone-700">
+                    <div className="grid h-10 w-32 grid-cols-[2.5rem_1fr_2.5rem] items-center overflow-hidden rounded-lg border border-black/8 bg-[#faf8f5] text-sm text-stone-700">
                       <button
                         type="button"
-                        className="flex h-full items-center justify-center text-2xl leading-none text-stone-700 transition hover:bg-[#f0ece6] disabled:text-stone-300"
+                        className="flex h-full items-center justify-center text-lg leading-none text-stone-700 transition hover:bg-[#f0ece6] disabled:text-stone-300"
                         onClick={() => updateQuantity(item, item.quantity - 1)}
                         aria-label="수량 줄이기"
                       >
                         -
                       </button>
-                      <span className="text-center text-base font-medium text-stone-900">
+                      <span className="text-center text-sm font-medium text-stone-900">
                         {item.quantity}
                       </span>
                       <button
                         type="button"
-                        className="flex h-full items-center justify-center text-2xl leading-none text-stone-700 transition hover:bg-[#f0ece6] disabled:text-stone-300"
+                        className="flex h-full items-center justify-center text-lg leading-none text-stone-700 transition hover:bg-[#f0ece6] disabled:text-stone-300"
                         disabled={item.trackStock && item.quantity >= item.stockQuantity}
                         onClick={() => updateQuantity(item, item.quantity + 1)}
                         aria-label="수량 늘리기"

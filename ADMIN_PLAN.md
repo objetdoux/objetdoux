@@ -174,8 +174,6 @@
 - 상품 코드
 - 목록용 한 줄 설명
 - 상세 상단 요약
-- 재질
-- 사이즈
 - 대표 이미지
   권장: 1200 x 1200px 이상, 1:1 정사각형
 - 추가 이미지
@@ -430,7 +428,9 @@ products
 - summary
 - description
 - material
+  현재 관리자 입력/고객 화면 노출에서는 사용하지 않는 레거시 컬럼
 - size
+  현재 관리자 입력/고객 화면 노출에서는 사용하지 않는 레거시 컬럼
 - track_stock
 - stock_quantity
 - thumbnail_url

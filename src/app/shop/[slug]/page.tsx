@@ -2,11 +2,10 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { shopProducts } from "../../site-data";
 import { getSiteSettings } from "../../site-settings";
-import { toggleWishlistItem } from "../../wishlist/actions";
 import { getWishlistProductSlugs } from "../../wishlist/wishlist-data";
 import { getShopProductBySlug, getShopProducts } from "../shop-data";
 import { ProductPurchasePanel } from "./product-purchase-panel";
-import { PendingButton } from "../../components/pending-button";
+import { WishlistButton } from "../../wishlist/wishlist-button";
 
 type ProductDetailPageProps = {
   params: Promise<{ slug: string }>;
@@ -61,7 +60,7 @@ export default async function ProductDetailPage({
             SHOP
           </Link>
           <span>/</span>
-          <span>{product.category}</span>
+          <span className="uppercase">{product.category}</span>
         </div>
 
         <div className="mt-6 grid gap-10 lg:grid-cols-[1fr_0.95fr] lg:items-start">
@@ -116,41 +115,17 @@ export default async function ProductDetailPage({
                 ) : null}
               </div>
 
-              <form action={toggleWishlistItem}>
-                <input type="hidden" name="productSlug" value={product.slug} />
-                <input
-                  type="hidden"
-                  name="redirectTo"
-                  value={`/shop/${product.slug}`}
-                />
-                <PendingButton
-                  aria-label={isLiked ? "좋아요 취소" : "좋아요 추가"}
-                  pendingLabel="·"
-                  className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full border border-black/8 bg-[#faf8f5] text-[1.9rem] leading-none text-stone-900 transition hover:border-stone-900 disabled:cursor-wait disabled:opacity-50"
-                >
-                  {isLiked ? "♥" : "♡"}
-                </PendingButton>
-              </form>
+              <WishlistButton
+                productSlug={product.slug}
+                initialLiked={isLiked}
+                label={isLiked ? "좋아요 취소" : "좋아요 추가"}
+                size="lg"
+              />
             </div>
 
             <p className="mt-6 text-base leading-7 text-stone-600">
               {product.summary}
             </p>
-
-            <div className="mt-8 grid gap-4 border-t border-black/6 pt-6 sm:grid-cols-2">
-              <div>
-                <p className="text-xs uppercase tracking-[0.16em] text-stone-500">
-                  Material
-                </p>
-                <p className="mt-2 text-sm text-stone-900">{product.material}</p>
-              </div>
-              <div>
-                <p className="text-xs uppercase tracking-[0.16em] text-stone-500">
-                  Size
-                </p>
-                <p className="mt-2 text-sm text-stone-900">{product.size}</p>
-              </div>
-            </div>
 
             <ProductPurchasePanel
               productSlug={product.slug}
@@ -212,54 +187,56 @@ export default async function ProductDetailPage({
           </div>
         </section>
 
-        <section className="mt-16">
-          <div className="flex items-end justify-between">
-            <h2 className="text-3xl font-semibold tracking-[-0.03em] text-stone-950 sm:text-4xl">
-              Related Items
-            </h2>
-            <Link href="/shop" className="text-sm text-stone-500 hover:text-stone-900">
-              전체 상품 보기
-            </Link>
-          </div>
-
-          <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {relatedProducts.map((item) => (
-              <Link
-                key={item.slug}
-                href={`/shop/${item.slug}`}
-                className="overflow-hidden rounded-[1.5rem] border border-black/6 bg-white transition hover:border-black/12 hover:bg-[#fcfaf7]"
-              >
-                <div className="m-5 mb-0 h-60 overflow-hidden rounded-[1rem] bg-[#e5e3de]">
-                  {item.thumbnailUrl ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      src={item.thumbnailUrl}
-                      alt=""
-                      className="h-full w-full object-cover"
-                    />
-                  ) : null}
-                </div>
-                <div className="px-6 py-6">
-                  <p className="text-xs font-medium uppercase tracking-[0.18em] text-[#8a6b5f]">
-                    {item.category}
-                  </p>
-                  <h3 className="mt-3 text-xl font-semibold tracking-[-0.02em] text-stone-950">
-                    {item.name}
-                  </h3>
-                  <p className="mt-2 text-sm leading-6 text-stone-600">
-                    {item.summary}
-                  </p>
-                  <div className="mt-4 flex items-center justify-between gap-4">
-                    <p className="text-base font-semibold text-stone-900">
-                      {item.price}
-                    </p>
-                    <span className="text-sm text-stone-400">자세히 보기</span>
-                  </div>
-                </div>
+        {relatedProducts.length > 0 ? (
+          <section className="mt-16">
+            <div className="flex items-end justify-between">
+              <h2 className="text-3xl font-semibold tracking-[-0.03em] text-stone-950 sm:text-4xl">
+                Related Items
+              </h2>
+              <Link href="/shop" className="text-sm text-stone-500 hover:text-stone-900">
+                전체 상품 보기
               </Link>
-            ))}
-          </div>
-        </section>
+            </div>
+
+            <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {relatedProducts.map((item) => (
+                <Link
+                  key={item.slug}
+                  href={`/shop/${item.slug}`}
+                  className="overflow-hidden rounded-[1.5rem] border border-black/6 bg-white transition hover:border-black/12 hover:bg-[#fcfaf7]"
+                >
+                  <div className="m-5 mb-0 h-60 overflow-hidden rounded-[1rem] bg-[#e5e3de]">
+                    {item.thumbnailUrl ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={item.thumbnailUrl}
+                        alt=""
+                        className="h-full w-full object-cover"
+                      />
+                    ) : null}
+                  </div>
+                  <div className="px-6 py-6">
+                    <p className="text-xs font-medium uppercase tracking-[0.18em] text-[#8a6b5f]">
+                      {item.category}
+                    </p>
+                    <h3 className="mt-3 text-xl font-semibold tracking-[-0.02em] text-stone-950">
+                      {item.name}
+                    </h3>
+                    <p className="mt-2 text-sm leading-6 text-stone-600">
+                      {item.summary}
+                    </p>
+                    <div className="mt-4 flex items-center justify-between gap-4">
+                      <p className="text-base font-semibold text-stone-900">
+                        {item.price}
+                      </p>
+                      <span className="text-sm text-stone-400">자세히 보기</span>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </section>
+        ) : null}
       </div>
     </main>
   );

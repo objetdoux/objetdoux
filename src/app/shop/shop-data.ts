@@ -9,8 +9,6 @@ export type ShopProduct = {
   price: string;
   description: string;
   summary: string;
-  material: string;
-  size: string;
   soldOut: boolean;
   trackStock: boolean;
   stockQuantity: number;
@@ -26,8 +24,6 @@ type ProductRow = {
   price: number;
   summary: string | null;
   description: string | null;
-  material: string | null;
-  size: string | null;
   is_sold_out?: boolean;
   track_stock?: boolean;
   stock_quantity?: number;
@@ -39,7 +35,7 @@ type ProductRow = {
 };
 
 const shopProductSelect =
-  "slug, name, category, price, summary, description, material, size, is_sold_out, track_stock, stock_quantity, product_images(image_type, image_url, sort_order)";
+  "slug, name, category, price, summary, description, is_sold_out, track_stock, stock_quantity, product_images(image_type, image_url, sort_order)";
 
 export async function getShopProducts() {
   const supabase = createAdminClient();
@@ -119,8 +115,6 @@ function mapProductRow(product: ProductRow): ShopProduct {
     price: `₩${product.price.toLocaleString("ko-KR")}`,
     description: product.description ?? "",
     summary: product.summary ?? "",
-    material: product.material ?? "",
-    size: product.size ?? "",
     soldOut: product.is_sold_out ?? false,
     trackStock: product.track_stock ?? false,
     stockQuantity: product.stock_quantity ?? 0,

@@ -2,10 +2,9 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import { toggleWishlistItem } from "../wishlist/actions";
 import { shopMenu, shopSortOptions } from "../site-data";
 import type { ShopProduct } from "./shop-data";
-import { PendingButton } from "../components/pending-button";
+import { WishlistButton } from "../wishlist/wishlist-button";
 
 export function ShopCatalog({
   products,
@@ -123,52 +122,47 @@ export function ShopCatalog({
                   key={product.slug}
                   className="overflow-hidden rounded-[1.5rem] border border-black/6 bg-white transition hover:border-black/12 hover:bg-[#fcfaf7]"
                 >
-                  <div className="relative m-5 mb-0 h-64 overflow-hidden rounded-[1rem] bg-[#e5e3de]">
+                  <Link
+                    href={`/shop/${product.slug}`}
+                    className="m-5 mb-0 block h-64 overflow-hidden rounded-[1rem] bg-[#e5e3de]"
+                  >
                     {product.thumbnailUrl ? (
                       // eslint-disable-next-line @next/next/no-img-element
                       <img
                         src={product.thumbnailUrl}
-                        alt=""
-                        className="h-full w-full object-cover"
+                        alt={product.name}
+                        className="h-full w-full object-cover transition duration-300 hover:scale-[1.02]"
                       />
                     ) : null}
-                    <form
-                      action={toggleWishlistItem}
-                      className="absolute right-3 top-3"
-                    >
-                      <input type="hidden" name="productSlug" value={product.slug} />
-                      <input type="hidden" name="redirectTo" value="/shop" />
-                      <PendingButton
-                        aria-label={isLiked ? "좋아요 취소" : "좋아요 추가"}
-                        pendingLabel="·"
-                        className="flex h-10 w-10 items-center justify-center rounded-full bg-white/90 text-lg text-stone-700 shadow-sm transition hover:text-stone-950 disabled:cursor-wait disabled:opacity-60"
-                      >
-                        {isLiked ? "♥" : "♡"}
-                      </PendingButton>
-                    </form>
-                  </div>
-                  <Link href={`/shop/${product.slug}`} className="block px-6 py-6">
-                    <p className="text-xs font-medium uppercase tracking-[0.18em] text-[#8a6b5f]">
-                      {product.category}
-                    </p>
-                    <div className="mt-3 flex items-start justify-between gap-4">
-                      <h2 className="text-xl font-semibold tracking-[-0.02em] text-stone-950">
-                        {product.name}
-                      </h2>
-                      <span className="shrink-0 text-sm text-stone-300">
-                        {isLiked ? "좋아요" : ""}
-                      </span>
-                    </div>
-                    <p className="mt-3 text-sm leading-6 text-stone-600">
-                      {product.description}
-                    </p>
-                    <p className="mt-4 text-base font-semibold text-stone-900">
-                      {product.soldOut ||
-                      (product.trackStock && product.stockQuantity <= 0)
-                        ? "품절"
-                        : product.price}
-                    </p>
                   </Link>
+                  <div className="px-6 py-6">
+                    <Link href={`/shop/${product.slug}`} className="block">
+                      <p className="text-xs font-medium uppercase tracking-[0.18em] text-[#8a6b5f]">
+                        {product.category}
+                      </p>
+                      <div className="mt-3">
+                        <h2 className="text-xl font-semibold tracking-[-0.02em] text-stone-950">
+                          {product.name}
+                        </h2>
+                      </div>
+                      <p className="mt-3 text-sm leading-6 text-stone-600">
+                        {product.description}
+                      </p>
+                    </Link>
+                    <div className="mt-4 flex items-center justify-between gap-4">
+                      <p className="text-base font-semibold text-stone-900">
+                        {product.soldOut ||
+                        (product.trackStock && product.stockQuantity <= 0)
+                          ? "품절"
+                          : product.price}
+                      </p>
+                      <WishlistButton
+                        productSlug={product.slug}
+                        initialLiked={isLiked}
+                        label={isLiked ? "좋아요 취소" : "좋아요 추가"}
+                      />
+                    </div>
+                  </div>
                 </article>
               );
             })}

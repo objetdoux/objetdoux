@@ -87,19 +87,19 @@ export function SiteHeader({
             aria-label={`장바구니 ${visibleCartItemCount}개`}
             className={
               pathname === "/cart"
-                ? "relative shrink-0 font-medium text-stone-950"
-                : "relative shrink-0 text-stone-500 transition hover:text-stone-900"
+                ? "shrink-0 font-medium text-stone-950"
+                : "shrink-0 text-stone-500 transition hover:text-stone-900"
             }
           >
             <span className="inline-flex items-center gap-1.5">
               <CartIcon />
               <span>CART</span>
+              {visibleCartItemCount > 0 ? (
+                <span className="ml-0.5 inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-stone-950 px-1 text-[9px] font-semibold leading-none tracking-normal text-white">
+                  {visibleCartItemCount > 99 ? "99+" : visibleCartItemCount}
+                </span>
+              ) : null}
             </span>
-            {visibleCartItemCount > 0 ? (
-              <span className="absolute -right-3 -top-2 flex h-4 min-w-4 items-center justify-center rounded-full bg-stone-950 px-1 text-[9px] font-semibold leading-none text-white">
-                {visibleCartItemCount > 99 ? "99+" : visibleCartItemCount}
-              </span>
-            ) : null}
           </Link>
           {isLoggedIn ? (
             <form action={logout} className="shrink-0">

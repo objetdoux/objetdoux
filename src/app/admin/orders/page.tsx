@@ -123,7 +123,7 @@ export default async function AdminOrdersPage({
                   <p className="font-semibold text-stone-950">
                     ₩{order.total.toLocaleString("ko-KR")}
                   </p>
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex min-w-max flex-nowrap items-center gap-2">
                     <StatusPill>{order.orderStatusLabel}</StatusPill>
                     <StatusPill tone="muted">{order.paymentStatusLabel}</StatusPill>
                   </div>

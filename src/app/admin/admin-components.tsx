@@ -214,7 +214,7 @@ export function StatusPill({
 
   return (
     <span
-      className={`inline-flex h-8 items-center rounded-full px-3 text-xs font-medium ${toneClass}`}
+      className={`inline-flex h-8 items-center whitespace-nowrap rounded-full px-3 text-xs font-medium ${toneClass}`}
     >
       {children}
     </span>

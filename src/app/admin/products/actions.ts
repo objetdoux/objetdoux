@@ -178,8 +178,6 @@ function parseProductFormData(formData: FormData) {
     slug,
     category,
     price,
-    size: nullableString(formData.get("size")),
-    material: nullableString(formData.get("material")),
     description: nullableString(formData.get("description")),
     summary: nullableString(formData.get("summary")),
     is_visible: formData.get("is_visible") === "on",

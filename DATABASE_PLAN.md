@@ -141,7 +141,9 @@ products
 - summary
 - description
 - material
+  현재 관리자 입력/고객 화면 노출에서는 사용하지 않는 레거시 컬럼
 - size
+  현재 관리자 입력/고객 화면 노출에서는 사용하지 않는 레거시 컬럼
 - track_stock
 - stock_quantity
 - is_visible
