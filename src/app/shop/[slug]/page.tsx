@@ -1,14 +1,16 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { addCartItem } from "../../cart/actions";
 import { shopProducts } from "../../site-data";
 import { getSiteSettings } from "../../site-settings";
 import { toggleWishlistItem } from "../../wishlist/actions";
 import { getWishlistProductSlugs } from "../../wishlist/wishlist-data";
 import { getShopProductBySlug, getShopProducts } from "../shop-data";
+import { ProductPurchasePanel } from "./product-purchase-panel";
+import { PendingButton } from "../../components/pending-button";
 
 type ProductDetailPageProps = {
   params: Promise<{ slug: string }>;
+  searchParams: Promise<{ cartError?: string }>;
 };
 
 export function generateStaticParams() {
@@ -19,8 +21,10 @@ export function generateStaticParams() {
 
 export default async function ProductDetailPage({
   params,
+  searchParams,
 }: ProductDetailPageProps) {
   const { slug } = await params;
+  const { cartError } = await searchParams;
   const product = await getShopProductBySlug(slug);
 
   if (!product) {
@@ -119,12 +123,13 @@ export default async function ProductDetailPage({
                   name="redirectTo"
                   value={`/shop/${product.slug}`}
                 />
-                <button
+                <PendingButton
                   aria-label={isLiked ? "좋아요 취소" : "좋아요 추가"}
-                  className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full border border-black/8 bg-[#faf8f5] text-[1.9rem] leading-none text-stone-900 transition hover:border-stone-900"
+                  pendingLabel="·"
+                  className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full border border-black/8 bg-[#faf8f5] text-[1.9rem] leading-none text-stone-900 transition hover:border-stone-900 disabled:cursor-wait disabled:opacity-50"
                 >
                   {isLiked ? "♥" : "♡"}
-                </button>
+                </PendingButton>
               </form>
             </div>
 
@@ -147,55 +152,19 @@ export default async function ProductDetailPage({
               </div>
             </div>
 
-            <div className="mt-8 grid gap-4 border-t border-black/6 pt-6">
-              <div>
-                <p className="text-xs uppercase tracking-[0.16em] text-stone-500">
-                  Quantity
-                </p>
-                <div className="mt-2 flex w-36 items-center justify-between rounded-xl border border-black/8 bg-[#faf8f5] px-4 py-3 text-sm text-stone-700">
-                  <span>-</span>
-                  <span>1</span>
-                  <span>+</span>
-                </div>
-              </div>
-              <div className="rounded-[1rem] bg-[#faf8f5] px-4 py-4">
-                <div className="flex items-center justify-between gap-4">
-                  <p className="text-sm text-stone-500">총 상품 금액</p>
-                  <p className="text-lg font-semibold text-stone-900">
-                    {product.price}
-                  </p>
-                </div>
-              </div>
-            </div>
+            <ProductPurchasePanel
+              productSlug={product.slug}
+              priceValue={product.priceValue}
+              price={product.price}
+              isPurchasable={isPurchasable}
+              maxQuantity={product.trackStock ? product.stockQuantity : undefined}
+            />
 
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <button
-                type="button"
-                className="rounded-xl bg-stone-950 px-6 py-3 text-sm font-medium text-white transition hover:bg-stone-800"
-              >
-                구매 문의
-              </button>
-              <form action={addCartItem}>
-                <input type="hidden" name="productSlug" value={product.slug} />
-                <input type="hidden" name="quantity" value="1" />
-                <button
-                  disabled={!isPurchasable}
-                  className={
-                    isPurchasable
-                      ? "w-full rounded-xl border border-black/8 bg-[#faf8f5] px-6 py-3 text-sm font-medium text-stone-700 transition hover:border-stone-900 sm:w-auto"
-                      : "w-full cursor-not-allowed rounded-xl border border-black/8 bg-stone-200 px-6 py-3 text-sm font-medium text-stone-400 sm:w-auto"
-                  }
-                >
-                  {isPurchasable ? "장바구니 담기" : "품절"}
-                </button>
-              </form>
-              <Link
-                href="/cart"
-                className="rounded-xl border border-black/8 bg-[#faf8f5] px-6 py-3 text-sm font-medium text-stone-700 transition hover:border-stone-900"
-              >
-                장바구니 보기
-              </Link>
-            </div>
+            {cartError === "stock" ? (
+              <div className="mt-4 rounded-[1rem] bg-[#faf8f5] px-4 py-3 text-sm leading-6 text-red-600">
+                현재 선택 가능한 재고 수량을 초과했습니다.
+              </div>
+            ) : null}
 
             <div className="mt-8 space-y-3 border-t border-black/6 pt-6 text-sm text-stone-600">
               <div className="grid gap-2 sm:grid-cols-[120px_minmax(0,1fr)] sm:gap-4">

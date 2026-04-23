@@ -8,6 +8,7 @@ import {
 } from "../admin-components";
 import { updateSiteSettings } from "./actions";
 import { getSiteSettings } from "../../site-settings";
+import { PendingButton } from "../../components/pending-button";
 
 export const metadata: Metadata = {
   title: "관리자 설정",
@@ -233,9 +234,12 @@ export default async function AdminSettingsPage({
             </div>
           </section>
 
-          <button className="h-12 rounded-xl bg-stone-950 px-6 text-sm font-medium text-white transition hover:bg-stone-800">
+          <PendingButton
+            pendingLabel="저장 중"
+            className="h-12 rounded-xl bg-stone-950 px-6 text-sm font-medium text-white transition hover:bg-stone-800 disabled:cursor-wait disabled:opacity-60"
+          >
             설정 저장
-          </button>
+          </PendingButton>
         </form>
       </div>
     </AdminShell>

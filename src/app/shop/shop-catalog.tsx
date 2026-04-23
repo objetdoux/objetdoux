@@ -5,6 +5,7 @@ import { useMemo, useState } from "react";
 import { toggleWishlistItem } from "../wishlist/actions";
 import { shopMenu, shopSortOptions } from "../site-data";
 import type { ShopProduct } from "./shop-data";
+import { PendingButton } from "../components/pending-button";
 
 export function ShopCatalog({
   products,
@@ -137,12 +138,13 @@ export function ShopCatalog({
                     >
                       <input type="hidden" name="productSlug" value={product.slug} />
                       <input type="hidden" name="redirectTo" value="/shop" />
-                      <button
+                      <PendingButton
                         aria-label={isLiked ? "좋아요 취소" : "좋아요 추가"}
-                        className="flex h-10 w-10 items-center justify-center rounded-full bg-white/90 text-lg text-stone-700 shadow-sm transition hover:text-stone-950"
+                        pendingLabel="·"
+                        className="flex h-10 w-10 items-center justify-center rounded-full bg-white/90 text-lg text-stone-700 shadow-sm transition hover:text-stone-950 disabled:cursor-wait disabled:opacity-60"
                       >
                         {isLiked ? "♥" : "♡"}
-                      </button>
+                      </PendingButton>
                     </form>
                   </div>
                   <Link href={`/shop/${product.slug}`} className="block px-6 py-6">

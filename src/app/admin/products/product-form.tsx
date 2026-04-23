@@ -7,6 +7,7 @@ import {
 } from "../admin-components";
 import { createProduct, updateProduct } from "./actions";
 import { ProductImageUploadBox } from "./product-image-upload-box";
+import { PendingButton } from "../../components/pending-button";
 
 type ProductFormProduct = {
   dbId?: string;
@@ -217,12 +218,13 @@ export function ProductForm({
           </AdminFormSection>
 
           <div className="rounded-[1.5rem] border border-black/6 bg-white px-5 py-5">
-            <button
+            <PendingButton
               form={formId}
-              className="h-12 w-full rounded-xl bg-stone-950 px-6 text-sm font-medium text-white transition hover:bg-stone-800"
+              pendingLabel={isEdit ? "저장 중" : "등록 중"}
+              className="h-12 w-full rounded-xl bg-stone-950 px-6 text-sm font-medium text-white transition hover:bg-stone-800 disabled:cursor-wait disabled:opacity-60"
             >
               {isEdit ? "수정 저장" : "상품 등록"}
-            </button>
+            </PendingButton>
             <div className="mt-2 [&>a]:w-full">
               <AdminSecondaryLink href="/admin/products">목록으로</AdminSecondaryLink>
             </div>

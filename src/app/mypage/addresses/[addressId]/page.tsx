@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { updateAddress } from "../actions";
 import { getAccountAddress } from "../address-data";
+import { PendingButton } from "../../../components/pending-button";
 
 type AddressEditPageProps = {
   params: Promise<{ addressId: string }>;
@@ -62,12 +63,13 @@ export default async function AddressEditPage({
               </p>
             </div>
             <div className="flex items-center gap-2">
-              <button
+              <PendingButton
                 type="submit"
-                className="inline-flex h-12 items-center justify-center rounded-xl bg-stone-950 px-5 text-sm font-medium text-white transition hover:bg-stone-800"
+                pendingLabel="저장 중"
+                className="inline-flex h-12 items-center justify-center rounded-xl bg-stone-950 px-5 text-sm font-medium text-white transition hover:bg-stone-800 disabled:cursor-wait disabled:opacity-60"
               >
                 저장하기
-              </button>
+              </PendingButton>
               <Link
                 href="/mypage/addresses"
                 className="inline-flex h-12 items-center justify-center rounded-xl border border-black/8 bg-[#faf8f5] px-5 text-sm font-medium text-stone-700 transition hover:border-stone-900"

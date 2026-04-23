@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { createAddress } from "../actions";
+import { PendingButton } from "../../../components/pending-button";
 
 export const metadata: Metadata = {
   title: "새 배송지 추가",
@@ -41,12 +42,13 @@ export default function NewAddressPage() {
               </p>
             </div>
             <div className="flex items-center gap-2">
-              <button
+              <PendingButton
                 type="submit"
-                className="inline-flex h-12 items-center justify-center rounded-xl bg-stone-950 px-5 text-sm font-medium text-white transition hover:bg-stone-800"
+                pendingLabel="저장 중"
+                className="inline-flex h-12 items-center justify-center rounded-xl bg-stone-950 px-5 text-sm font-medium text-white transition hover:bg-stone-800 disabled:cursor-wait disabled:opacity-60"
               >
                 저장하기
-              </button>
+              </PendingButton>
               <Link
                 href="/mypage/addresses"
                 className="inline-flex h-12 items-center justify-center rounded-xl border border-black/8 bg-[#faf8f5] px-5 text-sm font-medium text-stone-700 transition hover:border-stone-900"

@@ -5,6 +5,7 @@ import { getCurrentAccountProfile } from "../mypage/account-data";
 import { getAccountAddresses } from "../mypage/addresses/address-data";
 import { calculateShippingFee, getSiteSettings } from "../site-settings";
 import { createOrder } from "./actions";
+import { PendingButton } from "../components/pending-button";
 
 const paymentMethods = [
   "신용카드",
@@ -296,17 +297,18 @@ export default async function CheckoutPage() {
             </div>
 
             <div className="mt-8 flex flex-col gap-3">
-              <button
+              <PendingButton
                 type="submit"
                 disabled={items.length === 0}
+                pendingLabel="결제 준비 중"
                 className={
                   items.length > 0
-                    ? "rounded-xl bg-stone-950 px-6 py-3 text-center text-sm font-medium text-white transition hover:bg-stone-800"
+                    ? "rounded-xl bg-stone-950 px-6 py-3 text-center text-sm font-medium text-white transition hover:bg-stone-800 disabled:cursor-wait disabled:opacity-60"
                     : "cursor-not-allowed rounded-xl bg-stone-300 px-6 py-3 text-center text-sm font-medium text-white"
                 }
               >
                 결제하기
-              </button>
+              </PendingButton>
               <Link
                 href="/cart"
                 className="rounded-xl border border-black/8 bg-[#faf8f5] px-6 py-3 text-center text-sm font-medium text-stone-700 transition hover:border-stone-900"

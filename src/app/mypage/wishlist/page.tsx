@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { toggleWishlistItem } from "../../wishlist/actions";
 import { getWishlistProducts } from "../../wishlist/wishlist-data";
+import { PendingButton } from "../../components/pending-button";
 
 export const metadata: Metadata = {
   title: "관심 상품",
@@ -104,12 +105,13 @@ export default async function MyPageWishlistPage() {
                           name="redirectTo"
                           value="/mypage/wishlist"
                         />
-                        <button
+                        <PendingButton
                           aria-label="좋아요 취소"
-                          className="flex h-14 w-14 shrink-0 items-center justify-center text-[2.1rem] leading-none text-stone-900 transition hover:scale-105"
+                          pendingLabel="·"
+                          className="flex h-14 w-14 shrink-0 items-center justify-center text-[2.1rem] leading-none text-stone-900 transition hover:scale-105 disabled:cursor-wait disabled:opacity-50"
                         >
                           ♥
-                        </button>
+                        </PendingButton>
                       </form>
                     </div>
                   </div>

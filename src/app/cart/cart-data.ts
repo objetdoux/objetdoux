@@ -1,4 +1,5 @@
 import { createAdminClient } from "@/lib/supabase/admin";
+import { createClient } from "@/lib/supabase/server";
 import { getCurrentAccountProfile } from "../mypage/account-data";
 
 type CartRow = {
@@ -153,4 +154,52 @@ export async function getCartLineItems() {
   return ((data ?? []) as unknown as CartItemRow[])
     .map(mapCartItem)
     .filter((item): item is CartLineItem => item !== null);
+}
+
+export async function getCartItemCountByAuthUserId(authUserId?: string) {
+  if (!authUserId) {
+    return 0;
+  }
+
+  const admin = createAdminClient();
+  const { data: account } = await admin
+    .from("users")
+    .select("id")
+    .eq("auth_user_id", authUserId)
+    .maybeSingle<{ id: string }>();
+
+  if (!account) {
+    return 0;
+  }
+
+  const { data: cart } = await admin
+    .from("carts")
+    .select("id")
+    .eq("user_id", account.id)
+    .maybeSingle<CartRow>();
+
+  if (!cart) {
+    return 0;
+  }
+
+  const { data, error } = await admin
+    .from("cart_items")
+    .select("quantity")
+    .eq("cart_id", cart.id)
+    .returns<Array<{ quantity: number }>>();
+
+  if (error) {
+    return 0;
+  }
+
+  return (data ?? []).reduce((sum, item) => sum + item.quantity, 0);
+}
+
+export async function getCurrentCartItemCount() {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  return getCartItemCountByAuthUserId(user?.id);
 }

@@ -5,6 +5,7 @@ import {
   setDefaultAddress,
 } from "./actions";
 import { getAccountAddresses } from "./address-data";
+import { PendingButton } from "../../components/pending-button";
 
 export const metadata: Metadata = {
   title: "배송지 관리",
@@ -93,9 +94,12 @@ export default async function MyPageAddressesPage() {
                     {!address.isDefault ? (
                       <form action={setDefaultAddress}>
                         <input type="hidden" name="addressId" value={address.id} />
-                        <button className="text-stone-700 transition hover:text-stone-950">
+                        <PendingButton
+                          pendingLabel="변경 중"
+                          className="text-stone-700 transition hover:text-stone-950 disabled:cursor-wait disabled:opacity-60"
+                        >
                           기본으로 설정
-                        </button>
+                        </PendingButton>
                       </form>
                     ) : null}
                     <Link
@@ -106,9 +110,12 @@ export default async function MyPageAddressesPage() {
                     </Link>
                     <form action={deleteAddress}>
                       <input type="hidden" name="addressId" value={address.id} />
-                      <button className="text-stone-500 transition hover:text-stone-700">
+                      <PendingButton
+                        pendingLabel="삭제 중"
+                        className="text-stone-500 transition hover:text-stone-700 disabled:cursor-wait disabled:opacity-60"
+                      >
                         삭제
-                      </button>
+                      </PendingButton>
                     </form>
                   </div>
                 </div>

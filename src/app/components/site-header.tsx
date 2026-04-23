@@ -2,7 +2,9 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 import { logout } from "../auth/actions";
+import { PendingButton } from "./pending-button";
 
 const links = [
   { href: "/brand", label: "BRAND" },
@@ -10,12 +12,42 @@ const links = [
   { href: "/social", label: "SOCIAL" },
 ];
 
-export function SiteHeader({ isLoggedIn }: { isLoggedIn: boolean }) {
+export function SiteHeader({
+  isLoggedIn,
+  cartItemCount,
+}: {
+  isLoggedIn: boolean;
+  cartItemCount: number;
+}) {
   const pathname = usePathname();
+  const [visibleCartItemCount, setVisibleCartItemCount] = useState(cartItemCount);
   const accountLinks = isLoggedIn
     ? [{ href: "/mypage", label: "MY PAGE" }]
     : [{ href: "/login", label: "LOGIN" }];
   const allLinks = [...links, ...accountLinks];
+
+  useEffect(() => {
+    function updateCartCount(event: Event) {
+      const detail = (event as CustomEvent<{ count?: number; delta?: number }>).detail;
+
+      if (typeof detail?.count === "number") {
+        setVisibleCartItemCount(Math.max(0, detail.count));
+        return;
+      }
+
+      const delta = detail?.delta;
+
+      if (typeof delta === "number") {
+        setVisibleCartItemCount((currentCount) =>
+          Math.max(0, currentCount + delta),
+        );
+      }
+    }
+
+    window.addEventListener("objetdoux:cart-count", updateCartCount);
+    return () =>
+      window.removeEventListener("objetdoux:cart-count", updateCartCount);
+  }, []);
 
   return (
     <header className="sticky top-0 z-50 border-b border-black/6 bg-[rgba(247,243,238,0.88)] backdrop-blur">
@@ -50,15 +82,55 @@ export function SiteHeader({ isLoggedIn }: { isLoggedIn: boolean }) {
               </Link>
             );
           })}
+          <Link
+            href="/cart"
+            aria-label={`장바구니 ${visibleCartItemCount}개`}
+            className={
+              pathname === "/cart"
+                ? "relative shrink-0 font-medium text-stone-950"
+                : "relative shrink-0 text-stone-500 transition hover:text-stone-900"
+            }
+          >
+            <span className="inline-flex items-center gap-1.5">
+              <CartIcon />
+              <span>CART</span>
+            </span>
+            {visibleCartItemCount > 0 ? (
+              <span className="absolute -right-3 -top-2 flex h-4 min-w-4 items-center justify-center rounded-full bg-stone-950 px-1 text-[9px] font-semibold leading-none text-white">
+                {visibleCartItemCount > 99 ? "99+" : visibleCartItemCount}
+              </span>
+            ) : null}
+          </Link>
           {isLoggedIn ? (
             <form action={logout} className="shrink-0">
-              <button className="text-[11px] tracking-[0.1em] text-stone-500 transition hover:text-stone-900 sm:text-xs">
+              <PendingButton
+                pendingLabel="..."
+                className="text-[11px] tracking-[0.1em] text-stone-500 transition hover:text-stone-900 disabled:cursor-wait disabled:opacity-60 sm:text-xs"
+              >
                 LOGOUT
-              </button>
+              </PendingButton>
             </form>
           ) : null}
         </nav>
       </div>
     </header>
+  );
+}
+
+function CartIcon() {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 24 24"
+      className="h-3.5 w-3.5"
+      fill="none"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="1.7"
+    >
+      <path d="M6.5 8.5h11l-.8 10H7.3l-.8-10Z" />
+      <path d="M9 8.5a3 3 0 0 1 6 0" />
+    </svg>
   );
 }

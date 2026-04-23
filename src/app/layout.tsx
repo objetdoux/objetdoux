@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { SiteFooter } from "./components/site-footer";
 import { SiteHeader } from "./components/site-header";
 import { createClient } from "@/lib/supabase/server";
+import { getCartItemCountByAuthUserId } from "./cart/cart-data";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -22,11 +23,12 @@ export default async function RootLayout({
   const {
     data: { user },
   } = await supabase.auth.getUser();
+  const cartItemCount = await getCartItemCountByAuthUserId(user?.id);
 
   return (
     <html lang="ko" className="h-full antialiased">
       <body className="min-h-full flex flex-col">
-        <SiteHeader isLoggedIn={Boolean(user)} />
+        <SiteHeader isLoggedIn={Boolean(user)} cartItemCount={cartItemCount} />
         <div className="flex-1">{children}</div>
         <SiteFooter />
       </body>

@@ -11,6 +11,7 @@ import {
   adminOrderStatusOptions,
   getAdminOrderByNumber,
 } from "../order-data";
+import { PendingButton } from "../../../components/pending-button";
 
 export const metadata: Metadata = {
   title: "주문 상세",
@@ -128,9 +129,12 @@ export default async function AdminOrderDetailPage({
                     className="mt-2 h-12 w-full rounded-xl border border-black/8 bg-[#faf8f5] px-4 text-sm outline-none transition focus:border-stone-900"
                   />
                 </label>
-                <button className="h-12 w-full rounded-xl bg-stone-950 px-6 text-sm font-medium text-white transition hover:bg-stone-800">
+                <PendingButton
+                  pendingLabel="저장 중"
+                  className="h-12 w-full rounded-xl bg-stone-950 px-6 text-sm font-medium text-white transition hover:bg-stone-800 disabled:cursor-wait disabled:opacity-60"
+                >
                   상태 저장
-                </button>
+                </PendingButton>
               </form>
             </div>
 
