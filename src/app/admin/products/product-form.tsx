@@ -18,6 +18,8 @@ type ProductFormProduct = {
   description: string;
   material: string;
   size: string;
+  trackStock?: boolean;
+  stockQuantity?: number;
   visible: boolean;
   soldOut: boolean;
   isNew?: boolean;
@@ -123,6 +125,7 @@ export function ProductForm({
               <ProductImageUploadBox
                 title="대표 이미지"
                 description="상품 목록과 상세 상단 썸네일에 사용합니다."
+                sizeGuide="1200 x 1200px 이상, 1:1 정사각형"
                 ratio="aspect-square"
                 imageType="thumbnail"
                 productSlug={productSlug}
@@ -131,6 +134,7 @@ export function ProductForm({
               <ProductImageUploadBox
                 title="추가 이미지"
                 description="상세 상단 이미지 갤러리에 추가될 이미지입니다."
+                sizeGuide="1200 x 1200px 이상, 1:1 정사각형"
                 ratio="aspect-square"
                 imageType="gallery"
                 productSlug={productSlug}
@@ -142,6 +146,7 @@ export function ProductForm({
               <ProductImageUploadBox
                 title="상세페이지 긴 이미지"
                 description="상세페이지 제작 이미지를 세로로 길게 등록하는 영역입니다."
+                sizeGuide="1200px 너비 권장, 세로 길이는 자유"
                 ratio="aspect-[4/7]"
                 imageType="detail"
                 productSlug={productSlug}
@@ -153,7 +158,22 @@ export function ProductForm({
 
         <aside className="space-y-6">
           <AdminFormSection title="판매 설정">
-            <div className="space-y-3">
+              <div className="space-y-3">
+              <AdminTextField
+                label="재고 수량"
+                name="stock_quantity"
+                value={product?.stockQuantity ?? 0}
+                placeholder="0"
+                type="number"
+                form={formId}
+              />
+              <ToggleRow
+                title="재고 수량 관리"
+                name="track_stock"
+                formId={formId}
+                description="켜두면 주문 시 수량만큼 재고가 차감되고, 0개가 되면 자동 품절됩니다."
+                defaultChecked={product?.trackStock ?? false}
+              />
               <ToggleRow
                 title="상품 노출"
                 name="is_visible"

@@ -10,6 +10,15 @@ export type SiteSettings = {
   freeShippingMinimum: number;
   defaultOrderStatus: string;
   shippingNotice: string;
+  heroTitle: string;
+  heroSubtitle: string;
+  heroImageUrl: string;
+  eventPrimaryTitle: string;
+  eventPrimaryDescription: string;
+  eventPrimaryImageUrl: string;
+  eventSecondaryTitle: string;
+  eventSecondaryDescription: string;
+  eventSecondaryImageUrl: string;
 };
 
 type SiteSettingRow = {
@@ -27,6 +36,18 @@ export const defaultSiteSettings: SiteSettings = {
   freeShippingMinimum: 70000,
   defaultOrderStatus: "상품 준비 중",
   shippingNotice: "기본 배송 2-5일 소요 / 제주 및 도서산간 추가 배송비 별도",
+  heroTitle: "부드러운 감성의 오브제,\n오브제두",
+  heroSubtitle:
+    "일상에 자연스럽게 스며드는 물건과 조용한 식탁의 분위기를 제안합니다.",
+  heroImageUrl: "",
+  eventPrimaryTitle: "첫 런칭 소식",
+  eventPrimaryDescription:
+    "오브제두의 첫 컬렉션 오픈 일정과 브랜드 소식을 안내하는 영역",
+  eventPrimaryImageUrl: "",
+  eventSecondaryTitle: "프로모션 안내",
+  eventSecondaryDescription:
+    "이벤트, 팝업, 온라인 스토어 공지 등 추후 바로 교체 가능한 블록",
+  eventSecondaryImageUrl: "",
 };
 
 const settingKeys = {
@@ -39,6 +60,15 @@ const settingKeys = {
   freeShippingMinimum: "free_shipping_minimum",
   defaultOrderStatus: "default_order_status",
   shippingNotice: "shipping_notice",
+  heroTitle: "home_hero_title",
+  heroSubtitle: "home_hero_subtitle",
+  heroImageUrl: "home_hero_image_url",
+  eventPrimaryTitle: "home_event_primary_title",
+  eventPrimaryDescription: "home_event_primary_description",
+  eventPrimaryImageUrl: "home_event_primary_image_url",
+  eventSecondaryTitle: "home_event_secondary_title",
+  eventSecondaryDescription: "home_event_secondary_description",
+  eventSecondaryImageUrl: "home_event_secondary_image_url",
 } as const;
 
 function getStringSetting(
@@ -147,6 +177,51 @@ export async function getSiteSettings() {
       settingKeys.shippingNotice,
       defaultSiteSettings.shippingNotice,
     ),
+    heroTitle: getStringSetting(
+      rows,
+      settingKeys.heroTitle,
+      defaultSiteSettings.heroTitle,
+    ),
+    heroSubtitle: getStringSetting(
+      rows,
+      settingKeys.heroSubtitle,
+      defaultSiteSettings.heroSubtitle,
+    ),
+    heroImageUrl: getStringSetting(
+      rows,
+      settingKeys.heroImageUrl,
+      defaultSiteSettings.heroImageUrl,
+    ),
+    eventPrimaryTitle: getStringSetting(
+      rows,
+      settingKeys.eventPrimaryTitle,
+      defaultSiteSettings.eventPrimaryTitle,
+    ),
+    eventPrimaryDescription: getStringSetting(
+      rows,
+      settingKeys.eventPrimaryDescription,
+      defaultSiteSettings.eventPrimaryDescription,
+    ),
+    eventPrimaryImageUrl: getStringSetting(
+      rows,
+      settingKeys.eventPrimaryImageUrl,
+      defaultSiteSettings.eventPrimaryImageUrl,
+    ),
+    eventSecondaryTitle: getStringSetting(
+      rows,
+      settingKeys.eventSecondaryTitle,
+      defaultSiteSettings.eventSecondaryTitle,
+    ),
+    eventSecondaryDescription: getStringSetting(
+      rows,
+      settingKeys.eventSecondaryDescription,
+      defaultSiteSettings.eventSecondaryDescription,
+    ),
+    eventSecondaryImageUrl: getStringSetting(
+      rows,
+      settingKeys.eventSecondaryImageUrl,
+      defaultSiteSettings.eventSecondaryImageUrl,
+    ),
   } satisfies SiteSettings;
 }
 
@@ -185,6 +260,51 @@ export function toSiteSettingRows(settings: SiteSettings) {
     {
       key: settingKeys.shippingNotice,
       value: settings.shippingNotice,
+      updated_at: updatedAt,
+    },
+    {
+      key: settingKeys.heroTitle,
+      value: settings.heroTitle,
+      updated_at: updatedAt,
+    },
+    {
+      key: settingKeys.heroSubtitle,
+      value: settings.heroSubtitle,
+      updated_at: updatedAt,
+    },
+    {
+      key: settingKeys.heroImageUrl,
+      value: settings.heroImageUrl,
+      updated_at: updatedAt,
+    },
+    {
+      key: settingKeys.eventPrimaryTitle,
+      value: settings.eventPrimaryTitle,
+      updated_at: updatedAt,
+    },
+    {
+      key: settingKeys.eventPrimaryDescription,
+      value: settings.eventPrimaryDescription,
+      updated_at: updatedAt,
+    },
+    {
+      key: settingKeys.eventPrimaryImageUrl,
+      value: settings.eventPrimaryImageUrl,
+      updated_at: updatedAt,
+    },
+    {
+      key: settingKeys.eventSecondaryTitle,
+      value: settings.eventSecondaryTitle,
+      updated_at: updatedAt,
+    },
+    {
+      key: settingKeys.eventSecondaryDescription,
+      value: settings.eventSecondaryDescription,
+      updated_at: updatedAt,
+    },
+    {
+      key: settingKeys.eventSecondaryImageUrl,
+      value: settings.eventSecondaryImageUrl,
       updated_at: updatedAt,
     },
   ];

@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { addCartItem } from "../../cart/actions";
 import { shopProducts } from "../../site-data";
+import { getSiteSettings } from "../../site-settings";
 import { toggleWishlistItem } from "../../wishlist/actions";
 import { getWishlistProductSlugs } from "../../wishlist/wishlist-data";
 import { getShopProductBySlug, getShopProducts } from "../shop-data";
@@ -26,7 +27,10 @@ export default async function ProductDetailPage({
     notFound();
   }
 
-  const allProducts = await getShopProducts();
+  const [allProducts, settings] = await Promise.all([
+    getShopProducts(),
+    getSiteSettings(),
+  ]);
   const relatedProducts = allProducts
     .filter(
       (item) => item.category === product.category && item.slug !== product.slug,
@@ -34,6 +38,8 @@ export default async function ProductDetailPage({
     .slice(0, 3);
   const likedProductSlugs = await getWishlistProductSlugs();
   const isLiked = likedProductSlugs.includes(product.slug);
+  const isPurchasable =
+    !product.soldOut && (!product.trackStock || product.stockQuantity > 0);
   const previewImages = [product.thumbnailUrl, ...product.galleryUrls]
     .filter(Boolean)
     .slice(0, 3);
@@ -97,6 +103,13 @@ export default async function ProductDetailPage({
                 <p className="mt-4 text-lg font-semibold text-stone-900">
                   {product.price}
                 </p>
+                {product.trackStock ? (
+                  <p className="mt-2 text-sm text-stone-500">
+                    {isPurchasable ? `남은 수량 ${product.stockQuantity}개` : "품절"}
+                  </p>
+                ) : product.soldOut ? (
+                  <p className="mt-2 text-sm text-stone-500">품절</p>
+                ) : null}
               </div>
 
               <form action={toggleWishlistItem}>
@@ -166,9 +179,14 @@ export default async function ProductDetailPage({
                 <input type="hidden" name="productSlug" value={product.slug} />
                 <input type="hidden" name="quantity" value="1" />
                 <button
-                  className="w-full rounded-xl border border-black/8 bg-[#faf8f5] px-6 py-3 text-sm font-medium text-stone-700 transition hover:border-stone-900 sm:w-auto"
+                  disabled={!isPurchasable}
+                  className={
+                    isPurchasable
+                      ? "w-full rounded-xl border border-black/8 bg-[#faf8f5] px-6 py-3 text-sm font-medium text-stone-700 transition hover:border-stone-900 sm:w-auto"
+                      : "w-full cursor-not-allowed rounded-xl border border-black/8 bg-stone-200 px-6 py-3 text-sm font-medium text-stone-400 sm:w-auto"
+                  }
                 >
-                  장바구니 담기
+                  {isPurchasable ? "장바구니 담기" : "품절"}
                 </button>
               </form>
               <Link
@@ -183,7 +201,7 @@ export default async function ProductDetailPage({
               <div className="grid gap-2 sm:grid-cols-[120px_minmax(0,1fr)] sm:gap-4">
                 <p className="font-medium text-stone-900">배송 안내</p>
                 <p className="sm:max-w-[32rem] sm:justify-self-end sm:text-right">
-                  기본 배송 2~5일 소요 / 제주 및 도서산간 추가 배송비 별도
+                  {settings.shippingNotice}
                 </p>
               </div>
               <div className="grid gap-2 sm:grid-cols-[120px_minmax(0,1fr)] sm:gap-4">

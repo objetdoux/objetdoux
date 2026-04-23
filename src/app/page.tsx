@@ -1,18 +1,6 @@
 import Link from "next/link";
-import { shopProducts } from "./site-data";
-
-const eventItems = [
-  {
-    title: "첫 런칭 소식",
-    description: "오브제두의 첫 컬렉션 오픈 일정과 브랜드 소식을 안내하는 영역",
-  },
-  {
-    title: "프로모션 안내",
-    description: "이벤트, 팝업, 온라인 스토어 공지 등 추후 바로 교체 가능한 블록",
-  },
-];
-
-const newItems = shopProducts.slice(0, 4);
+import { getNewShopProducts } from "./shop/shop-data";
+import { getSiteSettings } from "./site-settings";
 
 const magazineItems = [
   {
@@ -29,21 +17,49 @@ const magazineItems = [
   },
 ];
 
-export default function Home() {
+export default async function Home() {
+  const [newItems, settings] = await Promise.all([
+    getNewShopProducts(4),
+    getSiteSettings(),
+  ]);
+  const heroTitleLines = settings.heroTitle.split("\n");
+  const eventItems = [
+    {
+      title: settings.eventPrimaryTitle,
+      description: settings.eventPrimaryDescription,
+      imageUrl: settings.eventPrimaryImageUrl,
+    },
+    {
+      title: settings.eventSecondaryTitle,
+      description: settings.eventSecondaryDescription,
+      imageUrl: settings.eventSecondaryImageUrl,
+    },
+  ];
+
   return (
     <main className="bg-[#f7f3ee] py-16 lg:py-24">
       <section className="w-full">
-        <div className="aspect-[16/9] w-full bg-[#e2dfda] sm:aspect-[16/8] lg:aspect-[16/6]">
-          <div className="mx-auto flex h-full w-full max-w-6xl items-end px-6 py-8 sm:px-8 sm:py-10 lg:px-8 lg:py-12">
+        <div className="relative aspect-[16/9] w-full overflow-hidden bg-[#e2dfda] sm:aspect-[16/8] lg:aspect-[16/6]">
+          {settings.heroImageUrl ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={settings.heroImageUrl}
+              alt=""
+              className="absolute h-full w-full object-cover"
+            />
+          ) : null}
+          <div className="relative mx-auto flex h-full w-full max-w-6xl items-end px-6 py-8 sm:px-8 sm:py-10 lg:px-8 lg:py-12">
             <div className="max-w-2xl">
               <h1 className="text-4xl font-semibold leading-[1.15] tracking-[-0.04em] text-stone-900 sm:text-5xl lg:text-6xl">
-                부드러운 감성의 오브제,
-                <br />
-                오브제두
+                {heroTitleLines.map((line, index) => (
+                  <span key={`${line}-${index}`}>
+                    {line}
+                    {index < heroTitleLines.length - 1 ? <br /> : null}
+                  </span>
+                ))}
               </h1>
               <p className="mt-5 max-w-xl text-sm leading-6 text-stone-600 sm:text-base sm:leading-7">
-                일상에 자연스럽게 스며드는 물건과 조용한 식탁의 분위기를
-                제안합니다.
+                {settings.heroSubtitle}
               </p>
             </div>
           </div>
@@ -63,7 +79,16 @@ export default function Home() {
               key={item.title}
               className="min-w-[84vw] rounded-[1.5rem] border border-black/6 bg-white p-6 md:min-w-0"
             >
-              <div className="h-48 rounded-[1rem] bg-[#e5e3de]" />
+              <div className="h-48 overflow-hidden rounded-[1rem] bg-[#e5e3de]">
+                {item.imageUrl ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={item.imageUrl}
+                    alt=""
+                    className="h-full w-full object-cover"
+                  />
+                ) : null}
+              </div>
               <h3 className="mt-5 text-xl font-semibold tracking-[-0.02em] text-stone-950">
                 {item.title}
               </h3>
@@ -94,12 +119,23 @@ export default function Home() {
               href={`/shop/${item.slug}`}
               className="rounded-[1.5rem] border border-black/6 bg-white p-4 transition hover:border-black/12 hover:bg-[#fcfaf7] sm:p-5"
             >
-              <div className="aspect-square rounded-[1rem] bg-[#e5e3de]" />
+              <div className="aspect-square overflow-hidden rounded-[1rem] bg-[#e5e3de]">
+                {item.thumbnailUrl ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={item.thumbnailUrl}
+                    alt=""
+                    className="h-full w-full object-cover"
+                  />
+                ) : null}
+              </div>
               <p className="mt-3 text-base font-medium text-stone-900">
                 {item.name}
               </p>
               <p className="mt-1 text-sm leading-6 text-stone-500">
-                {item.price}
+                {item.soldOut || (item.trackStock && item.stockQuantity <= 0)
+                  ? "품절"
+                  : item.price}
               </p>
             </Link>
           ))}
@@ -151,25 +187,23 @@ export default function Home() {
             <div>
               <p className="text-sm font-semibold text-stone-900">ADDRESS</p>
               <p className="mt-3 text-sm leading-6 text-stone-600">
-                서울시 강남구
-                <br />
-                추후 실제 주소가 들어갈 자리
+                {settings.businessAddress}
               </p>
             </div>
             <div>
               <p className="text-sm font-semibold text-stone-900">COMPANY</p>
               <p className="mt-3 text-sm leading-6 text-stone-600">
-                상호명, 대표자명, 사업자등록번호 등
+                {settings.companyName}
                 <br />
-                기본 회사 정보가 들어갈 자리
+                대표 {settings.ceoName}
               </p>
             </div>
             <div>
               <p className="text-sm font-semibold text-stone-900">CS</p>
               <p className="mt-3 text-sm leading-6 text-stone-600">
-                평일 운영시간 / 문의 메일
+                {settings.csPhone}
                 <br />
-                hello@objetdoux.com
+                {settings.csEmail}
               </p>
             </div>
           </div>

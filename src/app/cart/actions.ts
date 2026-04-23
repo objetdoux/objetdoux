@@ -7,6 +7,8 @@ import { getCurrentCartId } from "./cart-data";
 
 type ProductIdRow = {
   id: string;
+  track_stock: boolean;
+  stock_quantity: number;
 };
 
 function revalidateCartFlow() {
@@ -25,7 +27,7 @@ export async function addCartItem(formData: FormData) {
   const admin = createAdminClient();
   const { data: product } = await admin
     .from("products")
-    .select("id")
+    .select("id, track_stock, stock_quantity")
     .eq("slug", productSlug)
     .eq("is_visible", true)
     .eq("is_sold_out", false)
@@ -44,15 +46,27 @@ export async function addCartItem(formData: FormData) {
     .maybeSingle<{ id: string; quantity: number }>();
 
   if (existingItem) {
+    const nextQuantity = existingItem.quantity + quantity;
+
+    if (product.track_stock && nextQuantity > product.stock_quantity) {
+      revalidateCartFlow();
+      redirect("/cart?invalid=1");
+    }
+
     await admin
       .from("cart_items")
       .update({
-        quantity: existingItem.quantity + quantity,
+        quantity: nextQuantity,
         updated_at: new Date().toISOString(),
       })
       .eq("id", existingItem.id)
       .eq("cart_id", cartId);
   } else {
+    if (product.track_stock && quantity > product.stock_quantity) {
+      revalidateCartFlow();
+      redirect("/cart?invalid=1");
+    }
+
     await admin.from("cart_items").insert({
       cart_id: cartId,
       product_id: product.id,
@@ -76,10 +90,27 @@ export async function changeCartItemQuantity(formData: FormData) {
   const admin = createAdminClient();
   const { data: item } = await admin
     .from("cart_items")
-    .select("id, quantity")
+    .select("id, quantity, products(track_stock, stock_quantity, is_visible, is_sold_out)")
     .eq("id", cartItemId)
     .eq("cart_id", cartId)
-    .maybeSingle<{ id: string; quantity: number }>();
+    .maybeSingle<{
+      id: string;
+      quantity: number;
+      products:
+        | {
+            track_stock: boolean;
+            stock_quantity: number;
+            is_visible: boolean;
+            is_sold_out: boolean;
+          }
+        | Array<{
+            track_stock: boolean;
+            stock_quantity: number;
+            is_visible: boolean;
+            is_sold_out: boolean;
+          }>
+        | null;
+    }>();
 
   if (!item) {
     redirect("/cart");
@@ -87,6 +118,18 @@ export async function changeCartItemQuantity(formData: FormData) {
 
   const nextQuantity =
     direction === "decrease" ? item.quantity - 1 : item.quantity + 1;
+  const product = Array.isArray(item.products) ? item.products[0] : item.products;
+
+  if (
+    nextQuantity > item.quantity &&
+    (!product ||
+      !product.is_visible ||
+      product.is_sold_out ||
+      (product.track_stock && nextQuantity > product.stock_quantity))
+  ) {
+    revalidateCartFlow();
+    redirect("/cart?invalid=1");
+  }
 
   if (nextQuantity <= 0) {
     await admin

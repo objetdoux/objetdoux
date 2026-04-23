@@ -109,6 +109,19 @@ export async function createOrder(formData: FormData) {
     throw new Error(itemError.message);
   }
 
+  for (const item of items.filter((cartItem) => cartItem.trackStock)) {
+    const { error: stockError } = await admin.rpc("decrement_product_stock", {
+      p_product_id: item.productId,
+      p_quantity: item.quantity,
+    });
+
+    if (stockError) {
+      revalidatePath("/cart");
+      revalidatePath("/checkout");
+      redirect("/cart?invalid=1");
+    }
+  }
+
   await admin.from("cart_items").delete().eq("cart_id", cartId);
 
   revalidatePath("/cart");

@@ -46,6 +46,8 @@ create table if not exists public.products (
   description text,
   material text,
   size text,
+  track_stock boolean not null default false,
+  stock_quantity integer not null default 0 check (stock_quantity >= 0),
   is_visible boolean not null default true,
   is_sold_out boolean not null default false,
   is_new boolean not null default false,
@@ -53,6 +55,63 @@ create table if not exists public.products (
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
+
+alter table public.products
+add column if not exists track_stock boolean not null default false;
+
+alter table public.products
+add column if not exists stock_quantity integer not null default 0 check (stock_quantity >= 0);
+
+create or replace function public.decrement_product_stock(
+  p_product_id uuid,
+  p_quantity integer
+)
+returns integer
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  v_track_stock boolean;
+  v_stock_quantity integer;
+  v_next_stock_quantity integer;
+begin
+  if p_quantity <= 0 then
+    raise exception 'INVALID_QUANTITY';
+  end if;
+
+  select track_stock, stock_quantity
+  into v_track_stock, v_stock_quantity
+  from public.products
+  where id = p_product_id
+    and is_visible = true
+    and is_sold_out = false
+  for update;
+
+  if not found then
+    raise exception 'PRODUCT_UNAVAILABLE';
+  end if;
+
+  if not v_track_stock then
+    return v_stock_quantity;
+  end if;
+
+  if v_stock_quantity < p_quantity then
+    raise exception 'OUT_OF_STOCK';
+  end if;
+
+  v_next_stock_quantity := v_stock_quantity - p_quantity;
+
+  update public.products
+  set
+    stock_quantity = v_next_stock_quantity,
+    is_sold_out = v_next_stock_quantity <= 0,
+    updated_at = now()
+  where id = p_product_id;
+
+  return v_next_stock_quantity;
+end;
+$$;
 
 create table if not exists public.product_images (
   id uuid primary key default gen_random_uuid(),

@@ -136,7 +136,11 @@
 
 - 실제 이미지 대신 플레이스홀더 사용
 - 모바일에서 일부 섹션은 가로 스크롤 구조 적용
+- 메인 배너 문구와 EVENT 문구는 Supabase `site_settings` 기준으로 표시
+- 메인 배너 이미지와 EVENT 이미지는 Supabase Storage 업로드 후 `site_settings` URL 기준으로 표시
 - NEW ITEMS는 모바일 2열
+- NEW ITEMS는 Supabase `products.is_new = true` 상품을 우선 노출
+- COMPANY INFO는 Supabase `site_settings` 회사 정보 기준으로 표시
 
 ## 6. SHOP / 상품 관련 방향
 
@@ -162,6 +166,7 @@
 - 하단 상세 이미지 영역
 - 관련 상품 섹션
 - Supabase 대표 이미지, 추가 이미지, 상세페이지 긴 이미지 표시
+- 배송 안내는 Supabase `site_settings.shipping_notice` 기준으로 표시
 
 ## 7. 회원 / 주문 관련 방향
 
@@ -295,6 +300,9 @@
 핵심 원칙:
 
 - 주문 시점의 상품명/가격/수량은 `order_items`에 별도 저장
+- 재고 관리 상품은 관리자에서 `재고 수량 관리`를 켜고 수량을 입력
+- 주문 생성 후 DB 함수로 재고 수량을 안전하게 차감하고, 0개가 되면 자동 품절 처리
+- 장바구니와 주문서에서는 품절/비노출/재고 부족 상품을 주문하지 못하게 차단
 
 ## 12. 현재 관리자 페이지 구현 상태
 
@@ -303,7 +311,7 @@
 - `/admin/login`
   관리자 로그인 화면
 - `/admin` 이하 경로
-  Supabase Auth 세션이 없으면 `/admin/login`으로 이동
+  서버에서 관리자 권한을 확인하고 권한이 없으면 `/admin/login`으로 이동
 - 관리자 권한
   Supabase Auth 로그인 후 `admin_users`에 등록된 활성 이메일인지 확인
 
@@ -324,6 +332,7 @@
 - 대표 이미지 업로드 영역
 - 추가 이미지 업로드 영역
 - 상세페이지 긴 이미지 업로드 영역
+- 관리자 이미지 업로드 영역에 권장 사이즈 표시
 - Supabase Storage `product-images` bucket 업로드
 - Supabase `product_images` 테이블 저장
 - 상품 노출 여부
@@ -349,6 +358,7 @@
 - 관리자 회원 목록 검색/정렬 적용
 - Supabase `site_settings` 기준 회사 정보 조회/저장
 - Supabase `site_settings` 기준 배송비 / 무료 배송 기준 / 기본 배송 안내 조회/저장
+- Supabase Storage 기준 메인 배너 / 이벤트 이미지 업로드
 
 현재 관리자 로그인은 목업 쿠키 방식이고, 주문/상품/회원/설정 주요 기능은 Supabase DB에 연결된 상태입니다.
 - 주문 시점의 배송지도 `orders`에 스냅샷 저장

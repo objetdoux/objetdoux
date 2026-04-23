@@ -50,8 +50,8 @@ export default async function CartPage({ searchParams }: CartPageProps) {
           <section className="space-y-5">
             {invalid || unavailableItems.length > 0 ? (
               <div className="rounded-[1.25rem] border border-black/6 bg-white px-5 py-4 text-sm leading-6 text-stone-600">
-                품절 또는 판매 중지된 상품이 장바구니에 있습니다. 해당 상품을
-                삭제한 뒤 주문을 진행해주세요.
+                품절, 판매 중지 또는 재고 부족 상품이 장바구니에 있습니다.
+                해당 상품을 확인한 뒤 주문을 진행해주세요.
               </div>
             ) : null}
 
@@ -100,9 +100,13 @@ export default async function CartPage({ searchParams }: CartPageProps) {
                       >
                         {item.name}
                       </Link>
-                      {!item.isVisible || item.isSoldOut ? (
+                      {!item.isVisible || item.isSoldOut || !item.hasEnoughStock ? (
                         <p className="mt-2 inline-flex rounded-full bg-stone-100 px-3 py-1 text-xs font-medium text-stone-500">
-                          {item.isSoldOut ? "품절" : "판매 중지"}
+                          {item.isSoldOut
+                            ? "품절"
+                            : !item.isVisible
+                              ? "판매 중지"
+                              : `재고 ${item.stockQuantity}개`}
                         </p>
                       ) : null}
                       <p className="mt-2 text-sm leading-6 text-stone-600">

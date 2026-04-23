@@ -151,6 +151,11 @@ function parseProductFormData(formData: FormData) {
   const slug = sanitizePathPart(String(formData.get("slug") ?? ""));
   const category = String(formData.get("category") ?? "").trim();
   const price = Number(formData.get("price") ?? 0);
+  const trackStock = formData.get("track_stock") === "on";
+  const stockQuantity = Math.max(
+    0,
+    Number(formData.get("stock_quantity") ?? 0) || 0,
+  );
 
   if (!name) {
     throw new Error("상품명을 입력해주세요.");
@@ -178,7 +183,11 @@ function parseProductFormData(formData: FormData) {
     description: nullableString(formData.get("description")),
     summary: nullableString(formData.get("summary")),
     is_visible: formData.get("is_visible") === "on",
-    is_sold_out: formData.get("is_sold_out") === "on",
+    track_stock: trackStock,
+    stock_quantity: stockQuantity,
+    is_sold_out:
+      formData.get("is_sold_out") === "on" ||
+      (trackStock && stockQuantity <= 0),
     is_new: formData.get("is_new") === "on",
   };
 }

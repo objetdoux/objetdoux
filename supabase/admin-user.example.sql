@@ -2,6 +2,12 @@
 -- 1. Supabase Dashboard > Authentication > Users 에서 관리자 이메일 계정을 먼저 생성합니다.
 -- 2. 아래 email/name을 실제 관리자 정보로 바꿔 SQL Editor에서 실행합니다.
 
+alter table public.admin_users
+add column if not exists auth_user_id uuid unique;
+
+alter table public.admin_users
+alter column password_hash drop not null;
+
 insert into public.admin_users (email, name, role, is_active)
 values ('admin@objetdoux.com', '오브제두 관리자', 'admin', true)
 on conflict (email)

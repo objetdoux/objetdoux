@@ -122,18 +122,21 @@ export function AdminTextField({
   value,
   placeholder,
   type = "text",
+  form,
 }: {
   label: string;
   name?: string;
   value?: string | number;
   placeholder?: string;
   type?: string;
+  form?: string;
 }) {
   return (
     <label className="block">
       <span className="text-sm font-medium text-stone-700">{label}</span>
       <input
         name={name}
+        form={form}
         type={type}
         defaultValue={value}
         placeholder={placeholder}

@@ -123,7 +123,7 @@ admin_users
 
 - 현재 구현은 Supabase Auth 이메일/비밀번호 로그인 후 `admin_users`에 등록된 활성 이메일인지 확인합니다.
 - `supabase/admin-user.example.sql`은 관리자 이메일 allowlist 등록 예시입니다.
-- `src/proxy.ts`는 Supabase Auth 쿠키 유무를 기준으로 1차 차단하고, `AdminShell`은 서버에서 관리자 권한을 다시 확인합니다.
+- `AdminShell`은 서버에서 관리자 권한을 확인하고, 권한이 없으면 `/admin/login`으로 이동합니다.
 - 관리자 로그인은 일반 회원 로그인과 분리합니다.
 - 현재 구현은 `/admin/members`에서 `users` 회원 목록과 `orders` 기반 주문 수, 최근 주문일, 누적 주문 금액을 조회합니다. 회원 이름, 이메일, 연락처 검색과 최근 가입순/주문 많은순/구매 금액순/최근 주문순 정렬을 지원합니다.
 
@@ -142,6 +142,8 @@ products
 - description
 - material
 - size
+- track_stock
+- stock_quantity
 - is_visible
 - is_sold_out
 - is_new
@@ -157,6 +159,8 @@ products
 - `price`: 판매가입니다.
 - `summary`: 상품 상세 상단 요약입니다.
 - `description`: 상품 목록 카드에 보일 짧은 설명입니다.
+- `track_stock`: 재고 수량을 실제 주문과 연결해 관리할지 여부입니다.
+- `stock_quantity`: 현재 판매 가능한 재고 수량입니다.
 - `is_visible`: SHOP에 노출할지 여부입니다.
 - `is_sold_out`: 품절 표시 여부입니다.
 - `is_new`: 메인 NEW ITEMS 노출 여부입니다.
@@ -166,6 +170,8 @@ products
 
 - 상품 삭제는 실제 삭제보다 `is_visible = false` 또는 별도 `deleted_at` 방식이 안전합니다.
 - 주문된 상품은 삭제해도 과거 주문 내역이 깨지지 않아야 합니다.
+- `track_stock = true`인 상품은 장바구니 담기, 수량 변경, 주문 생성 시 `stock_quantity`를 확인합니다.
+- 주문 생성 후에는 DB 함수 `decrement_product_stock`으로 재고 행을 잠근 뒤 주문 수량만큼 `stock_quantity`를 차감하고, 0개가 되면 `is_sold_out = true`로 자동 전환합니다.
 
 ## 7. product_images
 
@@ -374,12 +380,21 @@ site_settings
 - `free_shipping_minimum`
 - `shipping_notice`
 - `return_notice`
+- `home_hero_title`
+- `home_hero_subtitle`
+- `home_hero_image_url`
+- `home_event_primary_title`
+- `home_event_primary_description`
+- `home_event_primary_image_url`
+- `home_event_secondary_title`
+- `home_event_secondary_description`
+- `home_event_secondary_image_url`
 
 ### 정책
 
 - 초기에는 관리자 설정 화면에 보이는 값만 저장합니다.
 - 값 구조가 복잡해지면 `value`를 JSON 형태로 저장할 수 있습니다.
-- 현재 구현은 `/admin/settings`에서 회사 정보, 배송비, 무료 배송 기준, 기본 배송 안내를 key/value 형태로 조회하고 저장합니다.
+- 현재 구현은 `/admin/settings`에서 메인 배너, 이벤트 문구/이미지, 회사 정보, 배송비, 무료 배송 기준, 기본 배송 안내를 key/value 형태로 조회하고 저장합니다.
 
 ## 15. 주요 관계
 
@@ -416,7 +431,7 @@ products 1:N wishlist_items
 
 1. 로그인 사용자 기준 `carts` 조회
 2. `cart_items`와 `products`를 함께 조회
-3. 품절/비노출 여부 재검증
+3. 품절/비노출/재고 부족 여부 재검증
 4. 주문서로 이동
 
 ### 주문 생성
@@ -426,7 +441,9 @@ products 1:N wishlist_items
 3. 결제 진행
 4. `orders` 생성
 5. `order_items`에 주문 상품 스냅샷 저장
-6. 장바구니 비우기
+6. 재고 관리 상품은 `decrement_product_stock` DB 함수로 주문 수량만큼 `products.stock_quantity` 차감
+7. 재고가 0개가 된 상품은 `is_sold_out = true` 처리
+8. 장바구니 비우기
 
 ## 17. 관리자 화면 데이터 흐름
 
@@ -436,14 +453,14 @@ products 1:N wishlist_items
 2. `products` 생성
 3. 대표 이미지, 추가 이미지, 상세페이지 긴 이미지 업로드
 4. `product_images` 생성
-5. `is_visible`, `is_sold_out`, `is_new` 값 저장
+5. `is_visible`, `is_sold_out`, `is_new`, `track_stock`, `stock_quantity` 값 저장
 
 ### 상품 수정
 
 1. `products.id` 또는 `slug`로 상품 조회
 2. 상품 기본 정보 수정
 3. 이미지 추가/삭제/순서 변경
-4. 노출/품절/신상품 상태 수정
+4. 노출/품절/신상품/재고 관리 상태 수정
 
 ### 주문 관리
 
@@ -520,10 +537,16 @@ products 1:N wishlist_items
 
 현재 SHOP 목록과 상품 상세 페이지도 Supabase `products`, `product_images` 데이터를 우선 조회합니다. DB에 상품이 없을 때만 기존 목업 상품 데이터를 fallback으로 사용합니다.
 
+현재 메인 NEW ITEMS는 Supabase `products.is_new = true`이고 `is_visible = true`인 상품을 우선 조회합니다. 등록된 신상품이 없을 때만 기존 목업 상품을 fallback으로 사용합니다.
+
+현재 메인 COMPANY INFO와 상품 상세 배송 안내는 Supabase `site_settings` 값을 표시합니다.
+
 현재 관리자 주문 대시보드, 주문 목록, 주문 상세는 Supabase `orders`, `order_items` 데이터를 조회합니다. 관리자 주문 목록은 검색어, 결제 상태, 주문 상태 필터를 적용합니다. 관리자 주문 상세에서는 `orders.order_status`를 변경할 수 있습니다.
 
 현재 관리자 설정은 Supabase `site_settings` 데이터를 조회하고 저장합니다. 저장된 값이 없으면 기본 설정값을 화면에 표시합니다.
 
 현재 장바구니, 주문서, 주문 생성 액션은 Supabase `site_settings`의 `shipping_fee`, `free_shipping_minimum`, `shipping_notice`를 사용합니다. 상품 금액이 무료 배송 기준 이상이면 배송비는 0원으로 계산합니다.
 
-현재 장바구니 담기와 주문 생성 전 단계에서는 `products.is_visible`, `products.is_sold_out`를 다시 확인합니다. 품절 또는 비노출 상품은 장바구니 담기와 주문 진행을 막습니다.
+현재 장바구니 담기와 주문 생성 전 단계에서는 `products.is_visible`, `products.is_sold_out`, `products.track_stock`, `products.stock_quantity`를 다시 확인합니다. 품절, 비노출, 재고 부족 상품은 장바구니 담기와 주문 진행을 막습니다.
+
+현재 주문 생성 후에는 재고 관리 상품의 `stock_quantity`를 DB 함수 `decrement_product_stock`으로 차감합니다. 이 함수는 상품 행을 잠근 뒤 재고를 확인하고 차감하므로 동시 주문 시 같은 재고가 중복 차감될 위험을 줄입니다. 재고가 0개가 되면 `is_sold_out = true`로 자동 전환합니다.

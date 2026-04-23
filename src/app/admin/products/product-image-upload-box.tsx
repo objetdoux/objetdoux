@@ -14,6 +14,7 @@ const initialState: ProductImageUploadState = {
 export function ProductImageUploadBox({
   title,
   description,
+  sizeGuide,
   ratio,
   imageType,
   productSlug,
@@ -21,6 +22,7 @@ export function ProductImageUploadBox({
 }: {
   title: string;
   description: string;
+  sizeGuide: string;
   ratio: string;
   imageType: "thumbnail" | "gallery" | "detail";
   productSlug: string;
@@ -59,6 +61,9 @@ export function ProductImageUploadBox({
         <div>
           <p className="text-sm font-semibold text-stone-900">{title}</p>
           <p className="mt-1 text-xs leading-5 text-stone-500">{description}</p>
+          <p className="mt-1 text-xs font-medium leading-5 text-stone-700">
+            권장 사이즈: {sizeGuide}
+          </p>
         </div>
 
         <div className="flex flex-wrap gap-2">

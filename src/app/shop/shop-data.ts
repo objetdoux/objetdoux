@@ -11,6 +11,9 @@ export type ShopProduct = {
   summary: string;
   material: string;
   size: string;
+  soldOut: boolean;
+  trackStock: boolean;
+  stockQuantity: number;
   thumbnailUrl?: string;
   galleryUrls: string[];
   detailImageUrl?: string;
@@ -25,6 +28,9 @@ type ProductRow = {
   description: string | null;
   material: string | null;
   size: string | null;
+  is_sold_out?: boolean;
+  track_stock?: boolean;
+  stock_quantity?: number;
   product_images?: Array<{
     image_type: string;
     image_url: string;
@@ -32,13 +38,14 @@ type ProductRow = {
   }>;
 };
 
+const shopProductSelect =
+  "slug, name, category, price, summary, description, material, size, is_sold_out, track_stock, stock_quantity, product_images(image_type, image_url, sort_order)";
+
 export async function getShopProducts() {
   const supabase = createAdminClient();
   const { data, error } = await supabase
     .from("products")
-    .select(
-      "slug, name, category, price, summary, description, material, size, product_images(image_type, image_url, sort_order)",
-    )
+    .select(shopProductSelect)
     .eq("is_visible", true)
     .order("sort_order", { ascending: true })
     .order("created_at", { ascending: false });
@@ -56,9 +63,7 @@ export async function getShopProductBySlug(slug: string) {
   const supabase = createAdminClient();
   const { data, error } = await supabase
     .from("products")
-    .select(
-      "slug, name, category, price, summary, description, material, size, product_images(image_type, image_url, sort_order)",
-    )
+    .select(shopProductSelect)
     .eq("slug", slug)
     .eq("is_visible", true)
     .maybeSingle();
@@ -73,6 +78,29 @@ export async function getShopProductBySlug(slug: string) {
 
   const mockProduct = shopProducts.find((product) => product.slug === slug);
   return mockProduct ? mapMockProduct(mockProduct) : null;
+}
+
+export async function getNewShopProducts(limit = 4) {
+  const supabase = createAdminClient();
+  const { data, error } = await supabase
+    .from("products")
+    .select(shopProductSelect)
+    .eq("is_visible", true)
+    .eq("is_new", true)
+    .eq("is_sold_out", false)
+    .order("sort_order", { ascending: true })
+    .order("created_at", { ascending: false })
+    .limit(limit);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  const products = ((data ?? []) as ProductRow[]).map(mapProductRow);
+
+  return products.length > 0
+    ? products
+    : shopProducts.slice(0, limit).map(mapMockProduct);
 }
 
 function mapProductRow(product: ProductRow): ShopProduct {
@@ -93,6 +121,9 @@ function mapProductRow(product: ProductRow): ShopProduct {
     summary: product.summary ?? "",
     material: product.material ?? "",
     size: product.size ?? "",
+    soldOut: product.is_sold_out ?? false,
+    trackStock: product.track_stock ?? false,
+    stockQuantity: product.stock_quantity ?? 0,
     thumbnailUrl: thumbnail?.image_url,
     galleryUrls: gallery.map((image) => image.image_url),
     detailImageUrl: detail?.image_url,
@@ -102,6 +133,9 @@ function mapProductRow(product: ProductRow): ShopProduct {
 function mapMockProduct(product: (typeof shopProducts)[number]): ShopProduct {
   return {
     ...product,
+    soldOut: false,
+    trackStock: false,
+    stockQuantity: 0,
     galleryUrls: [],
   };
 }

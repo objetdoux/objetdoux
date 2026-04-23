@@ -11,6 +11,9 @@ type WishlistProductRow = {
   price: number;
   summary: string | null;
   description: string | null;
+  is_sold_out?: boolean;
+  track_stock?: boolean;
+  stock_quantity?: number;
   product_images?: Array<{
     image_type: string;
     image_url: string;
@@ -45,6 +48,9 @@ function mapWishlistProduct(product: WishlistProductRow): ShopProduct {
     summary: product.summary ?? "",
     material: "",
     size: "",
+    soldOut: product.is_sold_out ?? false,
+    trackStock: product.track_stock ?? false,
+    stockQuantity: product.stock_quantity ?? 0,
     thumbnailUrl: getThumbnail(product),
     galleryUrls: [],
   };
@@ -95,7 +101,7 @@ export async function getWishlistProducts() {
   const { data, error } = await admin
     .from("wishlist_items")
     .select(
-      "products(id, slug, name, category, price, summary, description, product_images(image_type, image_url, sort_order))",
+      "products(id, slug, name, category, price, summary, description, is_sold_out, track_stock, stock_quantity, product_images(image_type, image_url, sort_order))",
     )
     .eq("user_id", account.id)
     .order("created_at", { ascending: false });

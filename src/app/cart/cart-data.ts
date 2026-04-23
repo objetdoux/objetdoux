@@ -20,6 +20,8 @@ type CartProductRow = {
   summary: string | null;
   is_visible: boolean;
   is_sold_out: boolean;
+  track_stock?: boolean;
+  stock_quantity?: number;
   product_images?: ProductImageRow[];
 };
 
@@ -42,6 +44,9 @@ export type CartLineItem = {
   total: number;
   isVisible: boolean;
   isSoldOut: boolean;
+  trackStock: boolean;
+  stockQuantity: number;
+  hasEnoughStock: boolean;
   thumbnailUrl?: string;
 };
 
@@ -77,12 +82,19 @@ function mapCartItem(row: CartItemRow): CartLineItem | null {
     total: product.price * row.quantity,
     isVisible: product.is_visible,
     isSoldOut: product.is_sold_out,
+    trackStock: product.track_stock ?? false,
+    stockQuantity: product.stock_quantity ?? 0,
+    hasEnoughStock:
+      !(product.track_stock ?? false) ||
+      row.quantity <= (product.stock_quantity ?? 0),
     thumbnailUrl: getThumbnail(product),
   };
 }
 
 export function getUnavailableCartItems(items: CartLineItem[]) {
-  return items.filter((item) => !item.isVisible || item.isSoldOut);
+  return items.filter(
+    (item) => !item.isVisible || item.isSoldOut || !item.hasEnoughStock,
+  );
 }
 
 export async function getCurrentCartId() {
@@ -129,7 +141,7 @@ export async function getCartLineItems() {
   const { data, error } = await admin
     .from("cart_items")
     .select(
-      "id, quantity, products(id, slug, name, category, price, summary, is_visible, is_sold_out, product_images(image_type, image_url, sort_order))",
+      "id, quantity, products(id, slug, name, category, price, summary, is_visible, is_sold_out, track_stock, stock_quantity, product_images(image_type, image_url, sort_order))",
     )
     .eq("cart_id", cart.id)
     .order("created_at", { ascending: false });

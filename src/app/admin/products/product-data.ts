@@ -11,6 +11,8 @@ export type AdminProductRecord = {
   description: string;
   material: string;
   size: string;
+  trackStock: boolean;
+  stockQuantity: number;
   visible: boolean;
   soldOut: boolean;
   isNew: boolean;
@@ -28,6 +30,8 @@ type ProductRow = {
   description: string | null;
   material: string | null;
   size: string | null;
+  track_stock?: boolean;
+  stock_quantity?: number;
   is_visible: boolean;
   is_sold_out: boolean;
   is_new: boolean;
@@ -46,7 +50,7 @@ export type AdminProductFilters = {
 };
 
 const productSelect =
-  "id, slug, name, category, price, summary, description, material, size, is_visible, is_sold_out, is_new, created_at, product_images(image_type, image_url, sort_order)";
+  "id, slug, name, category, price, summary, description, material, size, track_stock, stock_quantity, is_visible, is_sold_out, is_new, created_at, product_images(image_type, image_url, sort_order)";
 
 function sanitizeSearchValue(value: string) {
   return value.replaceAll("%", "").replaceAll(",", "").replaceAll("(", "").replaceAll(")", "");
@@ -137,6 +141,8 @@ function mapProductRow(product: ProductRow): AdminProductRecord {
     description: product.description ?? "",
     material: product.material ?? "",
     size: product.size ?? "",
+    trackStock: product.track_stock ?? false,
+    stockQuantity: product.stock_quantity ?? 0,
     visible: product.is_visible,
     soldOut: product.is_sold_out,
     isNew: product.is_new,

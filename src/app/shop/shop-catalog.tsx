@@ -161,7 +161,10 @@ export function ShopCatalog({
                       {product.description}
                     </p>
                     <p className="mt-4 text-base font-semibold text-stone-900">
-                      {product.price}
+                      {product.soldOut ||
+                      (product.trackStock && product.stockQuantity <= 0)
+                        ? "품절"
+                        : product.price}
                     </p>
                   </Link>
                 </article>
