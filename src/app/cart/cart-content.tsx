@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { setCartItemQuantity } from "./actions";
 import type { CartLineItem } from "./cart-data";
@@ -18,8 +19,10 @@ export function CartContent({
   shippingFee,
   freeShippingMinimum,
 }: CartContentProps) {
+  const router = useRouter();
   const [items, setItems] = useState(initialItems);
   const [messages, setMessages] = useState<Record<string, string>>({});
+  const [isOpeningCheckout, setIsOpeningCheckout] = useState(false);
   const [, startTransition] = useTransition();
   const hasUnavailableItems = items.some(
     (item) => !item.isVisible || item.isSoldOut || !isEnoughStock(item),
@@ -86,6 +89,15 @@ export function CartContent({
         setMessages((current) => ({ ...current, [item.id]: result.message }));
       }
     });
+  }
+
+  function openCheckout() {
+    if (!canCheckout || isOpeningCheckout) {
+      return;
+    }
+
+    setIsOpeningCheckout(true);
+    router.push("/checkout");
   }
 
   return (
@@ -235,16 +247,18 @@ export function CartContent({
         </div>
 
         <div className="mt-8 flex flex-col gap-3">
-          <Link
-            href="/checkout"
+          <button
+            type="button"
+            disabled={!canCheckout || isOpeningCheckout}
+            onClick={openCheckout}
             className={
               canCheckout
-                ? "rounded-xl bg-stone-950 px-6 py-3 text-center text-sm font-medium text-white transition hover:bg-stone-800"
-                : "pointer-events-none rounded-xl bg-stone-300 px-6 py-3 text-center text-sm font-medium text-white"
+                ? "rounded-xl bg-stone-950 px-6 py-3 text-center text-sm font-medium text-white transition hover:bg-stone-800 disabled:cursor-wait disabled:opacity-60"
+                : "cursor-not-allowed rounded-xl bg-stone-300 px-6 py-3 text-center text-sm font-medium text-white"
             }
           >
-            주문하기
-          </Link>
+            {isOpeningCheckout ? "주문서 여는 중" : "주문하기"}
+          </button>
           <Link
             href="/shop"
             className="rounded-xl border border-black/8 bg-[#faf8f5] px-6 py-3 text-center text-sm font-medium text-stone-700 transition hover:border-stone-900"

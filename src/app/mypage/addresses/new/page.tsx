@@ -8,7 +8,24 @@ export const metadata: Metadata = {
   description: "objetdoux 새 배송지 추가 페이지입니다.",
 };
 
-export default function NewAddressPage() {
+type NewAddressPageProps = {
+  searchParams: Promise<{ returnTo?: string }>;
+};
+
+function getSafeReturnTo(returnTo?: string) {
+  if (!returnTo || !returnTo.startsWith("/") || returnTo.startsWith("//")) {
+    return "/mypage/addresses";
+  }
+
+  return returnTo;
+}
+
+export default async function NewAddressPage({
+  searchParams,
+}: NewAddressPageProps) {
+  const { returnTo } = await searchParams;
+  const safeReturnTo = getSafeReturnTo(returnTo);
+
   return (
     <main className="bg-[#f7f3ee] px-6 py-10 lg:px-8 lg:py-14">
       <div className="mx-auto w-full max-w-4xl">
@@ -32,6 +49,7 @@ export default function NewAddressPage() {
           action={createAddress}
           className="mt-6 rounded-[1.75rem] border border-black/6 bg-white px-6 py-7 sm:px-8 sm:py-8"
         >
+          <input type="hidden" name="returnTo" value={safeReturnTo} />
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
               <h1 className="text-3xl font-semibold tracking-[-0.03em] text-stone-950">
@@ -50,10 +68,10 @@ export default function NewAddressPage() {
                 저장하기
               </PendingButton>
               <Link
-                href="/mypage/addresses"
+                href={safeReturnTo}
                 className="inline-flex h-12 items-center justify-center rounded-xl border border-black/8 bg-[#faf8f5] px-5 text-sm font-medium text-stone-700 transition hover:border-stone-900"
               >
-                배송지 목록으로 돌아가기
+                돌아가기
               </Link>
             </div>
           </div>
@@ -81,28 +99,17 @@ export default function NewAddressPage() {
               />
             </label>
 
-            <div className="grid gap-6 sm:grid-cols-[160px_minmax(0,1fr)]">
-              <label className="block">
-                <span className="text-sm text-stone-500">우편번호</span>
-                <input
-                  name="zoneCode"
-                  type="text"
-                  placeholder="우편번호"
-                  className="mt-3 h-12 w-full rounded-xl border border-black/8 bg-[#faf8f5] px-4 text-sm text-stone-900 outline-none transition placeholder:text-stone-400 focus:border-stone-900"
-                />
-              </label>
-
-              <label className="block">
-                <span className="text-sm text-stone-500">주소</span>
-                <input
-                  name="address"
-                  type="text"
-                  placeholder="주소를 입력해주세요"
-                  required
-                  className="mt-3 h-12 w-full rounded-xl border border-black/8 bg-[#faf8f5] px-4 text-sm text-stone-900 outline-none transition placeholder:text-stone-400 focus:border-stone-900"
-                />
-              </label>
-            </div>
+            <input type="hidden" name="zoneCode" value="" />
+            <label className="block">
+              <span className="text-sm text-stone-500">주소</span>
+              <input
+                name="address"
+                type="text"
+                placeholder="주소를 입력해주세요"
+                required
+                className="mt-3 h-12 w-full rounded-xl border border-black/8 bg-[#faf8f5] px-4 text-sm text-stone-900 outline-none transition placeholder:text-stone-400 focus:border-stone-900"
+              />
+            </label>
 
             <label className="block">
               <span className="text-sm text-stone-500">상세 메모</span>

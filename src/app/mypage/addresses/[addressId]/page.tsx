@@ -102,28 +102,17 @@ export default async function AddressEditPage({
               />
             </label>
 
-            <div className="grid gap-6 sm:grid-cols-[160px_minmax(0,1fr)]">
-              <label className="block">
-                <span className="text-sm text-stone-500">우편번호</span>
-                <input
-                  name="zoneCode"
-                  type="text"
-                  defaultValue={address.zoneCode}
-                  className="mt-3 h-12 w-full rounded-xl border border-black/8 bg-[#faf8f5] px-4 text-sm text-stone-900 outline-none transition focus:border-stone-900"
-                />
-              </label>
-
-              <label className="block">
-                <span className="text-sm text-stone-500">주소</span>
-                <input
-                  name="address"
-                  type="text"
-                  defaultValue={address.address}
-                  required
-                  className="mt-3 h-12 w-full rounded-xl border border-black/8 bg-[#faf8f5] px-4 text-sm text-stone-900 outline-none transition focus:border-stone-900"
-                />
-              </label>
-            </div>
+            <input type="hidden" name="zoneCode" value={address.zoneCode} />
+            <label className="block">
+              <span className="text-sm text-stone-500">주소</span>
+              <input
+                name="address"
+                type="text"
+                defaultValue={address.address}
+                required
+                className="mt-3 h-12 w-full rounded-xl border border-black/8 bg-[#faf8f5] px-4 text-sm text-stone-900 outline-none transition focus:border-stone-900"
+              />
+            </label>
 
             <label className="block">
               <span className="text-sm text-stone-500">상세 주소</span>

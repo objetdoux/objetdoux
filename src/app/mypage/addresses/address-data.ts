@@ -39,6 +39,11 @@ function mapAddress(row: AddressRow): AccountAddress {
 
 export async function getAccountAddresses() {
   const account = await getCurrentAccountProfile();
+
+  return getAccountAddressesByAccountId(account.id);
+}
+
+export async function getAccountAddressesByAccountId(accountId: string) {
   const admin = createAdminClient();
 
   const { data } = await admin
@@ -46,7 +51,7 @@ export async function getAccountAddresses() {
     .select(
       "id, recipient_name, phone, zone_code, address, detail_address, delivery_memo, is_default, created_at",
     )
-    .eq("user_id", account.id)
+    .eq("user_id", accountId)
     .order("is_default", { ascending: false })
     .order("created_at", { ascending: false })
     .returns<AddressRow[]>();

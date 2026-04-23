@@ -1,11 +1,15 @@
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import { getCartLineItems, getUnavailableCartItems } from "../cart/cart-data";
+import {
+  getCartLineItemsByAccountId,
+  getUnavailableCartItems,
+} from "../cart/cart-data";
 import { getCurrentAccountProfile } from "../mypage/account-data";
-import { getAccountAddresses } from "../mypage/addresses/address-data";
+import { getAccountAddressesByAccountId } from "../mypage/addresses/address-data";
 import { calculateShippingFee, getSiteSettings } from "../site-settings";
 import { createOrder } from "./actions";
 import { PendingButton } from "../components/pending-button";
+import { CheckoutAddressFields } from "./checkout-address-fields";
 
 const paymentMethods = [
   "신용카드",
@@ -15,14 +19,12 @@ const paymentMethods = [
 ];
 
 export default async function CheckoutPage() {
-  const [account, addresses, settings] = await Promise.all([
-    getCurrentAccountProfile(),
-    getAccountAddresses(),
+  const account = await getCurrentAccountProfile();
+  const [addresses, settings, items] = await Promise.all([
+    getAccountAddressesByAccountId(account.id),
     getSiteSettings(),
+    getCartLineItemsByAccountId(account.id),
   ]);
-  const defaultAddress =
-    addresses.find((address) => address.isDefault) ?? addresses[0] ?? null;
-  const items = await getCartLineItems();
   const unavailableItems = getUnavailableCartItems(items);
 
   if (unavailableItems.length > 0) {
@@ -157,88 +159,7 @@ export default async function CheckoutPage() {
               </div>
             </section>
 
-            <section className="rounded-[1.75rem] border border-black/6 bg-white px-6 py-7 sm:px-8 sm:py-8">
-              <h2 className="text-2xl font-semibold tracking-[-0.03em] text-stone-950">
-                배송 정보
-              </h2>
-              {defaultAddress ? (
-                <p className="mt-2 text-sm leading-6 text-stone-600">
-                  기본 배송지를 자동으로 불러왔습니다.
-                </p>
-              ) : (
-                <p className="mt-2 text-sm leading-6 text-stone-600">
-                  등록된 배송지가 없습니다. 배송지를 직접 입력하거나 마이페이지에서
-                  먼저 등록해주세요.
-                </p>
-              )}
-
-              <div className="mt-6 grid gap-4">
-                <label className="block">
-                  <span className="text-sm text-stone-500">받는 분</span>
-                  <input
-                    name="recipientName"
-                    type="text"
-                    defaultValue={defaultAddress?.recipientName ?? account.name}
-                    required
-                    className="mt-2 h-12 w-full rounded-xl border border-black/8 bg-[#faf8f5] px-4 text-sm text-stone-900 outline-none transition placeholder:text-stone-400 focus:border-stone-900"
-                  />
-                </label>
-
-                <label className="block">
-                  <span className="text-sm text-stone-500">받는 분 연락처</span>
-                  <input
-                    name="recipientPhone"
-                    type="tel"
-                    defaultValue={defaultAddress?.phone ?? account.phone}
-                    required
-                    className="mt-2 h-12 w-full rounded-xl border border-black/8 bg-[#faf8f5] px-4 text-sm text-stone-900 outline-none transition placeholder:text-stone-400 focus:border-stone-900"
-                  />
-                </label>
-
-                <div className="grid gap-4 sm:grid-cols-[140px_minmax(0,1fr)]">
-                  <label className="block">
-                    <span className="text-sm text-stone-500">우편번호</span>
-                    <input
-                      name="zoneCode"
-                      type="text"
-                      defaultValue={defaultAddress?.zoneCode ?? ""}
-                      className="mt-2 h-12 w-full rounded-xl border border-black/8 bg-[#faf8f5] px-4 text-sm text-stone-900 outline-none transition placeholder:text-stone-400 focus:border-stone-900"
-                    />
-                  </label>
-                  <label className="block">
-                    <span className="text-sm text-stone-500">주소</span>
-                    <input
-                      name="recipientAddress"
-                      type="text"
-                      defaultValue={defaultAddress?.address ?? ""}
-                      required
-                      className="mt-2 h-12 w-full rounded-xl border border-black/8 bg-[#faf8f5] px-4 text-sm text-stone-900 outline-none transition placeholder:text-stone-400 focus:border-stone-900"
-                    />
-                  </label>
-                </div>
-
-                <label className="block">
-                  <span className="text-sm text-stone-500">상세 주소</span>
-                  <input
-                    name="recipientDetailAddress"
-                    type="text"
-                    defaultValue={defaultAddress?.detailAddress ?? ""}
-                    className="mt-2 h-12 w-full rounded-xl border border-black/8 bg-[#faf8f5] px-4 text-sm text-stone-900 outline-none transition placeholder:text-stone-400 focus:border-stone-900"
-                  />
-                </label>
-
-                <label className="block">
-                  <span className="text-sm text-stone-500">배송 메모</span>
-                  <input
-                    name="deliveryMemo"
-                    type="text"
-                    defaultValue={defaultAddress?.deliveryMemo ?? ""}
-                    placeholder="부재 시 문 앞에 놓아주세요"
-                    className="mt-2 h-12 w-full rounded-xl border border-black/8 bg-[#faf8f5] px-4 text-sm text-stone-900 outline-none transition placeholder:text-stone-400 focus:border-stone-900"
-                  />
-                </label>
-              </div>
-            </section>
+            <CheckoutAddressFields account={account} addresses={addresses} />
 
             <section className="rounded-[1.75rem] border border-black/6 bg-white px-6 py-7 sm:px-8 sm:py-8">
               <h2 className="text-2xl font-semibold tracking-[-0.03em] text-stone-950">

@@ -18,6 +18,16 @@ function readAddressPayload(formData: FormData) {
   };
 }
 
+function getSafeReturnTo(formData: FormData) {
+  const returnTo = String(formData.get("returnTo") ?? "").trim();
+
+  if (!returnTo || !returnTo.startsWith("/") || returnTo.startsWith("//")) {
+    return "/mypage/addresses";
+  }
+
+  return returnTo;
+}
+
 async function unsetDefaultAddress(userId: string) {
   const admin = createAdminClient();
 
@@ -31,17 +41,20 @@ export async function createAddress(formData: FormData) {
   const userId = await getCurrentAccountId();
   const admin = createAdminClient();
   const payload = readAddressPayload(formData);
+  const returnTo = getSafeReturnTo(formData);
 
   if (!payload.recipient_name || !payload.phone || !payload.address) {
-    redirect("/mypage/addresses/new");
+    redirect(`/mypage/addresses/new?returnTo=${encodeURIComponent(returnTo)}`);
   }
 
-  const { count } = await admin
+  const { data: existingAddress } = await admin
     .from("addresses")
-    .select("id", { count: "exact", head: true })
-    .eq("user_id", userId);
+    .select("id")
+    .eq("user_id", userId)
+    .limit(1)
+    .maybeSingle<{ id: string }>();
 
-  const shouldSetDefault = payload.is_default || count === 0;
+  const shouldSetDefault = payload.is_default || !existingAddress;
 
   if (shouldSetDefault) {
     await unsetDefaultAddress(userId);
@@ -54,7 +67,8 @@ export async function createAddress(formData: FormData) {
   });
 
   revalidatePath("/mypage/addresses");
-  redirect("/mypage/addresses");
+  revalidatePath("/checkout");
+  redirect(returnTo);
 }
 
 export async function updateAddress(formData: FormData) {

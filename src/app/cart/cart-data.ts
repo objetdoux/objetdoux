@@ -100,12 +100,17 @@ export function getUnavailableCartItems(items: CartLineItem[]) {
 
 export async function getCurrentCartId() {
   const account = await getCurrentAccountProfile();
+
+  return getCurrentCartIdByAccountId(account.id);
+}
+
+export async function getCurrentCartIdByAccountId(accountId: string) {
   const admin = createAdminClient();
 
   const { data: existingCart } = await admin
     .from("carts")
     .select("id")
-    .eq("user_id", account.id)
+    .eq("user_id", accountId)
     .maybeSingle<CartRow>();
 
   if (existingCart) {
@@ -114,7 +119,7 @@ export async function getCurrentCartId() {
 
   const { data: createdCart, error } = await admin
     .from("carts")
-    .insert({ user_id: account.id })
+    .insert({ user_id: accountId })
     .select("id")
     .single<CartRow>();
 
@@ -127,12 +132,17 @@ export async function getCurrentCartId() {
 
 export async function getCartLineItems() {
   const account = await getCurrentAccountProfile();
+
+  return getCartLineItemsByAccountId(account.id);
+}
+
+export async function getCartLineItemsByAccountId(accountId: string) {
   const admin = createAdminClient();
 
   const { data: cart } = await admin
     .from("carts")
     .select("id")
-    .eq("user_id", account.id)
+    .eq("user_id", accountId)
     .maybeSingle<CartRow>();
 
   if (!cart) {
