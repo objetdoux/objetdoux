@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { createAddress } from "../actions";
 
 export const metadata: Metadata = {
   title: "새 배송지 추가",
@@ -26,19 +27,22 @@ export default function NewAddressPage() {
           <span>NEW</span>
         </div>
 
-        <section className="mt-6 rounded-[1.75rem] border border-black/6 bg-white px-6 py-7 sm:px-8 sm:py-8">
+        <form
+          action={createAddress}
+          className="mt-6 rounded-[1.75rem] border border-black/6 bg-white px-6 py-7 sm:px-8 sm:py-8"
+        >
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
               <h1 className="text-3xl font-semibold tracking-[-0.03em] text-stone-950">
                 새 배송지 추가
               </h1>
               <p className="mt-2 text-sm leading-6 text-stone-600">
-                새로운 배송지를 등록하는 목업 화면입니다.
+                새로운 배송지를 등록합니다.
               </p>
             </div>
             <div className="flex items-center gap-2">
               <button
-                type="button"
+                type="submit"
                 className="inline-flex h-12 items-center justify-center rounded-xl bg-stone-950 px-5 text-sm font-medium text-white transition hover:bg-stone-800"
               >
                 저장하기
@@ -56,8 +60,10 @@ export default function NewAddressPage() {
             <label className="block">
               <span className="text-sm text-stone-500">받는 분</span>
               <input
+                name="recipientName"
                 type="text"
                 placeholder="받는 분 이름을 입력해주세요"
+                required
                 className="mt-3 h-12 w-full rounded-xl border border-black/8 bg-[#faf8f5] px-4 text-sm text-stone-900 outline-none transition placeholder:text-stone-400 focus:border-stone-900"
               />
             </label>
@@ -65,8 +71,10 @@ export default function NewAddressPage() {
             <label className="block">
               <span className="text-sm text-stone-500">연락처</span>
               <input
+                name="phone"
                 type="tel"
                 placeholder="010-0000-0000"
+                required
                 className="mt-3 h-12 w-full rounded-xl border border-black/8 bg-[#faf8f5] px-4 text-sm text-stone-900 outline-none transition placeholder:text-stone-400 focus:border-stone-900"
               />
             </label>
@@ -75,6 +83,7 @@ export default function NewAddressPage() {
               <label className="block">
                 <span className="text-sm text-stone-500">우편번호</span>
                 <input
+                  name="zoneCode"
                   type="text"
                   placeholder="우편번호"
                   className="mt-3 h-12 w-full rounded-xl border border-black/8 bg-[#faf8f5] px-4 text-sm text-stone-900 outline-none transition placeholder:text-stone-400 focus:border-stone-900"
@@ -84,8 +93,10 @@ export default function NewAddressPage() {
               <label className="block">
                 <span className="text-sm text-stone-500">주소</span>
                 <input
+                  name="address"
                   type="text"
                   placeholder="주소를 입력해주세요"
+                  required
                   className="mt-3 h-12 w-full rounded-xl border border-black/8 bg-[#faf8f5] px-4 text-sm text-stone-900 outline-none transition placeholder:text-stone-400 focus:border-stone-900"
                 />
               </label>
@@ -94,6 +105,17 @@ export default function NewAddressPage() {
             <label className="block">
               <span className="text-sm text-stone-500">상세 메모</span>
               <input
+                name="detailAddress"
+                type="text"
+                placeholder="동/호수 또는 상세 주소를 입력해주세요"
+                className="mt-3 h-12 w-full rounded-xl border border-black/8 bg-[#faf8f5] px-4 text-sm text-stone-900 outline-none transition placeholder:text-stone-400 focus:border-stone-900"
+              />
+            </label>
+
+            <label className="block">
+              <span className="text-sm text-stone-500">배송 메모</span>
+              <input
+                name="deliveryMemo"
                 type="text"
                 placeholder="공동현관 비밀번호 또는 배송 메모를 입력해주세요"
                 className="mt-3 h-12 w-full rounded-xl border border-black/8 bg-[#faf8f5] px-4 text-sm text-stone-900 outline-none transition placeholder:text-stone-400 focus:border-stone-900"
@@ -101,11 +123,15 @@ export default function NewAddressPage() {
             </label>
 
             <label className="flex items-center gap-3 text-sm text-stone-600">
-              <input type="checkbox" className="h-4 w-4 accent-stone-950" />
+              <input
+                name="isDefault"
+                type="checkbox"
+                className="h-4 w-4 accent-stone-950"
+              />
               <span>기본 배송지로 저장</span>
             </label>
           </div>
-        </section>
+        </form>
       </div>
     </main>
   );

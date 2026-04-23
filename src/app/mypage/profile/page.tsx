@@ -1,13 +1,15 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { mockUser } from "../../site-data";
+import { getCurrentAccountProfile } from "../account-data";
 
 export const metadata: Metadata = {
   title: "회원 정보",
   description: "objetdoux 회원 정보 페이지입니다.",
 };
 
-export default function MyPageProfilePage() {
+export default async function MyPageProfilePage() {
+  const account = await getCurrentAccountProfile();
+
   return (
     <main className="bg-[#f7f3ee] px-6 py-10 lg:px-8 lg:py-14">
       <div className="mx-auto w-full max-w-4xl">
@@ -56,7 +58,7 @@ export default function MyPageProfilePage() {
                   <span className="text-sm text-stone-500">이름</span>
                   <input
                     type="text"
-                    defaultValue={mockUser.name}
+                    defaultValue={account.name}
                     className="mt-3 h-12 w-full rounded-xl border border-black/8 bg-[#faf8f5] px-4 text-sm text-stone-900 outline-none transition focus:border-stone-900"
                   />
                 </label>
@@ -65,7 +67,7 @@ export default function MyPageProfilePage() {
                   <span className="text-sm text-stone-500">이메일</span>
                   <input
                     type="email"
-                    defaultValue={mockUser.email}
+                    defaultValue={account.email}
                     className="mt-3 h-12 w-full rounded-xl border border-black/8 bg-[#faf8f5] px-4 text-sm text-stone-900 outline-none transition focus:border-stone-900"
                   />
                 </label>
@@ -74,7 +76,7 @@ export default function MyPageProfilePage() {
                   <span className="text-sm text-stone-500">연락처</span>
                   <input
                     type="tel"
-                    defaultValue={mockUser.phone}
+                    defaultValue={account.phone === "-" ? "" : account.phone}
                     className="mt-3 h-12 w-full rounded-xl border border-black/8 bg-[#faf8f5] px-4 text-sm text-stone-900 outline-none transition focus:border-stone-900"
                   />
                 </label>

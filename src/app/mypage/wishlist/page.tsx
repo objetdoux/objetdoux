@@ -1,16 +1,15 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { getProductBySlug, wishlistSlugs } from "../../site-data";
+import { toggleWishlistItem } from "../../wishlist/actions";
+import { getWishlistProducts } from "../../wishlist/wishlist-data";
 
 export const metadata: Metadata = {
   title: "관심 상품",
   description: "objetdoux 관심 상품 페이지입니다.",
 };
 
-export default function MyPageWishlistPage() {
-  const products = wishlistSlugs
-    .map((slug) => getProductBySlug(slug))
-    .filter((product): product is NonNullable<typeof product> => product !== null);
+export default async function MyPageWishlistPage() {
+  const products = await getWishlistProducts();
 
   return (
     <main className="bg-[#f7f3ee] px-6 py-10 lg:px-8 lg:py-14">
@@ -34,7 +33,7 @@ export default function MyPageWishlistPage() {
                 관심 상품
               </h1>
               <p className="mt-2 text-sm leading-6 text-stone-600">
-                추후 찜 기능과 연결될 수 있는 관심 상품 목업 페이지입니다.
+                좋아요로 저장한 상품을 모아볼 수 있습니다.
               </p>
             </div>
             <Link
@@ -46,13 +45,39 @@ export default function MyPageWishlistPage() {
           </div>
 
           <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {products.length === 0 ? (
+              <div className="rounded-[1.5rem] bg-[#faf8f5] px-6 py-10 text-center sm:col-span-2 lg:col-span-3">
+                <p className="text-sm leading-6 text-stone-600">
+                  아직 관심 상품이 없습니다.
+                </p>
+                <Link
+                  href="/shop"
+                  className="mt-5 inline-flex h-12 items-center justify-center rounded-xl bg-stone-950 px-6 text-sm font-medium text-white transition hover:bg-stone-800"
+                >
+                  상품 보러가기
+                </Link>
+              </div>
+            ) : null}
+
             {products.map((product) => (
               <article
                 key={product.slug}
                 className="overflow-hidden rounded-[1.5rem] bg-[#faf8f5]"
               >
                 <div className="block">
-                  <div className="aspect-square bg-[#e5e3de]" />
+                  <Link
+                    href={`/shop/${product.slug}`}
+                    className="block aspect-square overflow-hidden bg-[#e5e3de]"
+                  >
+                    {product.thumbnailUrl ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={product.thumbnailUrl}
+                        alt=""
+                        className="h-full w-full object-cover"
+                      />
+                    ) : null}
+                  </Link>
                   <div className="flex min-h-[13rem] flex-col px-5 py-5">
                     <div>
                       <p className="text-sm text-stone-500">{product.category}</p>
@@ -72,13 +97,20 @@ export default function MyPageWishlistPage() {
                       >
                         {product.price}
                       </Link>
-                      <button
-                        type="button"
-                        aria-label="좋아요 취소"
-                        className="flex h-14 w-14 shrink-0 items-center justify-center text-[2.1rem] leading-none text-stone-900 transition hover:scale-105"
-                      >
-                        ♥
-                      </button>
+                      <form action={toggleWishlistItem}>
+                        <input type="hidden" name="productSlug" value={product.slug} />
+                        <input
+                          type="hidden"
+                          name="redirectTo"
+                          value="/mypage/wishlist"
+                        />
+                        <button
+                          aria-label="좋아요 취소"
+                          className="flex h-14 w-14 shrink-0 items-center justify-center text-[2.1rem] leading-none text-stone-900 transition hover:scale-105"
+                        >
+                          ♥
+                        </button>
+                      </form>
                     </div>
                   </div>
                 </div>

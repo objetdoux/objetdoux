@@ -1,6 +1,10 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getProductBySlug, shopProducts, wishlistSlugs } from "../../site-data";
+import { addCartItem } from "../../cart/actions";
+import { shopProducts } from "../../site-data";
+import { toggleWishlistItem } from "../../wishlist/actions";
+import { getWishlistProductSlugs } from "../../wishlist/wishlist-data";
+import { getShopProductBySlug, getShopProducts } from "../shop-data";
 
 type ProductDetailPageProps = {
   params: Promise<{ slug: string }>;
@@ -16,18 +20,24 @@ export default async function ProductDetailPage({
   params,
 }: ProductDetailPageProps) {
   const { slug } = await params;
-  const product = getProductBySlug(slug);
+  const product = await getShopProductBySlug(slug);
 
   if (!product) {
     notFound();
   }
 
-  const relatedProducts = shopProducts
+  const allProducts = await getShopProducts();
+  const relatedProducts = allProducts
     .filter(
       (item) => item.category === product.category && item.slug !== product.slug,
     )
     .slice(0, 3);
-  const isLiked = wishlistSlugs.includes(product.slug);
+  const likedProductSlugs = await getWishlistProductSlugs();
+  const isLiked = likedProductSlugs.includes(product.slug);
+  const previewImages = [product.thumbnailUrl, ...product.galleryUrls]
+    .filter(Boolean)
+    .slice(0, 3);
+  const emptyPreviewCount = Math.max(0, 3 - previewImages.length);
 
   return (
     <main className="bg-[#f7f3ee] px-6 py-10 lg:px-8 lg:py-14">
@@ -46,11 +56,32 @@ export default async function ProductDetailPage({
 
         <div className="mt-6 grid gap-10 lg:grid-cols-[1fr_0.95fr] lg:items-start">
           <div className="rounded-[1.75rem] border border-black/6 bg-white p-5 sm:p-6">
-            <div className="aspect-square rounded-[1.25rem] bg-[#e5e3de]" />
+            <div className="aspect-square overflow-hidden rounded-[1.25rem] bg-[#e5e3de]">
+              {product.thumbnailUrl ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={product.thumbnailUrl}
+                  alt=""
+                  className="h-full w-full object-cover"
+                />
+              ) : null}
+            </div>
             <div className="mt-4 grid grid-cols-3 gap-3">
-              <div className="aspect-square rounded-[1rem] border border-black/8 bg-[#ece9e4]" />
-              <div className="aspect-square rounded-[1rem] bg-[#ece9e4]" />
-              <div className="aspect-square rounded-[1rem] bg-[#ece9e4]" />
+              {previewImages.map((url, index) => (
+                <div
+                  key={`${url}-${index}`}
+                  className="aspect-square overflow-hidden rounded-[1rem] border border-black/8 bg-[#ece9e4]"
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={url} alt="" className="h-full w-full object-cover" />
+                </div>
+              ))}
+              {[...Array(emptyPreviewCount)].map((_, index) => (
+                <div
+                  key={`empty-${index}`}
+                  className="aspect-square rounded-[1rem] bg-[#ece9e4]"
+                />
+              ))}
             </div>
           </div>
 
@@ -68,13 +99,20 @@ export default async function ProductDetailPage({
                 </p>
               </div>
 
-              <button
-                type="button"
-                aria-label={isLiked ? "좋아요 취소" : "좋아요 추가"}
-                className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full border border-black/8 bg-[#faf8f5] text-[1.9rem] leading-none text-stone-900 transition hover:border-stone-900"
-              >
-                {isLiked ? "♥" : "♡"}
-              </button>
+              <form action={toggleWishlistItem}>
+                <input type="hidden" name="productSlug" value={product.slug} />
+                <input
+                  type="hidden"
+                  name="redirectTo"
+                  value={`/shop/${product.slug}`}
+                />
+                <button
+                  aria-label={isLiked ? "좋아요 취소" : "좋아요 추가"}
+                  className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full border border-black/8 bg-[#faf8f5] text-[1.9rem] leading-none text-stone-900 transition hover:border-stone-900"
+                >
+                  {isLiked ? "♥" : "♡"}
+                </button>
+              </form>
             </div>
 
             <p className="mt-6 text-base leading-7 text-stone-600">
@@ -124,11 +162,20 @@ export default async function ProductDetailPage({
               >
                 구매 문의
               </button>
+              <form action={addCartItem}>
+                <input type="hidden" name="productSlug" value={product.slug} />
+                <input type="hidden" name="quantity" value="1" />
+                <button
+                  className="w-full rounded-xl border border-black/8 bg-[#faf8f5] px-6 py-3 text-sm font-medium text-stone-700 transition hover:border-stone-900 sm:w-auto"
+                >
+                  장바구니 담기
+                </button>
+              </form>
               <Link
                 href="/cart"
                 className="rounded-xl border border-black/8 bg-[#faf8f5] px-6 py-3 text-sm font-medium text-stone-700 transition hover:border-stone-900"
               >
-                장바구니 담기
+                장바구니 보기
               </Link>
             </div>
 
@@ -157,15 +204,24 @@ export default async function ProductDetailPage({
 
         <section className="mt-16">
           <div className="min-h-[32rem] bg-[#e5e3de] sm:min-h-[48rem] lg:min-h-[72rem]">
-            <div className="p-6">
-              <h2 className="text-2xl font-semibold tracking-[-0.03em] text-stone-800">
-                상세 이미지 영역
-              </h2>
-              <p className="mt-4 max-w-md text-sm leading-6 text-stone-500">
-                추후 와이프분이 넣을 긴 상세페이지 이미지를 위한 영역입니다.
-                카드나 패딩 없이 넓게 붙는 구조로 바꿔두었습니다.
-              </p>
-            </div>
+            {product.detailImageUrl ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={product.detailImageUrl}
+                alt=""
+                className="h-full w-full object-cover"
+              />
+            ) : (
+              <div className="p-6">
+                <h2 className="text-2xl font-semibold tracking-[-0.03em] text-stone-800">
+                  상세 이미지 영역
+                </h2>
+                <p className="mt-4 max-w-md text-sm leading-6 text-stone-500">
+                  추후 와이프분이 넣을 긴 상세페이지 이미지를 위한 영역입니다.
+                  카드나 패딩 없이 넓게 붙는 구조로 바꿔두었습니다.
+                </p>
+              </div>
+            )}
           </div>
         </section>
 
@@ -186,7 +242,16 @@ export default async function ProductDetailPage({
                 href={`/shop/${item.slug}`}
                 className="overflow-hidden rounded-[1.5rem] border border-black/6 bg-white transition hover:border-black/12 hover:bg-[#fcfaf7]"
               >
-                <div className="m-5 mb-0 h-60 rounded-[1rem] bg-[#e5e3de]" />
+                <div className="m-5 mb-0 h-60 overflow-hidden rounded-[1rem] bg-[#e5e3de]">
+                  {item.thumbnailUrl ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={item.thumbnailUrl}
+                      alt=""
+                      className="h-full w-full object-cover"
+                    />
+                  ) : null}
+                </div>
                 <div className="px-6 py-6">
                   <p className="text-xs font-medium uppercase tracking-[0.18em] text-[#8a6b5f]">
                     {item.category}

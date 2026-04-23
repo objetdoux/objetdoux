@@ -1,13 +1,19 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { myPageOrders } from "../../site-data";
+import {
+  formatOrderDate,
+  formatOrderStatus,
+  getCurrentUserOrderSummaries,
+} from "../../orders/order-data";
 
 export const metadata: Metadata = {
   title: "주문 내역",
   description: "objetdoux 주문 내역 페이지입니다.",
 };
 
-export default function MyPageOrdersPage() {
+export default async function MyPageOrdersPage() {
+  const orders = await getCurrentUserOrderSummaries();
+
   return (
     <main className="bg-[#f7f3ee] px-6 py-10 lg:px-8 lg:py-14">
       <div className="mx-auto w-full max-w-5xl">
@@ -42,7 +48,21 @@ export default function MyPageOrdersPage() {
           </div>
 
           <div className="mt-8 space-y-4">
-            {myPageOrders.map((order) => (
+            {orders.length === 0 ? (
+              <div className="rounded-[1.5rem] bg-[#faf8f5] px-5 py-8 text-center sm:px-6">
+                <p className="text-sm leading-6 text-stone-600">
+                  아직 주문 내역이 없습니다.
+                </p>
+                <Link
+                  href="/shop"
+                  className="mt-5 inline-flex h-12 items-center justify-center rounded-xl bg-stone-950 px-6 text-sm font-medium text-white transition hover:bg-stone-800"
+                >
+                  상품 보러가기
+                </Link>
+              </div>
+            ) : null}
+
+            {orders.map((order) => (
               <Link
                 key={order.orderNumber}
                 href={`/mypage/orders/${order.orderNumber}`}
@@ -50,18 +70,22 @@ export default function MyPageOrdersPage() {
               >
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                   <div>
-                    <p className="text-sm text-stone-500">{order.date}</p>
+                    <p className="text-sm text-stone-500">
+                      {formatOrderDate(order.createdAt)}
+                    </p>
                     <h2 className="mt-2 text-xl font-semibold tracking-[-0.03em] text-stone-950">
                       {order.orderNumber}
                     </h2>
                     <p className="mt-2 text-sm leading-6 text-stone-600">
-                      {order.items}
+                      {order.title}
                     </p>
                   </div>
                   <div className="text-left sm:text-right">
-                    <p className="text-sm text-stone-500">{order.status}</p>
+                    <p className="text-sm text-stone-500">
+                      {formatOrderStatus(order.orderStatus)}
+                    </p>
                     <p className="mt-2 text-lg font-semibold text-stone-950">
-                      {order.total}
+                      ₩{order.total.toLocaleString("ko-KR")}
                     </p>
                     <p className="mt-2 text-sm text-stone-400">상세 보기</p>
                   </div>

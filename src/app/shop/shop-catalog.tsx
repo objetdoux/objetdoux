@@ -2,23 +2,25 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import {
-  shopMenu,
-  shopProducts,
-  shopSortOptions,
-  wishlistSlugs,
-} from "../site-data";
+import { toggleWishlistItem } from "../wishlist/actions";
+import { shopMenu, shopSortOptions } from "../site-data";
+import type { ShopProduct } from "./shop-data";
 
-export function ShopCatalog() {
+export function ShopCatalog({
+  products,
+  likedProductSlugs,
+}: {
+  products: ShopProduct[];
+  likedProductSlugs: string[];
+}) {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [sortBy, setSortBy] = useState("latest");
   const [query, setQuery] = useState("");
-  const [likedProducts, setLikedProducts] = useState<string[]>(wishlistSlugs);
 
   const filteredProducts = useMemo(() => {
     const normalizedQuery = query.trim().toLowerCase();
 
-    const visible = shopProducts.filter((product) => {
+    const visible = products.filter((product) => {
       const categoryMatch =
         selectedCategory === "All" || product.category === selectedCategory;
       const queryMatch =
@@ -46,15 +48,7 @@ export function ShopCatalog() {
     }
 
     return sorted;
-  }, [query, selectedCategory, sortBy]);
-
-  function toggleLike(slug: string) {
-    setLikedProducts((current) =>
-      current.includes(slug)
-        ? current.filter((item) => item !== slug)
-        : [...current, slug],
-    );
-  }
+  }, [products, query, selectedCategory, sortBy]);
 
   return (
     <>
@@ -63,7 +57,7 @@ export function ShopCatalog() {
           <div>
             <p className="text-sm font-medium text-stone-900">상품 검색</p>
             <p className="mt-1 text-sm text-stone-500">
-              현재는 목업 상품 기준으로 이름과 카테고리 검색이 가능합니다.
+              상품명과 카테고리 기준으로 검색할 수 있습니다.
             </p>
           </div>
           <div className="flex w-full gap-2 sm:w-auto sm:min-w-[320px]">
@@ -120,46 +114,59 @@ export function ShopCatalog() {
           </div>
 
           <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
-            {filteredProducts.map((product) => (
-              <article
-                key={product.slug}
-                className="overflow-hidden rounded-[1.5rem] border border-black/6 bg-white transition hover:border-black/12 hover:bg-[#fcfaf7]"
-              >
-                <div className="relative m-5 mb-0 h-64 rounded-[1rem] bg-[#e5e3de]">
-                  <button
-                    type="button"
-                    onClick={() => toggleLike(product.slug)}
-                    aria-label={
-                      likedProducts.includes(product.slug)
-                        ? "좋아요 취소"
-                        : "좋아요 추가"
-                    }
-                    className="absolute right-3 top-3 flex h-10 w-10 items-center justify-center rounded-full bg-white/90 text-lg text-stone-700 shadow-sm transition hover:text-stone-950"
-                  >
-                    {likedProducts.includes(product.slug) ? "♥" : "♡"}
-                  </button>
-                </div>
-                <Link href={`/shop/${product.slug}`} className="block px-6 py-6">
-                  <p className="text-xs font-medium uppercase tracking-[0.18em] text-[#8a6b5f]">
-                    {product.category}
-                  </p>
-                  <div className="mt-3 flex items-start justify-between gap-4">
-                    <h2 className="text-xl font-semibold tracking-[-0.02em] text-stone-950">
-                      {product.name}
-                    </h2>
-                    <span className="shrink-0 text-sm text-stone-300">
-                      {likedProducts.includes(product.slug) ? "좋아요" : ""}
-                    </span>
+            {filteredProducts.map((product) => {
+              const isLiked = likedProductSlugs.includes(product.slug);
+
+              return (
+                <article
+                  key={product.slug}
+                  className="overflow-hidden rounded-[1.5rem] border border-black/6 bg-white transition hover:border-black/12 hover:bg-[#fcfaf7]"
+                >
+                  <div className="relative m-5 mb-0 h-64 overflow-hidden rounded-[1rem] bg-[#e5e3de]">
+                    {product.thumbnailUrl ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={product.thumbnailUrl}
+                        alt=""
+                        className="h-full w-full object-cover"
+                      />
+                    ) : null}
+                    <form
+                      action={toggleWishlistItem}
+                      className="absolute right-3 top-3"
+                    >
+                      <input type="hidden" name="productSlug" value={product.slug} />
+                      <input type="hidden" name="redirectTo" value="/shop" />
+                      <button
+                        aria-label={isLiked ? "좋아요 취소" : "좋아요 추가"}
+                        className="flex h-10 w-10 items-center justify-center rounded-full bg-white/90 text-lg text-stone-700 shadow-sm transition hover:text-stone-950"
+                      >
+                        {isLiked ? "♥" : "♡"}
+                      </button>
+                    </form>
                   </div>
-                  <p className="mt-3 text-sm leading-6 text-stone-600">
-                    {product.description}
-                  </p>
-                  <p className="mt-4 text-base font-semibold text-stone-900">
-                    {product.price}
-                  </p>
-                </Link>
-              </article>
-            ))}
+                  <Link href={`/shop/${product.slug}`} className="block px-6 py-6">
+                    <p className="text-xs font-medium uppercase tracking-[0.18em] text-[#8a6b5f]">
+                      {product.category}
+                    </p>
+                    <div className="mt-3 flex items-start justify-between gap-4">
+                      <h2 className="text-xl font-semibold tracking-[-0.02em] text-stone-950">
+                        {product.name}
+                      </h2>
+                      <span className="shrink-0 text-sm text-stone-300">
+                        {isLiked ? "좋아요" : ""}
+                      </span>
+                    </div>
+                    <p className="mt-3 text-sm leading-6 text-stone-600">
+                      {product.description}
+                    </p>
+                    <p className="mt-4 text-base font-semibold text-stone-900">
+                      {product.price}
+                    </p>
+                  </Link>
+                </article>
+              );
+            })}
           </div>
         </section>
       </div>

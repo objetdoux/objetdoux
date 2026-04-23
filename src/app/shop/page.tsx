@@ -1,6 +1,13 @@
+import { getWishlistProductSlugs } from "../wishlist/wishlist-data";
 import { ShopCatalog } from "./shop-catalog";
+import { getShopProducts } from "./shop-data";
 
-export default function ShopPage() {
+export const dynamic = "force-dynamic";
+
+export default async function ShopPage() {
+  const products = await getShopProducts();
+  const likedProductSlugs = await getWishlistProductSlugs();
+
   return (
     <main className="bg-[#f7f3ee] px-6 py-10 lg:px-8 lg:py-14">
       <div className="mx-auto w-full max-w-6xl">
@@ -15,7 +22,7 @@ export default function ShopPage() {
           </p>
         </div>
 
-        <ShopCatalog />
+        <ShopCatalog products={products} likedProductSlugs={likedProductSlugs} />
       </div>
     </main>
   );

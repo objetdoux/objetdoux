@@ -1,13 +1,22 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { mockUser, myPageOrders, myPageSections } from "../site-data";
+import {
+  formatOrderDate,
+  formatOrderStatus,
+  getCurrentUserOrderSummaries,
+} from "../orders/order-data";
+import { myPageSections } from "../site-data";
+import { getCurrentAccountProfile } from "./account-data";
 
 export const metadata: Metadata = {
   title: "마이페이지",
   description: "objetdoux 마이페이지입니다.",
 };
 
-export default function MyPage() {
+export default async function MyPage() {
+  const account = await getCurrentAccountProfile();
+  const orders = await getCurrentUserOrderSummaries(2);
+
   return (
     <main className="bg-[#f7f3ee] px-6 py-10 lg:px-8 lg:py-14">
       <div className="mx-auto w-full max-w-6xl">
@@ -23,13 +32,13 @@ export default function MyPage() {
           <aside className="rounded-[1.75rem] border border-black/6 bg-white px-6 py-7 sm:px-8 sm:py-8">
             <p className="text-sm tracking-[0.18em] text-stone-400">MY ACCOUNT</p>
             <h1 className="mt-4 text-3xl font-semibold tracking-[-0.04em] text-stone-950">
-              {mockUser.name}
+              {account.name}
             </h1>
 
             <div className="mt-4 space-y-1 text-sm leading-5 text-stone-600">
-              <p>{mockUser.email}</p>
-              <p>{mockUser.phone}</p>
-              <p>가입일 {mockUser.joinedAt}</p>
+              <p>{account.email}</p>
+              <p>{account.phone}</p>
+              <p>가입일 {account.joinedAt}</p>
             </div>
 
             <div className="mt-8 space-y-3">
@@ -54,7 +63,7 @@ export default function MyPage() {
                     주문 내역
                   </h2>
                   <p className="mt-2 text-sm leading-6 text-stone-600">
-                    최근 주문 상태와 결제 정보를 확인할 수 있는 목업 영역입니다.
+                    최근 주문 상태와 결제 정보를 확인할 수 있습니다.
                   </p>
                 </div>
                 <Link
@@ -66,7 +75,15 @@ export default function MyPage() {
               </div>
 
               <div className="mt-8 space-y-4">
-                {myPageOrders.map((order) => (
+                {orders.length === 0 ? (
+                  <div className="rounded-[1.5rem] bg-[#faf8f5] px-5 py-8 text-center sm:px-6">
+                    <p className="text-sm leading-6 text-stone-600">
+                      아직 주문 내역이 없습니다.
+                    </p>
+                  </div>
+                ) : null}
+
+                {orders.map((order) => (
                   <Link
                     key={order.orderNumber}
                     href={`/mypage/orders/${order.orderNumber}`}
@@ -74,18 +91,22 @@ export default function MyPage() {
                   >
                     <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                       <div>
-                        <p className="text-sm text-stone-500">{order.date}</p>
+                        <p className="text-sm text-stone-500">
+                          {formatOrderDate(order.createdAt)}
+                        </p>
                         <h3 className="mt-2 text-xl font-semibold tracking-[-0.03em] text-stone-950">
                           {order.orderNumber}
                         </h3>
                         <p className="mt-2 text-sm leading-6 text-stone-600">
-                          {order.items}
+                          {order.title}
                         </p>
                       </div>
                       <div className="text-left sm:text-right">
-                        <p className="text-sm text-stone-500">{order.status}</p>
+                        <p className="text-sm text-stone-500">
+                          {formatOrderStatus(order.orderStatus)}
+                        </p>
                         <p className="mt-2 text-lg font-semibold text-stone-950">
-                          {order.total}
+                          ₩{order.total.toLocaleString("ko-KR")}
                         </p>
                         <p className="mt-2 text-sm text-stone-400">상세 보기</p>
                       </div>

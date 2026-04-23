@@ -1,28 +1,25 @@
 import Link from "next/link";
-import { cartItems, getProductBySlug } from "../site-data";
+import { notFound } from "next/navigation";
+import { getCurrentUserOrderByNumber } from "../orders/order-data";
 
-const shippingFee = 3000;
-const orderNumber = "OD-20260422-001";
+type OrderCompletePageProps = {
+  searchParams: Promise<{ orderNumber?: string }>;
+};
 
-export default function OrderCompletePage() {
-  const items = cartItems
-    .map((item) => {
-      const product = getProductBySlug(item.slug);
+export default async function OrderCompletePage({
+  searchParams,
+}: OrderCompletePageProps) {
+  const { orderNumber } = await searchParams;
 
-      if (!product) {
-        return null;
-      }
+  if (!orderNumber) {
+    notFound();
+  }
 
-      return {
-        ...product,
-        quantity: item.quantity,
-        total: product.priceValue * item.quantity,
-      };
-    })
-    .filter((item): item is NonNullable<typeof item> => item !== null);
+  const order = await getCurrentUserOrderByNumber(orderNumber);
 
-  const subtotal = items.reduce((sum, item) => sum + item.total, 0);
-  const total = subtotal + shippingFee;
+  if (!order) {
+    notFound();
+  }
 
   return (
     <main className="bg-[#f7f3ee] px-6 py-10 lg:px-8 lg:py-14">
@@ -54,22 +51,21 @@ export default function OrderCompletePage() {
                 주문이 완료되었습니다
               </h1>
               <p className="mt-3 max-w-2xl text-base leading-6 text-stone-600">
-                오브제두의 첫 주문 흐름을 확인할 수 있는 완료 화면입니다. 실제
-                결제 연동 전 단계이므로 주문 완료 후 안내 화면의 구조와 분위기를
-                우선 정리해두었습니다.
+                주문 데이터가 정상적으로 생성되었습니다. 실제 PG 결제 연동 전
+                단계이므로 결제 상태는 대기 상태로 저장됩니다.
               </p>
 
               <div className="mt-8 grid gap-4 sm:grid-cols-3">
                 <div className="rounded-[1.25rem] bg-[#faf8f5] px-5 py-5">
                   <p className="text-sm text-stone-500">주문번호</p>
                   <p className="mt-2 text-lg font-semibold text-stone-950">
-                    {orderNumber}
+                    {order.orderNumber}
                   </p>
                 </div>
                 <div className="rounded-[1.25rem] bg-[#faf8f5] px-5 py-5">
                   <p className="text-sm text-stone-500">결제 금액</p>
                   <p className="mt-2 text-lg font-semibold text-stone-950">
-                    ₩{total.toLocaleString("ko-KR")}
+                    ₩{order.total.toLocaleString("ko-KR")}
                   </p>
                 </div>
                 <div className="rounded-[1.25rem] bg-[#faf8f5] px-5 py-5">
@@ -98,15 +94,26 @@ export default function OrderCompletePage() {
               </h2>
 
               <div className="mt-6 space-y-4">
-                {items.map((item) => (
+                {order.items.map((item) => (
                   <div
-                    key={item.slug}
+                    key={item.id}
                     className="grid grid-cols-[56px_minmax(0,1fr)_auto] items-center gap-3"
                   >
-                    <div className="aspect-square rounded-[0.9rem] bg-[#e5e3de]" />
+                    <div className="aspect-square overflow-hidden rounded-[0.9rem] bg-[#e5e3de]">
+                      {item.imageUrl ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          src={item.imageUrl}
+                          alt=""
+                          className="h-full w-full object-cover"
+                        />
+                      ) : null}
+                    </div>
                     <div>
                       <p className="text-base font-medium text-stone-950">{item.name}</p>
-                      <p className="mt-1 text-sm text-stone-500">수량 {item.quantity}개</p>
+                      <p className="mt-1 text-sm text-stone-500">
+                        수량 {item.quantity}개
+                      </p>
                     </div>
                     <p className="text-sm font-medium text-stone-900">
                       ₩{item.total.toLocaleString("ko-KR")}
@@ -118,16 +125,20 @@ export default function OrderCompletePage() {
               <div className="mt-6 space-y-4 border-t border-black/6 pt-6 text-sm text-stone-600">
                 <div className="flex items-center justify-between gap-4">
                   <p>상품 금액</p>
-                  <p className="text-stone-900">₩{subtotal.toLocaleString("ko-KR")}</p>
+                  <p className="text-stone-900">
+                    ₩{order.subtotal.toLocaleString("ko-KR")}
+                  </p>
                 </div>
                 <div className="flex items-center justify-between gap-4">
                   <p>배송비</p>
-                  <p className="text-stone-900">₩{shippingFee.toLocaleString("ko-KR")}</p>
+                  <p className="text-stone-900">
+                    ₩{order.shippingFee.toLocaleString("ko-KR")}
+                  </p>
                 </div>
                 <div className="flex items-center justify-between gap-4">
                   <p className="font-medium text-stone-900">총 결제 금액</p>
                   <p className="text-xl font-semibold text-stone-950">
-                    ₩{total.toLocaleString("ko-KR")}
+                    ₩{order.total.toLocaleString("ko-KR")}
                   </p>
                 </div>
               </div>
@@ -140,10 +151,10 @@ export default function OrderCompletePage() {
                   계속 쇼핑하기
                 </Link>
                 <Link
-                  href="/"
+                  href="/mypage/orders"
                   className="rounded-xl border border-black/8 bg-white px-6 py-3 text-center text-sm font-medium text-stone-700 transition hover:border-stone-900"
                 >
-                  메인으로 돌아가기
+                  주문 내역 보기
                 </Link>
               </div>
             </aside>

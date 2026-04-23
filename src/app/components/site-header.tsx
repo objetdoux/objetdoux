@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { logout } from "../auth/actions";
 
 const links = [
   { href: "/brand", label: "BRAND" },
@@ -9,13 +10,11 @@ const links = [
   { href: "/social", label: "SOCIAL" },
 ];
 
-const accountLinks = [
-  { href: "/login", label: "LOGIN" },
-  { href: "/mypage", label: "MY PAGE" },
-];
-
-export function SiteHeader() {
+export function SiteHeader({ isLoggedIn }: { isLoggedIn: boolean }) {
   const pathname = usePathname();
+  const accountLinks = isLoggedIn
+    ? [{ href: "/mypage", label: "MY PAGE" }]
+    : [{ href: "/login", label: "LOGIN" }];
   const allLinks = [...links, ...accountLinks];
 
   return (
@@ -51,6 +50,13 @@ export function SiteHeader() {
               </Link>
             );
           })}
+          {isLoggedIn ? (
+            <form action={logout} className="shrink-0">
+              <button className="text-[11px] tracking-[0.1em] text-stone-500 transition hover:text-stone-900 sm:text-xs">
+                LOGOUT
+              </button>
+            </form>
+          ) : null}
         </nav>
       </div>
     </header>
