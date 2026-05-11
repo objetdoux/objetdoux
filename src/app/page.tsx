@@ -1,212 +1,77 @@
-import Link from "next/link";
-import { getNewShopProducts } from "./shop/shop-data";
-import { getSiteSettings } from "./site-settings";
-
-const magazineItems = [
-  {
-    title: "오브제두가 생각하는 일상의 그릇",
-    description: "브랜드가 식기와 식탁을 바라보는 태도를 담는 콘텐츠 영역",
-  },
-  {
-    title: "도자기 표면과 색의 균형",
-    description: "제품 비하인드, 유약 이야기, 제작 노트를 쌓아갈 수 있는 영역",
-  },
-  {
-    title: "식탁 위의 단정한 분위기",
-    description: "라이프스타일과 테이블 무드를 보여주는 에디토리얼 콘텐츠 영역",
-  },
-];
-
-export default async function Home() {
-  const [newItems, settings] = await Promise.all([
-    getNewShopProducts(4),
-    getSiteSettings(),
-  ]);
-  const heroTitleLines = settings.heroTitle.split("\n");
-  const eventItems = [
-    {
-      title: settings.eventPrimaryTitle,
-      description: settings.eventPrimaryDescription,
-      imageUrl: settings.eventPrimaryImageUrl,
-    },
-    {
-      title: settings.eventSecondaryTitle,
-      description: settings.eventSecondaryDescription,
-      imageUrl: settings.eventSecondaryImageUrl,
-    },
-  ];
-
+export default function Home() {
   return (
-    <main className="bg-[#f7f3ee] py-16 lg:py-24">
-      <section className="w-full">
-        <div className="relative aspect-[16/9] w-full overflow-hidden bg-[#e2dfda] sm:aspect-[16/8] lg:aspect-[16/6]">
-          {settings.heroImageUrl ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={settings.heroImageUrl}
-              alt=""
-              className="absolute h-full w-full object-cover"
-            />
-          ) : null}
-          <div className="relative mx-auto flex h-full w-full max-w-6xl items-end px-6 py-8 sm:px-8 sm:py-10 lg:px-8 lg:py-12">
-            <div className="max-w-2xl">
-              <h1 className="text-4xl font-semibold leading-[1.15] tracking-[-0.04em] text-stone-900 sm:text-5xl lg:text-6xl">
-                {heroTitleLines.map((line, index) => (
-                  <span key={`${line}-${index}`}>
-                    {line}
-                    {index < heroTitleLines.length - 1 ? <br /> : null}
-                  </span>
-                ))}
-              </h1>
-              <p className="mt-5 max-w-xl text-sm leading-6 text-stone-600 sm:text-base sm:leading-7">
-                {settings.heroSubtitle}
-              </p>
-            </div>
-          </div>
+    <main className="bg-white">
+      <section className="relative">
+        <div className="h-[62vh] min-h-[28rem] w-full overflow-hidden bg-[#f6f4ef] sm:h-[72vh]">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/ceramic-hero.svg"
+            alt="오브제두 메인 비주얼"
+            className="h-full w-full object-cover"
+          />
         </div>
       </section>
 
-      <section className="mx-auto mt-16 w-full max-w-6xl px-6 lg:px-8">
-        <div>
-          <h2 className="mt-3 text-3xl font-semibold tracking-[-0.03em] text-stone-950 sm:text-4xl">
-            EVENT
-          </h2>
-        </div>
-
-        <div className="-mx-6 mt-4 flex gap-4 overflow-x-auto px-6 pb-2 md:mx-0 md:grid md:grid-cols-2 md:gap-5 md:overflow-visible md:px-0 md:pb-0">
-          {eventItems.map((item) => (
-            <article
-              key={item.title}
-              className="min-w-[84vw] rounded-[1.5rem] border border-black/6 bg-white p-6 md:min-w-0"
-            >
-              <div className="h-48 overflow-hidden rounded-[1rem] bg-[#e5e3de]">
-                {item.imageUrl ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={item.imageUrl}
-                    alt=""
-                    className="h-full w-full object-cover"
-                  />
-                ) : null}
-              </div>
-              <h3 className="mt-5 text-xl font-semibold tracking-[-0.02em] text-stone-950">
-                {item.title}
-              </h3>
-              <p className="mt-2 text-sm leading-6 text-stone-600">
-                {item.description}
-              </p>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section className="mx-auto mt-16 w-full max-w-6xl px-6 lg:px-8">
-        <div className="flex items-end justify-between">
+      <section className="mx-auto w-full max-w-6xl px-6 py-16 lg:px-8 lg:py-20">
+        <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
           <div>
-            <h2 className="mt-3 text-3xl font-semibold tracking-[-0.03em] text-stone-950 sm:text-4xl">
-              NEW ITEMS
-            </h2>
+            <p className="text-xs tracking-[0.22em] text-stone-400">objet doux</p>
+            <h1 className="mt-4 text-3xl font-semibold tracking-normal text-stone-950 sm:text-4xl">
+              오브제두의 브랜드 이야기
+            </h1>
           </div>
-          <Link href="/shop" className="text-sm text-stone-500 hover:text-stone-900">
-            SHOP 바로가기
-          </Link>
-        </div>
 
-        <div className="mt-4 grid grid-cols-2 gap-5 xl:grid-cols-4">
-          {newItems.map((item) => (
-            <Link
-              key={item.slug}
-              href={`/shop/${item.slug}`}
-              className="rounded-[1.5rem] border border-black/6 bg-white p-4 transition hover:border-black/12 hover:bg-[#fcfaf7] sm:p-5"
-            >
-              <div className="aspect-square overflow-hidden rounded-[1rem] bg-[#e5e3de]">
-                {item.thumbnailUrl ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={item.thumbnailUrl}
-                    alt=""
-                    className="h-full w-full object-cover"
-                  />
-                ) : null}
-              </div>
-              <p className="mt-3 text-base font-medium text-stone-900">
-                {item.name}
-              </p>
-              <p className="mt-1 text-sm leading-6 text-stone-500">
-                {item.soldOut || (item.trackStock && item.stockQuantity <= 0)
-                  ? "품절"
-                  : item.price}
-              </p>
-            </Link>
-          ))}
+          <div className="space-y-5 text-base leading-7 text-stone-600">
+            <p>
+              프랑스어로 <strong>objet</strong>는 오브제, 물건을 의미하고,
+              <strong> doux</strong>는 부드럽고 온화한 감성을 뜻합니다. 오브제두는
+              이 두 단어에서 영감을 받아, 조용히 예쁘고 오래 곁에 두고 싶은 물건의
+              감각을 이름 안에 담았습니다.
+            </p>
+            <p>
+              오브제두는 20~30대의 일상 속에서 과하지 않지만 분명한 취향을 보여주는
+              식기와 오브제를 만들고자 합니다. 생활 속에 자연스럽게 놓였을 때 더
+              아름다운 형태와 분위기를 중요하게 생각합니다.
+            </p>
+            <p>
+              우리가 제안하는 것은 단순한 제품이 아니라, 식탁과 공간의 분위기를 조금
+              더 다정하고 정돈된 방향으로 바꾸는 감각의 경험입니다.
+            </p>
+          </div>
         </div>
       </section>
 
-      <section className="mx-auto mt-16 w-full max-w-6xl px-6 lg:px-8">
-        <div className="flex items-end justify-between">
-          <div>
-            <h2 className="mt-3 text-3xl font-semibold tracking-[-0.03em] text-stone-950 sm:text-4xl">
-              MAGAZINE
-            </h2>
-          </div>
-          <Link
-            href="/magazine"
-            className="text-sm text-stone-500 hover:text-stone-900"
-          >
-            MAGAZINE 바로가기
-          </Link>
-        </div>
+      <section className="mx-auto w-full max-w-6xl px-6 pb-16 lg:px-8 lg:pb-20">
+        <div className="grid gap-5 md:grid-cols-3">
+          <article>
+            <h3 className="text-xl font-semibold tracking-normal text-stone-950">
+              부드러운 형태
+            </h3>
+            <p className="mt-3 text-sm leading-6 text-stone-600">
+              강한 장식보다 편안한 인상을 남기는 실루엣을 지향합니다. 오래 보아도
+              질리지 않는 균형을 가장 중요하게 생각합니다.
+            </p>
+          </article>
 
-        <div className="-mx-6 mt-4 flex gap-4 overflow-x-auto px-6 pb-2 md:mx-0 md:grid md:grid-cols-3 md:gap-5 md:overflow-visible md:px-0 md:pb-0">
-          {magazineItems.map((item) => (
-            <article
-              key={item.title}
-              className="min-w-[84vw] rounded-[1.5rem] border border-black/6 bg-white p-6 md:min-w-0"
-            >
-              <div className="h-52 rounded-[1rem] bg-[#e5e3de]" />
-              <h3 className="mt-5 text-xl font-semibold tracking-[-0.02em] text-stone-950">
-                {item.title}
-              </h3>
-              <p className="mt-2 text-sm leading-6 text-stone-600">
-                {item.description}
-              </p>
-            </article>
-          ))}
-        </div>
-      </section>
+          <article>
+            <h3 className="text-xl font-semibold tracking-normal text-stone-950">
+              조용한 감성
+            </h3>
+            <p className="mt-3 text-sm leading-6 text-stone-600">
+              잔잔한 색감과 차분한 표면, 생활에 자연스럽게 스며드는 분위기를 통해
+              자극적이지 않은 아름다움을 전달하고자 합니다.
+            </p>
+          </article>
 
-      <section className="mx-auto mt-16 w-full max-w-6xl px-6 lg:px-8">
-        <div className="rounded-[1.75rem] border border-black/6 bg-white px-6 py-8 sm:px-8 sm:py-10">
-          <div className="max-w-xl">
-            <h2 className="mt-3 text-3xl font-semibold tracking-[-0.03em] text-stone-950 sm:text-4xl">
-              COMPANY
-            </h2>
-          </div>
-
-          <div className="mt-8 grid gap-8 md:grid-cols-3">
-            <div>
-              <p className="text-sm font-semibold text-stone-900">ADDRESS</p>
-              <p className="mt-3 text-sm leading-6 text-stone-600">
-                {settings.businessAddress}
-              </p>
-            </div>
-            <div>
-              <p className="text-sm font-semibold text-stone-900">COMPANY</p>
-              <p className="mt-3 text-sm leading-6 text-stone-600">
-                {settings.companyName}
-                <br />
-                대표 {settings.ceoName}
-              </p>
-            </div>
-            <div>
-              <p className="text-sm font-semibold text-stone-900">CS</p>
-              <p className="mt-3 text-sm leading-6 text-stone-600">
-                {settings.csPhone}
-                <br />
-                {settings.csEmail}
-              </p>
-            </div>
-          </div>
+          <article>
+            <h3 className="text-xl font-semibold tracking-normal text-stone-950">
+              오래 곁에 두는 물건
+            </h3>
+            <p className="mt-3 text-sm leading-6 text-stone-600">
+              순간의 유행보다 매일 손이 가는 쓰임을 중요하게 생각합니다. 좋은
+              오브제는 결국 오래 함께하는 일상의 일부가 된다고 믿습니다.
+            </p>
+          </article>
         </div>
       </section>
     </main>
