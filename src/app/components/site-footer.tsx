@@ -128,25 +128,25 @@ export function SiteFooter() {
 
   return (
     <>
-      <footer className="mt-16 bg-[#17140d] text-white">
+      <footer className="mt-16 border-t border-black/8 bg-[#f7f7f3] text-stone-950">
         <div className="mx-auto w-full max-w-6xl px-6 py-10 lg:px-8 lg:py-12">
           <div className="grid gap-10 md:grid-cols-[1fr_1fr_auto]">
             <div>
-              <p className="text-sm font-semibold tracking-[0.08em] text-white/90">
+              <p className="text-sm font-semibold tracking-normal text-stone-950">
                 POLICY
               </p>
-              <div className="mt-5 flex flex-col gap-3 text-sm text-white/78">
+              <div className="mt-5 flex flex-col gap-3 text-sm text-stone-600">
                 <button
                   type="button"
                   onClick={() => setOpenedPolicy("terms")}
-                  className="w-fit text-left transition hover:text-white"
+                  className="w-fit text-left transition hover:text-stone-950"
                 >
                   이용약관
                 </button>
                 <button
                   type="button"
                   onClick={() => setOpenedPolicy("privacy")}
-                  className="w-fit text-left transition hover:text-white"
+                  className="w-fit text-left transition hover:text-stone-950"
                 >
                   개인정보처리방침
                 </button>
@@ -154,17 +154,17 @@ export function SiteFooter() {
             </div>
 
             <div>
-              <p className="text-sm font-semibold tracking-[0.08em] text-white/90">
+              <p className="text-sm font-semibold tracking-normal text-stone-950">
                 SOCIAL
               </p>
-              <div className="mt-5 flex flex-col gap-3 text-sm text-white/78">
+              <div className="mt-5 flex flex-col gap-3 text-sm text-stone-600">
                 {channelLinks.map((link) => (
                   <a
                     key={link.href}
                     href={link.href}
                     target="_blank"
                     rel="noreferrer"
-                    className="transition hover:text-white"
+                    className="transition hover:text-stone-950"
                   >
                     {link.label}
                   </a>
@@ -173,15 +173,15 @@ export function SiteFooter() {
             </div>
 
             <div className="text-left md:text-right">
-              <p className="text-3xl font-semibold uppercase tracking-[0.18em] text-white/95 sm:text-4xl">
+              <p className="text-3xl font-semibold uppercase tracking-normal text-stone-950 sm:text-4xl">
                 objetdoux
               </p>
-              <p className="mt-3 text-sm text-white/60">오브제두</p>
+              <p className="mt-3 text-sm text-stone-500">오브제두</p>
             </div>
           </div>
 
-          <div className="mt-12 border-t border-white/10 pt-6 text-sm leading-6 text-white/55">
-            <p>조용히 예쁘고 오래 곁에 두고 싶은 물건의 감각을 전합니다.</p>
+          <div className="mt-12 border-t border-black/8 pt-6 text-sm leading-6 text-stone-500">
+            <p>조용히 놓아도 분위기가 달라지는 것들.</p>
             <p className="mt-2">COPYRIGHT © OBJETDOUX ALL RIGHTS RESERVED.</p>
           </div>
         </div>

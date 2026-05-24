@@ -38,8 +38,8 @@ export function SiteHeader() {
           href="/"
           className={
             isCompact
-              ? "text-base font-semibold uppercase tracking-[0.28em] text-stone-900 transition-all duration-500 ease-out sm:text-lg"
-              : "text-lg font-semibold uppercase tracking-[0.34em] text-stone-900 transition-all duration-500 ease-out sm:text-xl"
+              ? "text-base font-semibold uppercase tracking-normal text-stone-900 transition-all duration-500 ease-out sm:text-lg"
+              : "text-lg font-semibold uppercase tracking-normal text-stone-900 transition-all duration-500 ease-out sm:text-xl"
           }
         >
           <span>objetdoux</span>

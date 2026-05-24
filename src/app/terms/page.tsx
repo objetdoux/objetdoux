@@ -2,8 +2,8 @@ export default function TermsPage() {
   return (
     <main className="bg-white px-6 py-16 lg:px-8 lg:py-20">
       <div className="mx-auto w-full max-w-3xl">
-        <p className="text-xs tracking-[0.22em] text-stone-400">TERMS</p>
-        <h1 className="mt-4 text-4xl font-semibold tracking-[-0.04em] text-stone-950">
+        <p className="text-xs tracking-normal text-stone-400">TERMS</p>
+        <h1 className="mt-4 text-4xl font-semibold tracking-normal text-stone-950">
           이용약관
         </h1>
         <div className="mt-8 space-y-5 text-base leading-7 text-stone-600">
