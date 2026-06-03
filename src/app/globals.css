@@ -43,3 +43,199 @@ img {
 ::selection {
   background: rgba(17, 17, 17, 0.12);
 }
+
+.art-image-frame {
+  transform-origin: center;
+  will-change: transform;
+}
+
+.art-kenburns {
+  animation: art-kenburns 18s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+.art-hover-scale {
+  transition: transform 1.2s ease, filter 1.2s ease;
+}
+
+.art-hover-scale:hover {
+  filter: saturate(1.04) contrast(1.02);
+  transform: scale(1.06);
+}
+
+.art-float-slow {
+  animation: art-float-slow 12s ease-in-out infinite alternate;
+}
+
+.art-float-medium {
+  animation: art-float-medium 9s ease-in-out infinite alternate;
+}
+
+.art-float-fast {
+  animation: art-float-fast 10.5s ease-in-out infinite alternate;
+}
+
+.art-marquee {
+  overflow: hidden;
+}
+
+.art-marquee-track {
+  display: flex;
+  width: max-content;
+  gap: 3rem;
+  animation: art-marquee 24s linear infinite;
+  white-space: nowrap;
+}
+
+.art-strip-track {
+  width: max-content;
+  animation: art-strip 36s linear infinite;
+  will-change: transform;
+}
+
+.art-vertical-track,
+.art-vertical-track-reverse {
+  will-change: transform;
+}
+
+.art-vertical-track {
+  animation: art-vertical 42s linear infinite;
+}
+
+.art-vertical-track-reverse {
+  animation: art-vertical-reverse 48s linear infinite;
+}
+
+.art-reveal {
+  animation: art-reveal both;
+  animation-timeline: view();
+  animation-range: entry 0% cover 36%;
+}
+
+.art-pulse-image {
+  animation: art-pulse-image 16s ease-in-out infinite alternate;
+  will-change: transform, filter;
+}
+
+@keyframes art-kenburns {
+  from {
+    transform: scale(1);
+  }
+
+  to {
+    transform: scale(1.08) translate3d(1.5%, -1.5%, 0);
+  }
+}
+
+@keyframes art-float-slow {
+  from {
+    transform: translate3d(0, 0, 0) rotate(-2deg) scale(1);
+  }
+
+  to {
+    transform: translate3d(3vw, 4vh, 0) rotate(1deg) scale(1.03);
+  }
+}
+
+@keyframes art-float-medium {
+  from {
+    transform: translate3d(0, 0, 0) rotate(1.2deg) scale(1);
+  }
+
+  to {
+    transform: translate3d(-3vw, 5vh, 0) rotate(-1deg) scale(0.97);
+  }
+}
+
+@keyframes art-float-fast {
+  from {
+    transform: translate3d(0, 0, 0) rotate(-0.8deg) scale(1);
+  }
+
+  to {
+    transform: translate3d(2vw, -4vh, 0) rotate(1.4deg) scale(1.04);
+  }
+}
+
+@keyframes art-marquee {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes art-strip {
+  from {
+    transform: translateX(-12rem);
+  }
+
+  to {
+    transform: translateX(calc(-50% - 12rem));
+  }
+}
+
+@keyframes art-vertical {
+  from {
+    transform: translateY(-4rem);
+  }
+
+  to {
+    transform: translateY(-50%);
+  }
+}
+
+@keyframes art-vertical-reverse {
+  from {
+    transform: translateY(-50%);
+  }
+
+  to {
+    transform: translateY(-4rem);
+  }
+}
+
+@keyframes art-reveal {
+  from {
+    opacity: 0.35;
+    transform: translateY(4rem) scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes art-pulse-image {
+  from {
+    filter: saturate(0.88) contrast(0.96);
+    transform: scale(1.02);
+  }
+
+  to {
+    filter: saturate(1.04) contrast(1.04);
+    transform: scale(1.12);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .art-kenburns,
+  .art-float-slow,
+  .art-float-medium,
+  .art-float-fast,
+  .art-marquee-track,
+  .art-strip-track,
+  .art-vertical-track,
+  .art-vertical-track-reverse,
+  .art-reveal,
+  .art-pulse-image {
+    animation: none;
+  }
+
+  .art-hover-scale:hover {
+    transform: none;
+  }
+}

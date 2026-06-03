@@ -1,72 +1,206 @@
 import Image from "next/image";
 
-const featuredObjects = [
+const heroImages = [
   {
-    name: "Spoon Rest",
-    label: "수저받침대",
-    copy: "작은 식탁 위에 조용한 포인트가 되는 오브제.",
-    shape: "h-12 w-24 rounded-[48%]",
+    src: "/brand/ai-blush-fluted.png",
+    alt: "Abstract blush fluted ceramic plate",
+    className: "left-[6%] top-[12%] h-[34vh] w-[34vw] min-w-72",
+    motion: "art-float-slow",
   },
   {
-    name: "Cup",
-    label: "컵",
-    copy: "손에 자주 닿는 물건일수록 더 섬세하게.",
-    shape: "h-24 w-16 rounded-b-3xl rounded-t-lg",
+    src: "/brand/ai-sage-closeup.png",
+    alt: "Abstract sage white ceramic plate closeup",
+    className: "right-[8%] top-[7%] h-[48vh] w-[38vw] min-w-80",
+    motion: "art-float-medium",
   },
   {
-    name: "Plate",
-    label: "접시",
-    copy: "여백과 불규칙한 림이 만드는 부드러운 장면.",
-    shape: "h-20 w-32 rounded-[50%]",
+    src: "/brand/ai-tide-crop.png",
+    alt: "Abstract tide blue ceramic plate crop",
+    className: "bottom-[8%] left-[26%] h-[44vh] w-[46vw] min-w-96",
+    motion: "art-float-fast",
   },
 ];
 
-const values = [
-  "화이트 중심의 깨끗한 도자기",
-  "손맛이 느껴지는 자연스러운 형태",
-  "얇고 섬세한 라인",
-  "작은 타이포그래피와 일러스트",
-  "선물하고 싶은 분위기",
-  "매일 쓰기 편한 사용성",
+const galleryImages = [
+  {
+    src: "/brand/ai-sage-closeup.png",
+    alt: "Sage glaze ceramic plate detail",
+    span: "lg:col-span-5",
+    height: "h-[34rem]",
+  },
+  {
+    src: "/brand/ai-blush-fluted.png",
+    alt: "Blush fluted ceramic plate detail",
+    span: "lg:col-span-7",
+    height: "h-[44rem]",
+  },
+  {
+    src: "/brand/ai-tide-crop.png",
+    alt: "Tide blue ceramic plate crop",
+    span: "lg:col-span-7",
+    height: "h-[38rem]",
+  },
+  {
+    src: "/brand/pebble-mist.png",
+    alt: "Pebble Mist ceramic plate mood board",
+    span: "lg:col-span-5",
+    height: "h-[30rem]",
+  },
 ];
 
-const moments = [
-  "밝은 자연광",
-  "흰 식탁",
-  "유리의 투명감",
-  "실버 커트러리",
-  "꽃 한 송이",
-  "종이 카드",
+const railImages = [
+  "/brand/ai-sage-closeup.png",
+  "/brand/ai-tide-crop.png",
+  "/brand/ai-blush-fluted.png",
+  "/brand/petal-fold.png",
+  "/brand/sea-mist.png",
+  "/brand/pebble-mist.png",
+];
+
+const plateNames = [
+  "Morning Dew",
+  "Cloud Petal",
+  "Sea Mist",
+  "Pebble Mist",
+  "Shell Dune",
+  "River Fold",
 ];
 
 export default function Home() {
   return (
-    <main className="bg-white text-[#1E1E1C]">
-      <section className="relative overflow-hidden border-b border-[#E9E6DD] bg-[#F8F7F3]">
-        <div className="mx-auto grid min-h-[calc(100vh-72px)] w-full max-w-7xl gap-10 px-5 py-10 sm:px-8 lg:grid-cols-[0.86fr_1.14fr] lg:items-center lg:px-10 lg:py-12">
-          <div className="relative z-10 max-w-xl">
-            <p className="text-sm font-medium uppercase text-[#6F6A62]">
-              soft objects, quiet days
-            </p>
-            <h1 className="mt-6 text-[3.85rem] font-normal leading-none text-[#1E1E1C] sm:text-[6.5rem] lg:text-[7.5rem]">
+    <main className="overflow-hidden bg-[#FCFBF8] text-[#1E1E1C]">
+      <section className="relative min-h-[calc(100vh-65px)] border-b border-[#E9E6DD]">
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,#FFFFFF_0%,#F8F7F3_58%,#FFFFFF_100%)]" />
+        <div className="absolute inset-x-0 top-0 z-10 flex justify-between px-5 py-5 text-[0.68rem] uppercase tracking-[0.26em] text-[#6F6A62] sm:px-8 lg:px-10">
+          <span>soft objects</span>
+          <span>quiet days</span>
+        </div>
+
+        <div className="absolute inset-0 hidden md:block">
+          {heroImages.map((image) => (
+            <div
+              key={image.src}
+              className={`art-image-frame absolute overflow-hidden border border-white/80 bg-white shadow-[0_30px_100px_rgba(30,30,28,0.12)] ${image.className} ${image.motion}`}
+            >
+              <Image
+                src={image.src}
+                alt={image.alt}
+                fill
+                priority
+                sizes="50vw"
+                className="art-kenburns object-cover"
+              />
+            </div>
+          ))}
+        </div>
+
+        <div className="relative z-20 mx-auto flex min-h-[calc(100vh-65px)] w-full max-w-7xl flex-col justify-center px-5 pb-10 pt-20 sm:px-8 lg:px-10">
+          <div className="max-w-5xl">
+            <h1 className="text-[4.5rem] font-normal leading-[0.88] tracking-normal sm:text-[8rem] lg:text-[12rem]">
               objetdoux
             </h1>
-            <p className="mt-5 text-2xl text-[#1E1E1C] sm:text-3xl">
-              조용히 예쁜 것들
+            <p className="mt-4 max-w-xl font-serif text-2xl italic leading-9 text-[#6A5B50] sm:text-4xl">
+              des objets doux,
+              <br />
+              des jours heureux
             </p>
-            <p className="mt-4 max-w-sm font-serif text-lg italic leading-8 text-[#1E1E1C] sm:text-2xl">
-              des objets doux, des jours heureux
+          </div>
+          <div className="mt-10 grid gap-4 md:hidden">
+            {heroImages.map((image) => (
+              <div
+                key={image.src}
+                className="relative h-72 overflow-hidden border border-[#E9E6DD] bg-white"
+              >
+                <Image
+                  src={image.src}
+                  alt={image.alt}
+                  fill
+                  priority
+                  sizes="100vw"
+                  className="object-cover"
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="art-marquee absolute bottom-0 left-0 right-0 z-30 border-y border-[#E9E6DD] bg-white/78 py-3 backdrop-blur">
+          <div className="art-marquee-track text-sm uppercase tracking-[0.22em] text-[#6F6A62]">
+            {[...plateNames, ...plateNames].map((name, index) => (
+              <span key={`${name}-${index}`}>{name}</span>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="relative border-b border-[#E9E6DD] bg-white py-8">
+        <div className="art-strip-track flex gap-4">
+          {[...railImages, ...railImages].map((src, index) => (
+            <div
+              key={`${src}-${index}`}
+              className="relative h-52 w-80 shrink-0 overflow-hidden border border-[#E9E6DD] bg-[#F8F7F3] sm:h-72 sm:w-[28rem]"
+            >
+              <Image
+                src={src}
+                alt="오브제두 접시 이미지 흐름"
+                fill
+                loading="eager"
+                sizes="28rem"
+                className="object-cover"
+              />
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="relative bg-[#FCFBF8] px-5 py-16 sm:px-8 lg:px-10 lg:py-24">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-4 lg:grid-cols-12">
+          <div className="lg:col-span-4 lg:pt-20">
+            <p className="text-xs uppercase tracking-[0.24em] text-[#A63A3A]">
+              plate as object
             </p>
-            <div className="mt-8 h-px w-20 bg-[#1E1E1C]" />
-            <p className="mt-8 text-lg leading-9 text-[#4F4B45]">
-              오브제두는 일상에 자연스럽게 스며들어, 공간의 분위기를
-              다정하게 정돈하는 오브제 브랜드다.
+            <h2 className="mt-5 text-4xl font-normal leading-tight sm:text-6xl">
+              텍스트보다 먼저,
+              <br />
+              빛과 유약이 말하게.
+            </h2>
+          </div>
+
+          {galleryImages.map((image, index) => (
+            <div
+              key={image.src}
+              className={`art-reveal relative overflow-hidden border border-[#E9E6DD] bg-white ${image.span} ${image.height}`}
+              style={{ animationDelay: `${index * 180}ms` }}
+            >
+              <Image
+                src={image.src}
+                alt={image.alt}
+                fill
+                loading="eager"
+                sizes="(min-width: 1024px) 58vw, 100vw"
+                className="art-hover-scale object-cover"
+              />
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="relative grid min-h-screen overflow-hidden border-y border-[#E9E6DD] bg-[#F8F7F3] lg:grid-cols-[0.95fr_1.05fr]">
+        <div className="relative flex items-center px-5 py-16 sm:px-8 lg:px-10">
+          <div className="relative z-10 max-w-xl">
+            <p className="text-xs uppercase tracking-[0.24em] text-[#6F6A62]">
+              oem friendly, visually poetic
             </p>
-            <p className="mt-5 text-base leading-8 text-[#6F6A62]">
-              하얀 식탁 위에 조용히 놓인, 섬세하고 시적인 오브제. 작은 물건
-              하나가 평범한 하루의 분위기를 부드럽게 바꿉니다.
+            <h2 className="mt-5 text-5xl font-normal leading-[0.98] sm:text-7xl">
+              조용히 움직이는
+              <br />
+              접시의 장면들.
+            </h2>
+            <p className="mt-8 max-w-md text-base leading-8 text-[#4F4B45]">
+              기존 금형의 단순한 형태를 바탕으로, 자연에서 온 색이 아주 천천히
+              번지는 제품군을 보여줍니다.
             </p>
-            <div className="mt-9 flex flex-wrap gap-3">
+            <div className="mt-10 flex gap-3">
               <a
                 href="https://www.instagram.com/objetdoux/?utm_source=ig_web_button_share_sheet"
                 target="_blank"
@@ -85,187 +219,64 @@ export default function Home() {
               </a>
             </div>
           </div>
-
-          <div className="relative min-h-[26rem] overflow-hidden border border-[#D8D8D3] bg-white sm:min-h-[34rem] lg:min-h-[40rem]">
-            <Image
-              src="/ceramic-hero.svg"
-              alt="하얀 식탁 위 오브제두 무드 비주얼"
-              fill
-              priority
-              sizes="(min-width: 1024px) 58vw, 100vw"
-              className="object-cover"
-            />
-          </div>
         </div>
-      </section>
 
-      <section className="mx-auto grid w-full max-w-7xl gap-10 px-5 py-20 sm:px-8 lg:grid-cols-[0.82fr_1.18fr] lg:px-10 lg:py-28">
-        <div>
-          <p className="text-sm font-medium uppercase text-[#A63A3A]">
-            Brand Mood
-          </p>
-          <h2 className="mt-4 max-w-lg text-4xl font-normal leading-tight text-[#1E1E1C] sm:text-5xl">
-            하얀 식탁 위에 조용히 놓이는 물건.
-          </h2>
-        </div>
-        <div className="space-y-6 text-base leading-8 text-[#4F4B45]">
-          <p>
-            오브제두는 과하게 꾸미기보다 오래 보고 싶은 여백을 남깁니다.
-            화이트 도자기, 작은 문구, 얇은 선, 손으로 빚은 듯한 형태를 통해
-            조용하지만 기억에 남는 분위기를 만듭니다.
-          </p>
-          <p>
-            제품은 예쁜 장식품에 머무르지 않습니다. 자주 꺼내 쓰고, 선물하고
-            싶고, 사진으로도 감도가 전해지는 물건을 오브제두다운 기준으로
-            고르고 만듭니다.
-          </p>
-        </div>
-      </section>
-
-      <section className="border-y border-[#E9E6DD] bg-[#F8F7F3]">
-        <div className="mx-auto grid w-full max-w-7xl gap-4 px-5 py-16 sm:px-8 md:grid-cols-3 lg:px-10">
-          {featuredObjects.map((object) => (
-            <article
-              key={object.name}
-              className="group border border-[#D8D8D3] bg-white p-6 transition hover:border-[#BDB5A8]"
-            >
-              <div className="flex aspect-[4/3] items-center justify-center bg-[#F8F7F3]">
-                <div
-                  className={`${object.shape} border border-[#D8D8D3] bg-white shadow-[0_18px_50px_rgba(30,30,28,0.08)] transition group-hover:border-[#A7B19A]`}
+        <div className="relative min-h-[46rem] overflow-hidden border-t border-[#E9E6DD] bg-white lg:border-l lg:border-t-0">
+          <div className="art-vertical-track absolute left-5 top-0 grid w-[42%] gap-5 sm:left-8">
+            {[...railImages, ...railImages].map((src, index) => (
+              <div
+                key={`left-${src}-${index}`}
+                className="relative h-72 overflow-hidden border border-[#E9E6DD]"
+              >
+                <Image
+                  src={src}
+                  alt="움직이는 오브제두 접시 이미지"
+                  fill
+                  loading="eager"
+                  sizes="22rem"
+                  className="object-cover"
                 />
               </div>
-              <div className="mt-5 flex items-start justify-between gap-4">
-                <div>
-                  <h3 className="text-xl font-normal text-[#1E1E1C]">
-                    {object.name}
-                  </h3>
-                  <p className="mt-1 text-sm text-[#6F6A62]">{object.label}</p>
-                </div>
-                <span className="mt-1 h-2 w-2 rounded-full bg-[#A63A3A]" />
-              </div>
-              <p className="mt-5 text-sm leading-7 text-[#4F4B45]">
-                {object.copy}
-              </p>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section className="mx-auto grid w-full max-w-7xl gap-12 px-5 py-20 sm:px-8 lg:grid-cols-[1fr_1fr] lg:px-10 lg:py-28">
-        <div className="border-t border-[#1E1E1C] pt-8">
-          <p className="text-sm font-medium uppercase text-[#1D3A68]">Found</p>
-          <h2 className="mt-5 text-3xl font-normal text-[#1E1E1C]">
-            발견하고 선택한 물건
-          </h2>
-          <p className="mt-5 text-base leading-8 text-[#4F4B45]">
-            Found는 오브제두가 직접 고른 셀렉션입니다. 기성품이더라도 흰
-            식탁 위에서 오브제처럼 보이는지, 사진으로 감도가 살아나는지,
-            선물하고 싶은 분위기와 실제 사용성이 있는지를 함께 봅니다.
-          </p>
-        </div>
-
-        <div className="border-t border-[#1E1E1C] pt-8">
-          <p className="text-sm font-medium uppercase text-[#A63A3A]">Made</p>
-          <h2 className="mt-5 text-3xl font-normal text-[#1E1E1C]">
-            직접 기획하고 만드는 물건
-          </h2>
-          <p className="mt-5 text-base leading-8 text-[#4F4B45]">
-            Made는 오브제두의 핵심이 될 라인입니다. 형태, 질감, 작은 문구와
-            일러스트, 로고 위치, 포장 경험, 손에 잡히는 감각까지 하나의
-            작은 오브제로 남도록 다듬습니다.
-          </p>
-        </div>
-      </section>
-
-      <section className="bg-[#1E1E1C] text-white">
-        <div className="mx-auto grid w-full max-w-7xl gap-12 px-5 py-20 sm:px-8 lg:grid-cols-[0.9fr_1.1fr] lg:px-10 lg:py-28">
-          <div>
-            <p className="font-serif text-3xl italic text-white">
-              des objets doux, des jours heureux
-            </p>
-            <h2 className="mt-6 max-w-md text-4xl font-normal leading-tight sm:text-5xl">
-              선물하고 싶은 물건에는 작은 이유가 있어요.
-            </h2>
+            ))}
           </div>
-          <div className="grid gap-3 sm:grid-cols-2">
-            {values.map((value) => (
+          <div className="art-vertical-track-reverse absolute right-5 top-0 grid w-[48%] gap-5 sm:right-8">
+            {[...railImages].reverse().concat(railImages).map((src, index) => (
               <div
-                key={value}
-                className="border border-white/14 bg-white/[0.04] px-5 py-4 text-sm leading-6 text-white/78"
+                key={`right-${src}-${index}`}
+                className="relative h-96 overflow-hidden border border-[#E9E6DD]"
               >
-                {value}
+                <Image
+                  src={src}
+                  alt="움직이는 오브제두 접시 이미지"
+                  fill
+                  loading="eager"
+                  sizes="26rem"
+                  className="object-cover"
+                />
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="mx-auto grid w-full max-w-7xl gap-10 px-5 py-20 sm:px-8 lg:grid-cols-[1.1fr_0.9fr] lg:px-10 lg:py-28">
-        <div className="relative min-h-[28rem] overflow-hidden border border-[#D8D8D3] bg-[#F8F7F3]">
-          <div className="absolute left-8 top-8 h-40 w-32 border border-[#D8D8D3] bg-white shadow-[0_24px_70px_rgba(30,30,28,0.08)]" />
-          <div className="absolute right-10 top-16 h-24 w-24 rounded-full border border-[#E9E6DD] bg-white" />
-          <div className="absolute bottom-12 left-1/2 h-28 w-44 -translate-x-1/2 rounded-[50%] border border-[#D8D8D3] bg-white shadow-[0_24px_70px_rgba(30,30,28,0.08)]" />
-          <div className="absolute bottom-8 right-8 h-32 w-20 rounded-b-3xl rounded-t-lg border border-[#D8D8D3] bg-white" />
-          <div className="absolute left-10 top-56 h-px w-44 bg-[#BDB5A8]" />
-          <p className="absolute bottom-8 left-8 font-serif text-xl italic text-[#1E1E1C]">
+      <section className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#1E1E1C] px-5 py-20 text-white sm:px-8 lg:px-10">
+        <div className="absolute inset-0 opacity-55">
+          <Image
+            src="/brand/ai-tide-crop.png"
+            alt="Full bleed abstract ceramic plate mood"
+            fill
+            sizes="100vw"
+            className="art-pulse-image object-cover"
+          />
+        </div>
+        <div className="absolute inset-0 bg-[#1E1E1C]/45" />
+        <div className="relative z-10 max-w-5xl text-center">
+          <p className="font-serif text-3xl italic leading-tight sm:text-6xl">
             soft objects, quiet days
           </p>
-        </div>
-
-        <div className="flex flex-col justify-center">
-          <p className="text-sm font-medium uppercase text-[#6F6A62]">
-            Photo & Styling
-          </p>
-          <h2 className="mt-5 text-4xl font-normal leading-tight text-[#1E1E1C]">
-            빛, 여백, 그리고 아주 작은 포인트.
+          <h2 className="mt-8 text-[3.7rem] font-normal leading-[0.9] sm:text-[8rem]">
+            조용히 예쁜 것들
           </h2>
-          <p className="mt-6 text-base leading-8 text-[#4F4B45]">
-            사진은 밝은 자연광과 흰 식탁을 중심으로 합니다. 배경보다 제품이
-            먼저 보이고, 작은 소품은 분위기를 돕는 정도로만 둡니다.
-          </p>
-          <div className="mt-8 flex flex-wrap gap-2">
-            {moments.map((moment) => (
-              <span
-                key={moment}
-                className="border border-[#D8D8D3] px-4 py-2 text-sm text-[#4F4B45]"
-              >
-                {moment}
-              </span>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="border-t border-[#E9E6DD] bg-[#F8F7F3]">
-        <div className="mx-auto w-full max-w-4xl px-5 py-20 text-center sm:px-8 lg:py-28">
-          <p className="font-serif text-3xl italic text-[#1E1E1C]">
-            des objets doux, des jours heureux
-          </p>
-          <h2 className="mt-6 text-4xl font-normal leading-tight text-[#1E1E1C] sm:text-5xl">
-            일상에 스며드는 부드러운 오브제
-          </h2>
-          <p className="mx-auto mt-6 max-w-2xl text-base leading-8 text-[#4F4B45]">
-            오브제두다운 제품은 조용하고, 섬세하며, 하얀 식탁 위에 자연스럽게
-            놓이고, 선물하고 싶어지는 물건입니다.
-          </p>
-          <div className="mt-9 flex flex-wrap justify-center gap-3">
-            <a
-              href="https://www.instagram.com/objetdoux/?utm_source=ig_web_button_share_sheet"
-              target="_blank"
-              rel="noreferrer"
-              className="border border-[#1E1E1C] bg-[#1E1E1C] px-5 py-3 text-sm font-medium text-white transition hover:bg-white hover:text-[#1E1E1C]"
-            >
-              INSTAGRAM
-            </a>
-            <a
-              href="https://smartstore.naver.com/objet_doux"
-              target="_blank"
-              rel="noreferrer"
-              className="border border-[#D8D8D3] bg-white px-5 py-3 text-sm font-medium text-[#1E1E1C] transition hover:border-[#1E1E1C]"
-            >
-              STORES
-            </a>
-          </div>
         </div>
       </section>
     </main>
