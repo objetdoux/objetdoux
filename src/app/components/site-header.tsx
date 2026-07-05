@@ -1,49 +1,40 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
+
+const navItems = [
+  ["HOME", "/"],
+  ["COLLECTION", "/collections/pastel-ceramic-bowl"],
+  ["STORE", "/stores"],
+];
 
 export function SiteHeader() {
-  const [isCompact, setIsCompact] = useState(false);
+  const pathname = usePathname();
 
-  useEffect(() => {
-    function handleScroll() {
-      setIsCompact(window.scrollY > 32);
-    }
-
-    handleScroll();
-    window.addEventListener("scroll", handleScroll, { passive: true });
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
+  if (pathname === "/") {
+    return null;
+  }
 
   return (
-    <header
-      className={
-        isCompact
-          ? "sticky top-0 z-50 border-b border-black/8 bg-[rgba(255,255,255,0.96)] shadow-[0_8px_30px_rgba(0,0,0,0.04)] backdrop-blur transition-all duration-500 ease-out"
-          : "sticky top-0 z-50 border-b border-black/8 bg-[rgba(255,255,255,0.96)] backdrop-blur transition-all duration-500 ease-out"
-      }
-    >
-      <div
-        className={
-          isCompact
-            ? "mx-auto flex w-full max-w-6xl items-center justify-center px-6 py-3 lg:px-8"
-            : "mx-auto flex w-full max-w-6xl items-center justify-center px-6 py-5 lg:px-8"
-        }
-      >
-        <Link
-          href="/"
-          className={
-            isCompact
-              ? "text-base font-semibold uppercase tracking-normal text-stone-900 transition-all duration-500 ease-out sm:text-lg"
-              : "text-lg font-semibold uppercase tracking-normal text-stone-900 transition-all duration-500 ease-out sm:text-xl"
-          }
-        >
-          <span>objetdoux</span>
+    <header className="site-header">
+      <div className="header-inner">
+        <Link href="/" className="wordmark" aria-label="오브제두 홈">
+          objetdoux
         </Link>
+        <nav className="desktop-nav" aria-label="주요 메뉴">
+          {navItems.map(([label, href]) => (
+            <Link key={label} href={href}>{label}</Link>
+          ))}
+        </nav>
+        <a
+          href="https://www.instagram.com/objetdoux/?utm_source=ig_web_button_share_sheet"
+          target="_blank"
+          rel="noreferrer"
+          className="store-link"
+        >
+          INSTAGRAM <span aria-hidden="true">↗</span>
+        </a>
       </div>
     </header>
   );

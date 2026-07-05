@@ -128,7 +128,7 @@ export function SiteFooter() {
 
   return (
     <>
-      <footer className="mt-16 border-t border-black/8 bg-[#f7f7f3] text-stone-950">
+      <footer className="border-t border-black/8 bg-[#f7f3ec] text-stone-950">
         <div className="mx-auto w-full max-w-6xl px-6 py-10 lg:px-8 lg:py-12">
           <div className="grid gap-10 md:grid-cols-[1fr_1fr_auto]">
             <div>

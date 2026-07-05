@@ -1,116 +1,59 @@
 import Image from "next/image";
-
-const products = [
-  {
-    src: "/brand/ai-sage-closeup.png",
-    alt: "Sage glaze ceramic plate",
-  },
-  {
-    src: "/brand/ai-blush-fluted.png",
-    alt: "Blush fluted ceramic plate",
-  },
-  {
-    src: "/brand/ai-tide-crop.png",
-    alt: "Tide glaze ceramic plate",
-  },
-  {
-    src: "/brand/ai-blush-fluted.png",
-    alt: "Blush ceramic plate detail",
-  },
-  {
-    src: "/brand/ai-sage-closeup.png",
-    alt: "Sage ceramic plate detail",
-  },
-];
-
-const menuItems = ["Shop", "Collection", "Lookbook", "About"];
-const gridCells = Array.from({ length: 72 }, (_, index) => index);
+import Link from "next/link";
 
 export default function Home() {
   return (
-    <main className="bg-[#AAA9A5] text-[#050505]">
-      <header className="sticky top-0 z-50 border-b border-black bg-[#F8F7F3]">
-        <div className="grid h-16 grid-cols-[1fr_auto_1fr] items-center px-4 text-[0.72rem] font-medium uppercase tracking-[0.14em] sm:px-6 lg:px-8">
-          <a
-            href="/"
-            className="justify-self-start text-[1.05rem] font-semibold normal-case tracking-[-0.04em]"
-          >
-            objetdoux
-          </a>
+    <main className="brand-home">
+      <Link
+        href="/collections/pastel-ceramic-bowl"
+        className="brand-hero"
+        aria-label="오브제두 첫 번째 컬렉션 보기"
+      >
+        <Image
+          src="/brand/objetdoux-top-view-hero.png"
+          alt="오브제두의 파스텔 세라믹 테이블웨어를 위에서 바라본 모습"
+          fill
+          loading="eager"
+          sizes="100vw"
+          className="brand-hero-image"
+        />
+        <h1>objetdoux</h1>
+      </Link>
 
-          <nav className="hidden items-center justify-center gap-8 md:flex">
-            {menuItems.map((item) => (
-              <a
-                key={item}
-                href={item === "Shop" ? "/stores" : `#${item.toLowerCase()}`}
-                className="transition hover:text-black/46"
-              >
-                {item}
-              </a>
-            ))}
-          </nav>
-
-          <div className="flex items-center justify-end gap-4">
-            <button
-              type="button"
-              className="hidden transition hover:text-black/46 sm:block"
-            >
-              Search
-            </button>
-            <button type="button" className="transition hover:text-black/46">
-              Cart 0
-            </button>
-            <button
-              type="button"
-              className="border border-black px-3 py-2 transition hover:bg-black hover:text-white md:hidden"
-            >
-              Menu
-            </button>
-          </div>
-        </div>
-      </header>
-
-      <section className="relative min-h-[calc(100vh-64px)] overflow-hidden bg-[#D8D8D3]">
-        <div className="absolute inset-0">
-          <Image
-            src="/brand/ai-sage-closeup.png"
-            alt="Objetdoux monochrome ceramic background"
-            fill
-            loading="eager"
-            sizes="100vw"
-            className="editorial-image object-cover opacity-[0.86]"
-          />
-        </div>
-        <div className="absolute inset-0 bg-[#D8D8D3]/8" />
-        <div className="editorial-grid absolute inset-0 z-10" />
-        <div className="flip-grid absolute inset-0 z-20" aria-hidden="true">
-          {gridCells.map((cell) => (
-            <span key={cell} className="flip-cell" />
-          ))}
-        </div>
-        <div className="pointer-events-none absolute inset-0 z-40 border-[14px] border-black sm:border-[18px]" />
-
-        <h1 className="pointer-events-none absolute left-1/2 top-1/2 z-30 -translate-x-1/2 -translate-y-1/2 select-none text-[clamp(4rem,15vw,12rem)] font-black leading-none tracking-[-0.09em]">
-          objetdoux
-        </h1>
+      <section className="brand-introduction">
+        <p className="brand-kicker">GENTLE OBJECTS FOR EVERYDAY LIVING</p>
+        <h2>
+          오래 곁에 두고 싶은 것들은
+          <br />
+          조용히 일상을 바꿉니다.
+        </h2>
+        <p>
+          오브제두는 쓰임과 아름다움 사이의 작은 균형을 생각합니다.
+          <br />
+          매일의 공간에 자연스럽게 스며드는 다정한 오브제를 만듭니다.
+        </p>
       </section>
 
-      <section className="bg-[#050505] p-px">
-        <div className="grid grid-cols-5 gap-px bg-white/14">
-          {products.map((product, index) => (
-            <div
-              key={`${product.src}-${index}`}
-              className="relative h-[8.5rem] overflow-hidden bg-black sm:h-[14rem] lg:h-[18rem]"
-            >
-              <Image
-                src={product.src}
-                alt={product.alt}
-                fill
-                sizes="(min-width: 1024px) 20vw, (min-width: 640px) 50vw, 100vw"
-                className="editorial-image object-cover opacity-80 transition duration-700 hover:scale-[1.04] hover:opacity-100"
-              />
-            </div>
-          ))}
+      <section className="featured-collection">
+        <div className="featured-image">
+          <Image
+            src="/product/bowl-lifestyle.png"
+            alt="오브제두 첫 번째 세라믹 볼 컬렉션"
+            fill
+            sizes="(min-width: 900px) 62vw, 100vw"
+            className="featured-photo"
+          />
+        </div>
+        <div className="featured-copy">
+          <p className="brand-kicker">THE FIRST COLLECTION · 2026</p>
+          <h2>담는 순간부터,<br />남은 순간까지.</h2>
+          <p>
+            식탁에서는 부드러운 세라믹 볼로,
+            식사가 끝나면 그대로 덮어 보관하는 첫 번째 오브제.
+          </p>
+          <Link href="/collections/pastel-ceramic-bowl" className="collection-link">
+            컬렉션 보기 <span aria-hidden="true">→</span>
+          </Link>
         </div>
       </section>
     </main>

@@ -10,11 +10,11 @@ export const metadata: Metadata = {
     template: "%s | 오브제두",
   },
   description:
-    "오브제두는 일상에 자연스럽게 스며들어, 공간의 분위기를 다정하게 정돈하는 오브제 브랜드입니다.",
+    "오브제두는 쓰임과 아름다움 사이의 작은 균형을 생각하며, 매일의 공간에 자연스럽게 스며드는 다정한 오브제를 만듭니다.",
   openGraph: {
     title: "오브제두",
     description:
-      "조용히 예쁜 것들. soft objects, quiet days.",
+      "gentle objects for everyday living. 일상에 자연스럽게 스며드는 다정한 오브제.",
     url: "https://objetdoux.com",
     siteName: "오브제두",
     locale: "ko_KR",
