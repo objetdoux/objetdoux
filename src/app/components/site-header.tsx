@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 const navItems = [
   ["HOME", "/"],
   ["COLLECTION", "/collections/pastel-ceramic-bowl"],
-  ["STORE", "/stores"],
+  ["SHOP", "/shop"],
 ];
 
 export function SiteHeader() {
