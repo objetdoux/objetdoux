@@ -131,13 +131,14 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.55; stroke-linecap: roun
 @media (max-width:620px) {
   .soft-stage { padding: 12px; } .soft-shell { padding: 10px; border-radius: 28px; } .soft-header { min-height: 62px; padding: 7px 9px; border-radius: 19px; }
   .round-button { width: 42px; height: 42px; } .wordmark { font-size: 24px; } .hero-dashboard { gap: 12px; min-height: auto; padding-top: 12px; }
-  .hero-side { grid-template-columns: 1fr; gap: 12px; } .intro-card { min-height: 400px; padding: 34px 28px; } .intro-card h2 { font-size: 36px; }
-  .utility-card { min-height: 240px; } .product-card { min-height: 650px; } .product-card::after { inset: 11px; } .product-copy { top: 42px; left: 32px; }
-  .product-copy h1 { font-size: 49px; } .product-visual { transform: translateY(55px); } .ceramic-bowl { right: -2%; width: 90%; }
+  .hero-side { grid-template-columns: 1fr; gap: 12px; } .intro-card { min-height: 390px; padding: 34px clamp(22px,7vw,28px); } .intro-card h2 { font-size: clamp(30px,9vw,36px); word-break: keep-all; }
+  .utility-card { min-height: 240px; grid-template-columns: minmax(100px,.8fr) 1.2fr; gap: 18px; padding: 24px clamp(18px,6vw,28px); } .utility-card h3 { font-size: clamp(17px,5vw,21px); }
+  .product-card { min-height: 650px; } .product-card::after { inset: 11px; } .product-copy { top: 42px; right: 24px; left: clamp(22px,7vw,32px); }
+  .product-copy h1 { font-size: clamp(39px,11.8vw,49px); white-space: nowrap; } .product-copy p { font-size: 12px; } .product-visual { transform: translateY(55px); } .ceramic-bowl { right: -2%; width: 90%; }
   .bowl-butter { right: 4%; } .bowl-peach { right: -4%; } .floating-lid { right: 8%; width: 72%; } .product-meta { right: 25px; bottom: 23px; left: 25px; }
   .stage-caption { margin-block: 24px 9px; } .color-section { padding: 95px 12px 110px; } .color-section::before { top: 1%; font-size: 62vw; }
-  .palette-heading { padding-inline: 12px; } .palette-heading h2 { font-size: 18vw; } .palette-grid { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 5px; margin-top: 65px; }
-  .palette-grid button { padding-inline: 8px; } .swatch-name { font-size: 15px; } .swatch-hex { opacity: 1; transform: none; }
+  .palette-heading { padding-inline: 12px; } .palette-heading h2 { font-size: clamp(52px,17vw,96px); } .palette-grid { grid-template-columns: repeat(3,minmax(0,1fr)); gap: 2px; margin-top: 60px; }
+  .palette-grid button { padding: 10px 5px 15px; } .swatch-number { margin-bottom: 7px; font-size: 10px; } .swatch-name { margin-top: 11px; font-size: clamp(11px,3.4vw,14px); white-space: nowrap; } .swatch-hex { margin-top: 3px; font-size: 7px; opacity: 1; transform: none; }
   .palette-footer { grid-template-columns: 1fr auto; gap: 18px; margin: 60px 12px 0; } .palette-footer p { grid-column: 1 / -1; grid-row: 1; }
   .closing-section { min-height: 680px; } .closing-section h2 { font-size: 48px; }
 }
